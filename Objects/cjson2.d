@@ -1,0 +1,9 @@
+.\objects\cjson2.o: System\cJSON2.c
+.\objects\cjson2.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\cjson2.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\cjson2.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\math.h
+.\objects\cjson2.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\cjson2.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\float.h
+.\objects\cjson2.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\limits.h
+.\objects\cjson2.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\ctype.h
+.\objects\cjson2.o: System\cJSON2.h
