@@ -129,7 +129,7 @@ uint8_t esp8266_send_command_PUB(char *cmd, char *res)
 
 }
 /*************************************** USART2中断函数 ***********************************************************/
-// USART2在初始化阶段的中断处理函数
+// USART2在初始化阶段的中断处理函数 -1
 void USART2_IRQHandler_Init(void)
 {
     uint8_t receive_data = 0;   
@@ -181,6 +181,45 @@ void USART2_IRQHandler_Init(void)
 
 // USART2在运行时的中断处理函数  -2
 void USART2_IRQHandler_Runtime(void) {
+    if (USART_GetITStatus(USART2, USART_IT_RXNE) != RESET) {
+        char c = USART_ReceiveData(USART2);
+		// printf("%c",c);
+		rx_buffer[rx_index++] = c;
+		rx_index_2 = rx_index;
+		
+		// 判断是否是这组数据的结束
+//		if(rx_buffer[rx_index] == '}'){
+//			if(rx_buffer[rx_index] == rx_buffer[rx_index - 1]){
+//				rx_index_2 = rx_index;
+//				data_received = 1;
+//				rx_index = 0;
+//			}
+//		}
+//		if (c == '\n' /* || c == '\r' */ ) {  // assuming '\n' is the end of message
+//            rx_buffer[rx_index] = '\0';  // Null-terminate the string
+//            data_received = 1;  // Flag indicating data is received
+//			rx_index_2 = rx_index;
+//            rx_index = 0;  // Reset index for next message
+//			goto exit;
+//        }
+
+		
+		// printf("%c",c);
+        // Store received character in buffer if there is space
+//        if (rx_index < BUFFER_SIZE - 1) {
+//            rx_buffer[rx_index++] = c;
+//        }
+
+        // Check if the received character indicates end of data (e.g., newline or specific character)
+//		exit:
+		USART_ClearITPendingBit(USART2, USART_IT_RXNE);
+    }
+}
+
+
+
+// 接收没有payload的json数据  中断函数 -2
+void USART2_IRQHandler_Runtime2(void) {
     if (USART_GetITStatus(USART2, USART_IT_RXNE) != RESET) {
         char c = USART_ReceiveData(USART2);
 		// printf("%c",c);

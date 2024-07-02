@@ -28,6 +28,7 @@ extern volatile bool data_received;
 extern uint8_t g_uart_rx_buf[ESP8266_UART_RX_BUF_SIZE];
 /******************************* 函数指针 动态切换usart2中断函数 **********************************************/
 
+extern char rx_buffer_5[RX_BUFFER_SIZE];
 
 
 volatile USART2_IRQHandler_t USART2_IRQHandler_ptr = NULL;
@@ -61,13 +62,16 @@ int main(void){				// a9f0879994d95a42e919b574af}
 	EspRst_GPIO_Init();
 	ESP8266_Init();
 	MQTT_Init();
-//	cJSON * jo = cJSON_Parse(rx_buffer_2);
-
+	
+/* 测试json数据代码
+//	cJSON * jo = cJSON_Parse(rx_buffer_5);
 //	if (jo) {
 //		printf("JSON ok\n");
 //	}
 //	else
 //		printf("JSON invalid\n");
+//	return 0;
+*/
 	do{
 		// break;
 		Delay_ms(3000);	

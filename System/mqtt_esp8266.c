@@ -1,6 +1,6 @@
 #include "My_include.h"
 
-
+char rx_buffer_5[RX_BUFFER_SIZE] = "{\"CtxId\":\"7f91c5a9f0879994d95a42e919b574af\"}";
 extern char rx_buffer_2[RX_BUFFER_SIZE]; 
 extern char rx_buffer_3[RX_BUFFER_SIZE];
 extern uint8_t g_uart_rx_buf[ESP8266_UART_RX_BUF_SIZE];
@@ -296,28 +296,8 @@ void processSecondGroupData(char *data) {
 	
 	// 7/1 加转义
     add_backslashes_and_quotes(jsonStart);
-/**************************打印提取出来的回执数据 6/30 ******************************/	
-	
-	// 加上末尾'\0'  6/30
-//	if (jsonStart[150 - 1] != '\0') {
-//       jsonStart[150] = '\0';  // 添加 '\0' 到字符串末尾
-//		jsonStart[151] = NULL;
-//		jsonStart[152] = NULL;
-//    }
-	
-	
-//	while((*jsonStart++) != '\0'){
-//		printf("%c",*jsonStart);
-//	
-//	}
-	printf("%s",jsonStart);
+	printf("\r\n%s\r\n",jsonStart);
 	// {"Type":4,"Time":1719746116700,"MsgId":"96c158a3-1a72-4604-b699-4487b58a28b8","SendId":"SVR01","Payload":{"CtxId":"7f91c5a9f0879994d95a42e919b574af"}}
-
-	//printf("\r\n");
-	// 打印错误信息
-	// printJsonError((const char *)jsonStart);
-
-	//printf("\r\n");
 /***********************************************************************/	
 	
 	
@@ -349,22 +329,44 @@ void processSecondGroupData(char *data) {
         printf("Type: %d\n", type->valueint);
         printf("Time: %.llf\n", time->valuedouble);  // 使用valueint或valuedouble取决于数据类型
         printf("MsgId: %s\n", msgId->valuestring);
-        printf("SendId: %s\n", sendId->valuestring);		
-        
-        cJSON *ctxId = cJSON_GetObjectItem(payload, "CtxId");
+        printf("SendId: %s\n", sendId->valuestring);
+
+
+		char payload_json_string[256];
+
+		sprintf(payload_json_string,"%s",payload->valuestring);
+		// printf("%s\r\n",payload_json_string);
+		/******** 解析payload中的数据 嵌套解析 *************/
+        // 解析嵌套的payload JSON字符串
+		//sprintf(payload_json_string,"%s",payload->valuestring);
+		// strcpy(payload_json_string, payload->valuestring); // 将结果复制回原字符串
+		cJSON_Delete(root);
+		cJSON *payload_json = cJSON_Parse(payload_json_string);
+//		return;
+        if (payload_json == NULL) {
+            printf("Payload JSON parse error: %s\n", cJSON_GetErrorPtr());
+            cJSON_Delete(payload_json);
+            return;
+        }		
+		
+		/*********************/
+		
+        cJSON *ctxId = cJSON_GetObjectItem(payload_json, "CtxId");
         if (ctxId) {
             printf("CtxId: %s\n", ctxId->valuestring);// 原  %s  valuestring 7/1 
-        }
+        }else{				// test 解析错误 7/2
+			printf("Ctxld error!\r\n");	
+		}
 		// 7/1 新增payload 第二组数据作测试
 //		cJSON *ctxId2 = cJSON_GetObjectItem(payload, "CtxId2");
 //        if (ctxId2) {
 //            printf("CtxId2: %d\n", ctxId2->valueint);// 原  %s  valuestring 7/1 
 //        }
-		
+		 // 释放JSON对象
+		 cJSON_Delete(payload_json);
+
     }
     
-    // 释放JSON对象
-    cJSON_Delete(root);
 	printf("\r\nParsing completed!\r\n");				//  7/1
 }
 
@@ -389,22 +391,22 @@ void add_backslashes_and_quotes(char *str) {
     int res_index = 0;
     int curly_braces_count = 0;
     int inside_second_braces = 0;
-    int second_brace_found = 0;
-    int third_brace_found = 0;
+//    int second_brace_found = 0;
+//    int third_brace_found = 0;
 
     for (int i = 0; i < len; i++) {
         if (str[i] == '{') {
             curly_braces_count++;
             if (curly_braces_count == 2) {
                 inside_second_braces = 1;
-                second_brace_found = 1;
+               //  second_brace_found = 1;
                 result[res_index++] = '\"'; // 在第二个 '{' 前加双引号
             }
         } else if (str[i] == '}') {
             curly_braces_count--;
             if (curly_braces_count < 2 && inside_second_braces) {
                 inside_second_braces = 0;
-                third_brace_found = 1;
+                // third_brace_found = 1;
                 result[res_index++] = str[i];
                 result[res_index++] = '\"'; // 在第三个 '}' 后加双引号
                 continue; // 跳过这个字符的默认处理
