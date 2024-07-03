@@ -21,7 +21,7 @@ RingBuffer rxBuffer = { .head = 0, .tail = 0 };
 
 volatile char rx_buffer[RX_BUFFER_SIZE];
 volatile uint16_t rx_index = 0;
-volatile bool data_received = false;
+volatile bool data_received_3 = false;
 /*********************************************************************************************/
 
 uint8_t g_uart_rx_buf[ESP8266_UART_RX_BUF_SIZE];
@@ -195,45 +195,33 @@ void USART2_IRQHandler_Runtime(void) {
 //				rx_index = 0;
 //			}
 //		}
-//		if (c == '\n' /* || c == '\r' */ ) {  // assuming '\n' is the end of message
-//            rx_buffer[rx_index] = '\0';  // Null-terminate the string
-//            data_received = 1;  // Flag indicating data is received
-//			rx_index_2 = rx_index;
-//            rx_index = 0;  // Reset index for next message
-//			goto exit;
-//        }
-
-		
-		// printf("%c",c);
-        // Store received character in buffer if there is space
-//        if (rx_index < BUFFER_SIZE - 1) {
-//            rx_buffer[rx_index++] = c;
-//        }
-
-        // Check if the received character indicates end of data (e.g., newline or specific character)
-//		exit:
 		USART_ClearITPendingBit(USART2, USART_IT_RXNE);
     }
 }
 
 
 
-// 接收没有payload的json数据  中断函数 -2
+// 非嵌套JSON 			接收没有payload的json数据  中断函数 -3
 void USART2_IRQHandler_Runtime2(void) {
     if (USART_GetITStatus(USART2, USART_IT_RXNE) != RESET) {
-        char c = USART_ReceiveData(USART2);
+        char Rx_c = USART_ReceiveData(USART2);
 		// printf("%c",c);
-		rx_buffer[rx_index++] = c;
-		rx_index_2 = rx_index;
+		if(rx_index >= sizeof(rx_buffer))
+            rx_index = 0; //防止串口被刷爆
+
+		rx_buffer[rx_index++] = Rx_c;
 		
 		// 判断是否是这组数据的结束
-//		if(rx_buffer[rx_index] == '}'){
-//			if(rx_buffer[rx_index] == rx_buffer[rx_index - 1]){
-//				rx_index_2 = rx_index;
-//				data_received = 1;
-//				rx_index = 0;
-//			}
-//		}
+		if(Rx_c == '}'){
+
+
+			rx_buffer[rx_index] = '\0';  // 添加字符串终止符			
+			// printf("%s\r\n",rx_buffer);
+			data_received_3 = true;
+			rx_index = 0;
+//			memset((void*)rx_buffer, 0, RX_BUFFER_SIZE);
+
+		}
 //		if (c == '\n' /* || c == '\r' */ ) {  // assuming '\n' is the end of message
 //            rx_buffer[rx_index] = '\0';  // Null-terminate the string
 //            data_received = 1;  // Flag indicating data is received

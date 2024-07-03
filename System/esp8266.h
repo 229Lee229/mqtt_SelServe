@@ -34,9 +34,12 @@ typedef void (*USART2_IRQHandler_t)(void);
 
 // 定义函数指针变量
 // extern volatile USART2_IRQHandler_t USART2_IRQHandler_ptr;
-// 声明USART2的中断处理函数
+
+/********************************** 声明USART2的中断处理函数 **************************/
 void USART2_IRQHandler_Init(void);
 void USART2_IRQHandler_Runtime(void);
+void USART2_IRQHandler_Runtime2(void);
+
 /*****************************************************************************************************************/
 
 uint8_t esp8266_wait_receive(void);
@@ -54,4 +57,5 @@ uint8_t esp8266_at_PING(char *ip);
 
 void ESP8266_GPIO_PinInit(void);
 void ESP8266_Init(void);
+
 #endif

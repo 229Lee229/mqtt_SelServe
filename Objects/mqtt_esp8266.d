@@ -32,6 +32,7 @@
 .\objects\mqtt_esp8266.o: .\Library\cJSON.h
 .\objects\mqtt_esp8266.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stddef.h
 .\objects\mqtt_esp8266.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\mqtt_esp8266.o: .\Hardware\relay5V.h
 .\objects\mqtt_esp8266.o: System\OLED.h
 .\objects\mqtt_esp8266.o: System\Delay.h
 .\objects\mqtt_esp8266.o: .\Hardware\Matrix_Key2.h

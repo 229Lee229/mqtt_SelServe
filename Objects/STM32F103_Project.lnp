@@ -35,6 +35,7 @@
 ".\objects\mqtt_esp8266.o"
 ".\objects\matrix_key2.o"
 ".\objects\esprst.o"
+".\objects\relay5v.o"
 ".\objects\stm32f10x_it.o"
 ".\objects\main.o"
 --library_type=microlib --strict --scatter ".\Objects\STM32F103_Project.sct"

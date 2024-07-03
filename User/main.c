@@ -24,12 +24,12 @@
 // bool esp_RstPin = false;
 
 extern volatile u16 rx_index_2;
-extern volatile bool data_received;
+extern volatile bool data_received_3;
 extern uint8_t g_uart_rx_buf[ESP8266_UART_RX_BUF_SIZE];
 /******************************* 函数指针 动态切换usart2中断函数 **********************************************/
 
 extern char rx_buffer_5[RX_BUFFER_SIZE];
-
+extern uint16_t rx_index;
 
 volatile USART2_IRQHandler_t USART2_IRQHandler_ptr = NULL;
 
@@ -39,6 +39,8 @@ void USART2_IRQHandler(void) {
         USART2_IRQHandler_ptr();
     }
 }
+
+u8 relay_type;
 
 /*****************************************************************************************************************/
 extern volatile bool data_received;
@@ -51,14 +53,21 @@ char rx_buffer_3[RX_BUFFER_SIZE] = "{\"w\":\"GWiFi\",\"p\":\"G@dge@n#24it&dp\",\
 char rx_buffer_4[RX_BUFFER_SIZE] = "{\"data\":\"{\\\"a\\\":1,\\\"b\\\":2}\"}";
 
 int main(void){				// a9f0879994d95a42e919b574af}
-	
 	Usart1_Init(115200);
 	Usart2_Init(115200);
-	
-	
+//	char test[20];
+//	sprintf(test,"%s",MQTTCONN_Host_MyConf_LAN);
+//	printf("%s\r\n",test);
+//	return 0;
 	// 将USART2的中断处理函数指针指向初始化阶段的处理函数
     USART2_IRQHandler_ptr = USART2_IRQHandler_Init;
+	// ----test 7/3
+	relay5V_Init();
+	// GPIO_Pin_Init(PB14 ,GPIO_Mode_Out_PP);
+	// PBout(14) = 1;
+	// ----test 7/3
 	
+	//relay5V_Init();	
 	EspRst_GPIO_Init();
 	ESP8266_Init();
 	MQTT_Init();
@@ -72,6 +81,7 @@ int main(void){				// a9f0879994d95a42e919b574af}
 //		printf("JSON invalid\n");
 //	return 0;
 */
+#ifdef MQTTPUB_Init	
 	do{
 		// break;
 		Delay_ms(3000);	
@@ -84,16 +94,59 @@ int main(void){				// a9f0879994d95a42e919b574af}
 		
 		
 	}while(0);
+#endif	
+	// 数组清零			7/3
+	memset((void*)rx_buffer, 0, RX_BUFFER_SIZE);
+	rx_index = 0;
+	// 转移中断, 接收非嵌套JSON  test  7/3
+    USART2_IRQHandler_ptr = USART2_IRQHandler_Runtime2;
 	
 	while(1){
-		 // if (data_received) {
-			// process_received_data((const char *)rx_buffer);
-//			for(u16 i = 0;i < rx_index_2;i++){
-//				printf("%c",rx_buffer[i]);
-//				
+		if (data_received_3) {
+			printf("%s",rx_buffer);
+			data_received_3 = false;	
+
+
+			char *jsonStart = strchr((char *)rx_buffer, '{');
+			cJSON * jo = cJSON_Parse(jsonStart);
+			if (jo == NULL) {			// 若解析失败 7/3
+				// JSON解析失败
+				// printf("JSON parse error\n");
+				printf("JSON parse error: %s\n", cJSON_GetErrorPtr());
+				cJSON_Delete(jo);
+				return 0;
+			}
+
+			
+			
+
+			cJSON *type = cJSON_GetObjectItem(jo, "Type");
+			if (type) {
+				printf("Type: %d\n", type->valueint);
+				relay_type = type->valueint;
+				if(relay_type == 11){			// 开门
+					PBout(14) = 0;
+	
+				}else if(relay_type == 10){		// 关门
+					PBout(14) = 1;
+	
+				}
+			}
+					
+//			if (jo) {
+//				printf("JSON ok\n");
 //			}
-		  // data_received = false;
-		// }		
+//			else
+//				printf("JSON invalid\n");
+			cJSON_Delete(jo);
+		// return 0;			
+			// memset((void*)rx_buffer, 0, RX_BUFFER_SIZE);
+		}		
+		
+		
+		
+		
+		
 		
 		// esp重置
 //		if(esp_RstPin == true){

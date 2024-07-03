@@ -73,10 +73,14 @@ void MQTT_Init(void){
 	TimeOut_mqtt = 5;
 	// 3 - AT+MQTTCONN£ºÁ¬½Ó MQTT Broker
 	while(TimeOut_mqtt--){
-		if(esp8266_at_MQTTCONN(MQTTCONN_Host_MyConf_PUB,MQTTCONN_Port_MyConf) == 1)
-			printf("MQTTCONN Error!\r\n");
+		char conn_name[24];
+		if(esp8266_at_MQTTCONN(MQTTCONN_Host_MyConf,MQTTCONN_Port_MyConf) == 1){
+			sprintf(conn_name,"%s",MQTTCONN_Host_MyConf);
+			printf("MQTTCONN Error!%s\r\n",conn_name);
+		}
 		else {
-			printf("MQTTCONN Successful!\r\n");
+			sprintf(conn_name,"%s",MQTTCONN_Host_MyConf);
+			printf("MQTTCONN Successful!%s\r\n",conn_name);
 			break;
 		}
 		Delay_ms(20);
@@ -97,6 +101,9 @@ void MQTT_Init(void){
 	
 	Delay_ms(2);
 	
+#ifdef MQTTPUB_Init	
+	
+	
 	MQTTPUB_FLAG = true;
 	TimeOut_mqtt = 3;
 	while(TimeOut_mqtt--){
@@ -111,6 +118,8 @@ void MQTT_Init(void){
 		}
 		Delay_ms(10);		
 	}
+#endif	
+	
 }
 //void MQTT_Init(void){
 //	

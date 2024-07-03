@@ -9,8 +9,8 @@
 
 #define MQTTLONGCLIENTID_MyConf 		"1234567_T9BX11TG"
 #define MQTTCONNCFG_MyConf  			"0,60,1,\"\",\"\",0,0"
-#define MQTTCONN_Host_MyConf_LAN 		"192.168.1.42"
-#define MQTTCONN_Host_MyConf_PUB 		"nestbase.meseee.com"
+#define MQTTCONN_Host_MyConf			"192.168.1.42"				// LAN
+// #define MQTTCONN_Host_MyConf	 		"nestbase.meseee.com"		// PUB
 #define MQTTCONN_Port_MyConf			1883
 
 

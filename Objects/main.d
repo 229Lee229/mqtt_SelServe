@@ -32,6 +32,7 @@
 .\objects\main.o: .\Library\cJSON.h
 .\objects\main.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stddef.h
 .\objects\main.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\main.o: .\Hardware\relay5V.h
 .\objects\main.o: .\System\OLED.h
 .\objects\main.o: .\System\Delay.h
 .\objects\main.o: .\Hardware\Matrix_Key2.h

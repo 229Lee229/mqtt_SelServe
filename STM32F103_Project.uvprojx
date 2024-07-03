@@ -765,6 +765,16 @@
               <FileType>5</FileType>
               <FilePath>.\Hardware\EspRst.h</FilePath>
             </File>
+            <File>
+              <FileName>relay5V.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Hardware\relay5V.c</FilePath>
+            </File>
+            <File>
+              <FileName>relay5V.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Hardware\relay5V.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
