@@ -2,6 +2,7 @@
 #define __MY_INCLUDE_H
 
 #include "stm32f10x.h"                  // Device header
+#include "user.h"
 #include "cJSON.h"
 // #include "cJSON2.h"
 #include "string.h"

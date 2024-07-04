@@ -29,6 +29,7 @@
 .\objects\esprst.o: .\Library\stm32f10x_usart.h
 .\objects\esprst.o: .\Library\stm32f10x_wwdg.h
 .\objects\esprst.o: .\Library\misc.h
+.\objects\esprst.o: .\User\user.h
 .\objects\esprst.o: .\Library\cJSON.h
 .\objects\esprst.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stddef.h
 .\objects\esprst.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\string.h

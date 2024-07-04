@@ -29,6 +29,7 @@
 .\objects\mqtt_esp8266.o: .\Library\stm32f10x_usart.h
 .\objects\mqtt_esp8266.o: .\Library\stm32f10x_wwdg.h
 .\objects\mqtt_esp8266.o: .\Library\misc.h
+.\objects\mqtt_esp8266.o: .\User\user.h
 .\objects\mqtt_esp8266.o: .\Library\cJSON.h
 .\objects\mqtt_esp8266.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stddef.h
 .\objects\mqtt_esp8266.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\string.h

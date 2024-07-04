@@ -29,6 +29,7 @@
 .\objects\relay5v.o: .\Library\stm32f10x_usart.h
 .\objects\relay5v.o: .\Library\stm32f10x_wwdg.h
 .\objects\relay5v.o: .\Library\misc.h
+.\objects\relay5v.o: .\User\user.h
 .\objects\relay5v.o: .\Library\cJSON.h
 .\objects\relay5v.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stddef.h
 .\objects\relay5v.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\string.h

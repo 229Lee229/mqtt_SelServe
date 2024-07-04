@@ -805,6 +805,11 @@
               <FileType>5</FileType>
               <FilePath>.\User\main.h</FilePath>
             </File>
+            <File>
+              <FileName>user.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\User\user.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

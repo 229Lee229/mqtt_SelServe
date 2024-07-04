@@ -14,8 +14,10 @@
 												AT调试时测试一下是否可以正常设置 考虑mqtt_clean的问题 重连mqtt的时候考虑重新启动esp
 												
     V1.2		 6/25/2024	  Lee				尝试中断函数中不加延时函数 使用标志位进行esp重置 
-	V1.3		 6/272024     Lee  				中断后出不去的原因是,判断语句中多个引脚判断 "(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_15) == 0)"
+	V1.3		 6/27/2024     Lee  				中断后出不去的原因是,判断语句中多个引脚判断 "(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_15) == 0)"
 												当进入中断函数后,判断if语句中,这条语句不成立,故不断进入中断,出不去的原因,标志位在语句中,故一直清除不掉
+	V2.0		 7/4/2024	  Lee				增加mqtt指令控制系统复位
+ 
  ***********************************************************************/
 
 
@@ -40,7 +42,7 @@ void USART2_IRQHandler(void) {
     }
 }
 
-u8 relay_type;
+u8 Json_type;
 
 /*****************************************************************************************************************/
 extern volatile bool data_received;
@@ -55,19 +57,10 @@ char rx_buffer_4[RX_BUFFER_SIZE] = "{\"data\":\"{\\\"a\\\":1,\\\"b\\\":2}\"}";
 int main(void){				// a9f0879994d95a42e919b574af}
 	Usart1_Init(115200);
 	Usart2_Init(115200);
-//	char test[20];
-//	sprintf(test,"%s",MQTTCONN_Host_MyConf_LAN);
-//	printf("%s\r\n",test);
-//	return 0;
 	// 将USART2的中断处理函数指针指向初始化阶段的处理函数
     USART2_IRQHandler_ptr = USART2_IRQHandler_Init;
 	// ----test 7/3
-	relay5V_Init();
-	// GPIO_Pin_Init(PB14 ,GPIO_Mode_Out_PP);
-	// PBout(14) = 1;
-	// ----test 7/3
-	
-	//relay5V_Init();	
+	relay5V_Init();	
 	EspRst_GPIO_Init();
 	ESP8266_Init();
 	MQTT_Init();
@@ -101,6 +94,8 @@ int main(void){				// a9f0879994d95a42e919b574af}
 	// 转移中断, 接收非嵌套JSON  test  7/3
     USART2_IRQHandler_ptr = USART2_IRQHandler_Runtime2;
 	
+	
+	bool json_YorN_flag;
 	while(1){
 		if (data_received_3) {
 			printf("%s",rx_buffer);
@@ -114,57 +109,37 @@ int main(void){				// a9f0879994d95a42e919b574af}
 				// printf("JSON parse error\n");
 				printf("JSON parse error: %s\n", cJSON_GetErrorPtr());
 				cJSON_Delete(jo);
-				return 0;
-			}
-
-			
-			
+				json_YorN_flag = false;
+				continue;
+				// return 0;
+			}else	json_YorN_flag = true;
 
 			cJSON *type = cJSON_GetObjectItem(jo, "Type");
-			if (type) {
+			if (type && json_YorN_flag) {
 				printf("Type: %d\n", type->valueint);
-				relay_type = type->valueint;
-				if(relay_type == 11){			// 开门
-					PBout(14) = 0;
-	
-				}else if(relay_type == 10){		// 关门
-					PBout(14) = 1;
-	
+				Json_type = type->valueint;
+				
+				switch(Json_type){
+					case RELAY_1_ON:		
+								Pin_DoorLock_2 = 0;
+								Pin_Light_2	   = 0;		
+								break;
+					case RELAY_1_OFF:		
+								Pin_DoorLock_2 = 1;
+								Pin_Light_2	   = 1;		
+								break;
+					case SysReset:
+								printf("System will reset...\r\n");
+								Delay_ms(1000); // 发送完信息后延时一会儿
+								NVIC_SystemReset(); // 触发软件复位
+								break;
+					default:				
+								break;
+					
 				}
 			}
-					
-//			if (jo) {
-//				printf("JSON ok\n");
-//			}
-//			else
-//				printf("JSON invalid\n");
 			cJSON_Delete(jo);
-		// return 0;			
-			// memset((void*)rx_buffer, 0, RX_BUFFER_SIZE);
 		}		
-		
-		
-		
-		
-		
-		
-		// esp重置
-//		if(esp_RstPin == true){
-//			Delay_ms(300);
-//			PBout(9) = 1;
-
-//			printf("ESP8266 Reset Successful!\r\n");
-//			esp_RstPin = false;
-//		}
-
-//		Delay_ms(5000);	
-//		for(u16 i = 0;i < rx_index_2;i++){
-//			printf("%c",rx_buffer[i]);
-//				
-//		}
-//		printf("\r\n");
-//		processSecondGroupData((char *)rx_buffer);
-		// USART1_SendString("test...\r\n");
 			
 	}
 }

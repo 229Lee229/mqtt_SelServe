@@ -29,6 +29,7 @@
 .\objects\main.o: .\Library\stm32f10x_wwdg.h
 .\objects\main.o: .\Library\misc.h
 .\objects\main.o: .\System\My_include.h
+.\objects\main.o: .\User\user.h
 .\objects\main.o: .\Library\cJSON.h
 .\objects\main.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stddef.h
 .\objects\main.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\string.h

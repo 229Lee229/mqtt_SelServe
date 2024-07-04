@@ -3,9 +3,9 @@
 <title>Static Call Graph - [.\Objects\STM32F103_Project.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\STM32F103_Project.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Wed Jul 03 23:35:08 2024
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Thu Jul 04 23:19:57 2024
 <BR><P>
-<H3>Maximum Stack Usage =        612 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =        588 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
 main &rArr; MQTT_Init &rArr; esp8266_at_MQTTUSERCFG &rArr; esp8266_send_command &rArr; strstr
 <P>
@@ -564,7 +564,8 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Delay_us
 </UL>
-<BR>[Called By]<UL><LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MQTT_Init
+<BR>[Called By]<UL><LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+<LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MQTT_Init
 <LI><a href="#[b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;esp8266_send_command
 <LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ESP8266_Init
 <LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ESP8266_GPIO_PinInit
@@ -1127,8 +1128,8 @@ Global Symbols
 <P><STRONG><a name="[50]"></a>fputc</STRONG> (Thumb, 24 bytes, Stack size 0 bytes, usart.o(i.fputc))
 <BR>[Address Reference Count : 1]<UL><LI> printfa.o(i.__0printf)
 </UL>
-<P><STRONG><a name="[49]"></a>main</STRONG> (Thumb, 200 bytes, Stack size 24 bytes, main.o(i.main))
-<BR><BR>[Stack]<UL><LI>Max Depth = 612<LI>Call Chain = main &rArr; MQTT_Init &rArr; esp8266_at_MQTTUSERCFG &rArr; esp8266_send_command &rArr; strstr
+<P><STRONG><a name="[49]"></a>main</STRONG> (Thumb, 268 bytes, Stack size 0 bytes, main.o(i.main))
+<BR><BR>[Stack]<UL><LI>Max Depth = 588<LI>Call Chain = main &rArr; MQTT_Init &rArr; esp8266_at_MQTTUSERCFG &rArr; esp8266_send_command &rArr; strstr
 </UL>
 <BR>[Calls]<UL><LI><a href="#[bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strchr
 <LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr
@@ -1138,6 +1139,7 @@ Global Symbols
 <LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ESP8266_Init
 <LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Usart2_Init
 <LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Usart1_Init
+<LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Delay_ms
 <LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cJSON_Parse
 <LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cJSON_GetObjectItem
 <LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cJSON_GetErrorPtr
