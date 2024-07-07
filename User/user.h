@@ -15,6 +15,16 @@
 //}Json_Type;
 
 
+//struct Json_type{
+//	u8 Json_type : 7;
+//	double Json_time;
+//	char *MsgId;
+//	
+//	
+//	
+//}Json_type_NoPayload;
+
+
 #define Pin_DoorLock_1						PBout(12)
 #define Pin_DoorLock_2               	 	PBout(13)
 #define Pin_Light_1                			PBout(14)

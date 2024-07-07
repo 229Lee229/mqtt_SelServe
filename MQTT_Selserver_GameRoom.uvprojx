@@ -740,6 +740,16 @@
               <FileType>5</FileType>
               <FilePath>.\System\mqtt_esp8266.h</FilePath>
             </File>
+            <File>
+              <FileName>Rec_Json_parse.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\System\Rec_Json_parse.c</FilePath>
+            </File>
+            <File>
+              <FileName>Rec_Json_parse.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\System\Rec_Json_parse.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

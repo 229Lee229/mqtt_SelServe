@@ -5,7 +5,7 @@ extern volatile USART2_IRQHandler_t USART2_IRQHandler_ptr;
 
 /*********** Debug **************/ 
 
-// #define MQTTPUB_Init
+#define MQTTPUB_Init
 
 /*******************************/ 
 

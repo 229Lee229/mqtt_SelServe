@@ -3,9 +3,9 @@
 /**********************************************************************
  * flie:  main
  * brief:  
- * Input: 
- * Output:
- * Retval:
+ * Input:  
+ * Output: 
+ * Retval: 
  *
  * History--------------------------------------------------------------
  * Version       Date         Name    			Changes and comments
@@ -17,7 +17,9 @@
 	V1.3		 6/27/2024     Lee  				中断后出不去的原因是,判断语句中多个引脚判断 "(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_15) == 0)"
 												当进入中断函数后,判断if语句中,这条语句不成立,故不断进入中断,出不去的原因,标志位在语句中,故一直清除不掉
 	V2.0		 7/4/2024	  Lee				增加mqtt指令控制系统复位
- 
+	V3.0		 7/7/2024     Lee				增加解析payload数据,startANDend长整形数据,增加看门狗定时,
+												解除半主机模式解析失败 使用mircro LIB解析成功
+												如函数 : void _ttywrch(int ch)
  ***********************************************************************/
 
 
@@ -25,8 +27,29 @@
 // extern uint8_t g_uart_rx_buf[];
 // bool esp_RstPin = false;
 
+
+/* 7/6 */
+
+void IWDG_Init(void) {
+    // 使能对IWDG寄存器的写访问
+    IWDG_WriteAccessCmd(IWDG_WriteAccess_Enable);
+
+    // 设置预分频值
+    IWDG_SetPrescaler(IWDG_Prescaler_256);
+
+    IWDG_SetReload(49999);			// timeout = (Reload Value + 1) × (1/(LSI / (Prescaler)))
+	// 10s
+    // IWDG重装载值
+    IWDG_ReloadCounter();
+
+    // 使能IWDG
+    IWDG_Enable();
+}
+
+
+
 extern volatile u16 rx_index_2;
-extern volatile bool data_received_3;
+extern volatile bool data_REC_NoPayload_Flag;
 extern uint8_t g_uart_rx_buf[ESP8266_UART_RX_BUF_SIZE];
 /******************************* 函数指针 动态切换usart2中断函数 **********************************************/
 
@@ -43,21 +66,33 @@ void USART2_IRQHandler(void) {
 }
 
 u8 Json_type;
-
-/*****************************************************************************************************************/
-extern volatile bool data_received;
-extern volatile char rx_buffer[RX_BUFFER_SIZE];
-char rx_buffer_2[RX_BUFFER_SIZE] = "{\"Type\":4,\"Time\":1719746116700,\"MsgId\":\"96c158a3-1a72-4604-b699-4487b58a28b8\",\"SendId\":\"SVR01\",			\
-	\"Payload\":\"{\\\"CtxId\\\":\\\"jjoodf\\\",\\\"CtxId2\\\":1974611670}\"}";
-
-
-char rx_buffer_3[RX_BUFFER_SIZE] = "{\"w\":\"GWiFi\",\"p\":\"G@dge@n#24it&dp\",\"t\":\"0,0,26941480,140,170,40,40,100,200,150,29,39,89,45,2,75,75,2\"}";
-char rx_buffer_4[RX_BUFFER_SIZE] = "{\"data\":\"{\\\"a\\\":1,\\\"b\\\":2}\"}";
-
+bool json_YorN_flag;
+extern volatile char rx_buffer_esp8266[RX_BUFFER_SIZE];
+extern bool data_REC_WithPayload_Flag;			// 7/7
+/*********************************** JSON_parse 测试数据 *************************************************************************/
+char JSON_parse_test_1[RX_BUFFER_SIZE] = "{\"Type\":4,\"Time\":1719746116700,\"MsgId\":\"96c158a3-1a72-4604-b699-4487b58a28b8\",\"SendId\":\"SVR01\",			\
+										\"Payload\":\"{\\\"CtxId\\\":\\\"jjoodf\\\",\\\"CtxId2\\\":1974611670}\"}";
+char JSON_parse_test_2[RX_BUFFER_SIZE] = "{\"w\":\"GWiFi\",\"p\":\"G@dge@n#24it&dp\",\"t\":\"0,0,26941480,140,170,40,40,100,200,150,29,39,89,45,2,75,75,2\"}";
+// char JSON_parse_test_3[RX_BUFFER_SIZE] = "{\"data\":\"{\\\"a\\\":1,\\\"b\\\":2}\"}";
+// char JSON_parse_test_4[RX_BUFFER_SIZE]/* 7/7 */ = "{\"Type\":10,\"Time\":1720343740875,\"MsgId\":\"5464cd57-c59f-4c53-8f46-8725013f3db9\",\"SendId\":\"SVR01\",\"Payload\":\"{\\\"CtxId\\\":\\\"7f91c5a9f0879994d95a42e919b574af\\\"}\"}";
+char JSON_parse_test_5[RX_BUFFER_SIZE]	= "{\"Type\":92,\"Time\":1744533467325,\"MsgId\":\"4af325ke4af325ke4af325ke4af325ke\",\"SendId\":\"SVR01\",\"Payload\":\"{\\\"Start\\\":1744533467325,\\\"End\\\":17445334883254,\\\"Getter\\\":\\\"clientId_005\\\"}\"}";								
+// {"Type":10,"Time":1720343740875,"MsgId":"5464cd57-c59f-4c53-8f46-8725013f3db9","SendId":"SVR01","Payload":{"CtxId":"7f91c5a9f0879994d95a42e919b574af"}}
 int main(void){				// a9f0879994d95a42e919b574af}
+
+	
+	
+
 	Usart1_Init(115200);
+
 	Usart2_Init(115200);
-	// 将USART2的中断处理函数指针指向初始化阶段的处理函数
+//	cJSON * jo = cJSON_Parse(JSON_parse_test_5);
+//	if (jo) {
+//		printf("JSON ok\n");
+//	}
+//	else
+//		printf("JSON invalid\n");
+//	return 0;	
+	// 将USART2的中 断处理函数指针指向初始化阶段的处理函数
     USART2_IRQHandler_ptr = USART2_IRQHandler_Init;
 	// ----test 7/3
 	relay5V_Init();	
@@ -79,30 +114,34 @@ int main(void){				// a9f0879994d95a42e919b574af}
 		// break;
 		Delay_ms(3000);	
 		for(u16 i = 0;i < rx_index_2;i++){
-			printf("%c",rx_buffer[i]);
+			printf("%c",rx_buffer_esp8266[i]);
 				
 		}
 		// printf("\r\n");
-		processSecondGroupData((char *)rx_buffer);		
+		processSecondGroupData(	(char *)rx_buffer_esp8266);		
 		
 		
 	}while(0);
 #endif	
 	// 数组清零			7/3
-	memset((void*)rx_buffer, 0, RX_BUFFER_SIZE);
+	memset((void*)rx_buffer_esp8266, 0, RX_BUFFER_SIZE);
 	rx_index = 0;
 	// 转移中断, 接收非嵌套JSON  test  7/3
-    USART2_IRQHandler_ptr = USART2_IRQHandler_Runtime2;
+    // USART2_IRQHandler_ptr = USART2_IRQHandler_Runtime2_NoPayload;
 	
-	
-	bool json_YorN_flag;
+	// 转移中断,接收嵌套JSON	test 7/7
+	USART2_IRQHandler_ptr = USART2_IRQHandler_Runtime3_WithPayload;
+	IWDG_Init();
+
 	while(1){
-		if (data_received_3) {
-			printf("%s",rx_buffer);
-			data_received_3 = false;	
+
+		/* 原parse NoPayload 7/7
+		if (data_REC_NoPayload_Flag) {
+			printf("%s",rx_buffer_esp8266);
+			data_REC_NoPayload_Flag = false;	
 
 
-			char *jsonStart = strchr((char *)rx_buffer, '{');
+			char *jsonStart = strchr((char *)rx_buffer_esp8266, '{');
 			cJSON * jo = cJSON_Parse(jsonStart);
 			if (jo == NULL) {			// 若解析失败 7/3
 				// JSON解析失败
@@ -140,6 +179,20 @@ int main(void){				// a9f0879994d95a42e919b574af}
 			}
 			cJSON_Delete(jo);
 		}		
-			
 	}
+	*/
+		
+//		if(data_REC_WithPayload_Flag){
+//			printf("%s\r\n",rx_buffer_esp8266);
+//			data_REC_WithPayload_Flag = true;
+//	
+//		}
+		Json_parse_WithPayload();
+		Delay_ms(3000);
+		printf("test\r\n");
+	// Json_parse_NoPayload();
+			// 喂狗 7/6
+		IWDG_ReloadCounter(); // 重装载IWDG寄存器
+	}
+
 }

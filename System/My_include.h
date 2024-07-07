@@ -21,4 +21,7 @@
 #include "stdbool.h"
 
 #include "EspRst.h"
+
+#include "Rec_Json_parse.h"
+
 #endif

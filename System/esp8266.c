@@ -4,8 +4,8 @@
 
 volatile u16 rx_index_2;
 u8 rx_flag_char = 0;			// 接收是否是'}'
-
-
+bool REC_WithPayload_Flag = false;			// 在中断中接收嵌套Json 判断中括号 7/7
+bool data_REC_WithPayload_Flag = false;
 extern bool MQTTPUB_FLAG;
 
 /******************************* runtime 环形缓冲区 **********************************************/
@@ -19,9 +19,9 @@ RingBuffer rxBuffer = { .head = 0, .tail = 0 };
 /******************************* JSON格式 声明变量 **********************************************/
 
 
-volatile char rx_buffer[RX_BUFFER_SIZE];
+volatile char rx_buffer_esp8266[RX_BUFFER_SIZE];
 volatile uint16_t rx_index = 0;
-volatile bool data_received_3 = false;
+volatile bool data_REC_NoPayload_Flag = false;
 /*********************************************************************************************/
 
 uint8_t g_uart_rx_buf[ESP8266_UART_RX_BUF_SIZE];
@@ -106,7 +106,7 @@ uint8_t esp8266_send_command(char *cmd, char *res)
 
 }
 
-// MQTTPUB test 转换中断指针  6/30
+// MQTTPUB test 转换中断指针  6/30  暂时不用
 uint8_t esp8266_send_command_PUB(char *cmd, char *res)
 {
 	
@@ -135,15 +135,8 @@ void USART2_IRQHandler_Init(void)
     uint8_t receive_data = 0;   
     if(USART_GetITStatus(USART2, USART_IT_RXNE) != RESET){
 		if(esp8266_cnt >= sizeof(g_uart_rx_buf))
-            esp8266_cnt = 0; //防止串口被刷爆
-        // HAL_UART_Receive(&g_uart_handle, &receive_data, 1, 1000);//串口2接收1位数据
+            esp8266_cnt = 0; 
 		receive_data = USART_ReceiveData(USART2);
-		// USART_SendData(USART1, receive_data);		// 新增  查看回传数据
-//		if(USART2_IRQn_EnableSel == false){
-//			USART_SendData(USART1, receive_data);
-//			while(USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET)
-//				;
-//		}
 		g_uart_rx_buf[esp8266_cnt++] = receive_data; 		
 		/********************切换中断函数 6/30 ************************/
 		if(MQTTPUB_FLAG == true && g_uart_rx_buf[esp8266_cnt-2] == 'O' && g_uart_rx_buf[esp8266_cnt-1] == 'K'){
@@ -157,34 +150,14 @@ void USART2_IRQHandler_Init(void)
  
 		USART_ClearITPendingBit(USART2, USART_IT_RXNE);
     }
-    // HAL_UART_IRQHandler(&g_uart_handle);
 }
-
-// USART2在运行时的中断处理函数  -1
-//void USART2_IRQHandler_Runtime(void) {
-//    if (USART_GetITStatus(USART2, USART_IT_RXNE) != RESET) {
-//        char c = USART_ReceiveData(USART2);
-//		// printf("%c",c);
-//        if (c == '\n' || c == '\r') {
-//            rx_buffer[rx_index] = '\0';
-//            rx_index = 0;
-//            data_received = true;
-//        } else {
-//            rx_buffer[rx_index++] = c;
-//            if (rx_index >= RX_BUFFER_SIZE) {
-//                rx_index = 0; // 防止缓冲区溢出
-//            }
-//        }
-//        USART_ClearITPendingBit(USART2, USART_IT_RXNE);
-//    }
-//}
 
 // USART2在运行时的中断处理函数  -2
 void USART2_IRQHandler_Runtime(void) {
     if (USART_GetITStatus(USART2, USART_IT_RXNE) != RESET) {
         char c = USART_ReceiveData(USART2);
 		// printf("%c",c);
-		rx_buffer[rx_index++] = c;
+		rx_buffer_esp8266[rx_index++] = c;
 		rx_index_2 = rx_index;
 		
 		// 判断是否是这组数据的结束
@@ -201,49 +174,57 @@ void USART2_IRQHandler_Runtime(void) {
 
 
 
-// 非嵌套JSON 			接收没有payload的json数据  中断函数 -3
-void USART2_IRQHandler_Runtime2(void) {
+// USART2在运行时的中断处理函数 -3	接收没有payload的json数据  非嵌套JSON 中断函数 
+void USART2_IRQHandler_Runtime2_NoPayload(void) {
     if (USART_GetITStatus(USART2, USART_IT_RXNE) != RESET) {
         char Rx_c = USART_ReceiveData(USART2);
 		// printf("%c",c);
-		if(rx_index >= sizeof(rx_buffer))
+		if(rx_index >= sizeof(rx_buffer_esp8266))
             rx_index = 0; //防止串口被刷爆
 
-		rx_buffer[rx_index++] = Rx_c;
+		rx_buffer_esp8266[rx_index++] = Rx_c;
 		
 		// 判断是否是这组数据的结束
 		if(Rx_c == '}'){
-
-
-			rx_buffer[rx_index] = '\0';  // 添加字符串终止符			
+			rx_buffer_esp8266[rx_index] = '\0';  // 添加字符串终止符			
 			// printf("%s\r\n",rx_buffer);
-			data_received_3 = true;
+			data_REC_NoPayload_Flag = true;
 			rx_index = 0;
 //			memset((void*)rx_buffer, 0, RX_BUFFER_SIZE);
-
 		}
-//		if (c == '\n' /* || c == '\r' */ ) {  // assuming '\n' is the end of message
-//            rx_buffer[rx_index] = '\0';  // Null-terminate the string
-//            data_received = 1;  // Flag indicating data is received
-//			rx_index_2 = rx_index;
-//            rx_index = 0;  // Reset index for next message
-//			goto exit;
-//        }
-
-		
-		// printf("%c",c);
-        // Store received character in buffer if there is space
-//        if (rx_index < BUFFER_SIZE - 1) {
-//            rx_buffer[rx_index++] = c;
-//        }
-
-        // Check if the received character indicates end of data (e.g., newline or specific character)
-//		exit:
 		USART_ClearITPendingBit(USART2, USART_IT_RXNE);
     }
 }
 
-/*********************************************************************************************************************/
+
+void USART2_IRQHandler_Runtime3_WithPayload(void) {
+    if (USART_GetITStatus(USART2, USART_IT_RXNE) != RESET) {
+        char Rx_c = USART_ReceiveData(USART2);
+		// printf("%c",c);
+		if(rx_index >= sizeof(rx_buffer_esp8266))
+            rx_index = 0; //防止串口被刷爆
+
+		rx_buffer_esp8266[rx_index++] = Rx_c;
+		
+		if(Rx_c == '}' && REC_WithPayload_Flag == true){
+			// rx_buffer_esp8266[rx_index] = '\0';  // 添加字符串终止符			
+			// printf("%s\r\n",rx_buffer);
+			data_REC_WithPayload_Flag = true;
+			REC_WithPayload_Flag = false;
+			rx_index = 0;	
+			USART_ClearITPendingBit(USART2, USART_IT_RXNE);
+			return;			
+		}
+		
+		// 判断是否是这组数据的结束
+		if(Rx_c == '}' && REC_WithPayload_Flag == false){
+			REC_WithPayload_Flag = true;
+		}
+		USART_ClearITPendingBit(USART2, USART_IT_RXNE);
+    }
+}
+
+/******************************************* 以上为 USART2中断函数 **************************************************************************/
 
 void ESP8266_GPIO_PinInit(void){
 	

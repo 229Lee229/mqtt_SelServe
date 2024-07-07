@@ -36,6 +36,10 @@ void _sys_exit(int x)
 { 
 	x = x; 
 } 
+//void _ttywrch(int ch)			// 7/7 半主机  加了此代码printf出错
+//{	
+//ch = ch;
+//} 
 // 重定义fputc函数
 int fputc(int ch, FILE *f)
 {      
@@ -46,10 +50,29 @@ int fputc(int ch, FILE *f)
 }
 #endif 
 	
+/* 7/7 禁用半主机模式 */
+//#pragma import(__use_no_semihosting)
+// 
+//struct __FILE
+//{
+//	int a;
+//};
+// 
+//FILE __stdout;
+// 
+//void _sys_exit(int x)
+//{
+//	
+//}
 
+//_ttywrch(int ch)
+//{
+//ch = ch;
+//} 
 
+             
 
-
+/* 以上为禁用半主机模式7/7 */
 #if EN_USART1_RX		/*` 如果使能了接收 */
 /* 串口1 中中断服务程序 */
 /* 注意 读取USARTx->SR能避免莫名其妙的错误 */

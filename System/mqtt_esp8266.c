@@ -98,6 +98,13 @@ void MQTT_Init(void){
 			break;
 		}
 	}
+	// 若连接失败 复位 7/7  考虑重启mqtt  此方法重置时间长
+//	if(TimeOut_mqtt == 0){
+//		printf("System will reset...\r\n");
+//		Delay_ms(1000); // 发送完信息后延时一会儿
+//		NVIC_SystemReset(); // 触发软件复位
+
+//	}
 	
 	Delay_ms(2);
 	
@@ -324,6 +331,7 @@ void processSecondGroupData(char *data) {
         // JSON解析失败
         // printf("JSON parse error\n");
 		printf("JSON parse error: %s\n", cJSON_GetErrorPtr());
+		cJSON_Delete(root);
         return;
     }
     

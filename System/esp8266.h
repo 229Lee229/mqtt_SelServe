@@ -38,8 +38,8 @@ typedef void (*USART2_IRQHandler_t)(void);
 /********************************** 声明USART2的中断处理函数 **************************/
 void USART2_IRQHandler_Init(void);
 void USART2_IRQHandler_Runtime(void);
-void USART2_IRQHandler_Runtime2(void);
-
+void USART2_IRQHandler_Runtime2_NoPayload(void);
+void USART2_IRQHandler_Runtime3_WithPayload(void);
 /*****************************************************************************************************************/
 
 uint8_t esp8266_wait_receive(void);
