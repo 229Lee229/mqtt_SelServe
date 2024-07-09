@@ -27,17 +27,20 @@
 // extern uint8_t g_uart_rx_buf[];
 // bool esp_RstPin = false;
 
+// 7/9 
+extern bool CompareTime_Flag;
 
+uchar init_time[6] = {24,7,8,23,59,05};			// 初始化时钟
+uchar time_data[6] = {0};// 接收时钟数据缓冲
 /* 7/6 */
-
 void IWDG_Init(void) {
     // 使能对IWDG寄存器的写访问
     IWDG_WriteAccessCmd(IWDG_WriteAccess_Enable);
 
     // 设置预分频值
-    IWDG_SetPrescaler(IWDG_Prescaler_256);
+    IWDG_SetPrescaler(IWDG_Prescaler_128);
 
-    IWDG_SetReload(49999);			// timeout = (Reload Value + 1) × (1/(LSI / (Prescaler)))
+    IWDG_SetReload(3995);			// timeout = (Reload Value + 1) × (1/(LSI / (Prescaler)))
 	// 10s
     // IWDG重装载值
     IWDG_ReloadCounter();
@@ -75,7 +78,13 @@ char JSON_parse_test_1[RX_BUFFER_SIZE] = "{\"Type\":4,\"Time\":1719746116700,\"M
 char JSON_parse_test_2[RX_BUFFER_SIZE] = "{\"w\":\"GWiFi\",\"p\":\"G@dge@n#24it&dp\",\"t\":\"0,0,26941480,140,170,40,40,100,200,150,29,39,89,45,2,75,75,2\"}";
 // char JSON_parse_test_3[RX_BUFFER_SIZE] = "{\"data\":\"{\\\"a\\\":1,\\\"b\\\":2}\"}";
 // char JSON_parse_test_4[RX_BUFFER_SIZE]/* 7/7 */ = "{\"Type\":10,\"Time\":1720343740875,\"MsgId\":\"5464cd57-c59f-4c53-8f46-8725013f3db9\",\"SendId\":\"SVR01\",\"Payload\":\"{\\\"CtxId\\\":\\\"7f91c5a9f0879994d95a42e919b574af\\\"}\"}";
-char JSON_parse_test_5[RX_BUFFER_SIZE]	= "{\"Type\":92,\"Time\":1744533467325,\"MsgId\":\"4af325ke4af325ke4af325ke4af325ke\",\"SendId\":\"SVR01\",\"Payload\":\"{\\\"Start\\\":1744533467325,\\\"End\\\":17445334883254,\\\"Getter\\\":\\\"clientId_005\\\"}\"}";								
+char JSON_parse_test_5[RX_BUFFER_SIZE]	= "{\"Type\":92,\"Time\":1744533467325,\"MsgId\":\"4af325ke4af325ke4af325ke4af325ke\",  \
+											\"SendId\":\"SVR01\",\"Payload\":		\
+											\"{\\\"Start\\\":1744533467325,\\\"End\\\":17445334883254,\\\"Getter\\\":\\\"clientId_005\\\"}\"}";								
+//char JSON_parse_test_6[RX_BUFFER_SIZE] = "{\"Type\":11,\"Time\":174454444467325,\"MsgId\":\"4af325ke4af325ke4af325ke4af325ke\", \
+//										   \"SendId\":\"SVR01\",\"Payload\":  \
+//										   \"{\\\"Start\\\":1720444624448,\\\"End\\\":17445334883254,\\\"Getter\\\":\\\"clientId_005\\\"}\"}";
+
 // {"Type":10,"Time":1720343740875,"MsgId":"5464cd57-c59f-4c53-8f46-8725013f3db9","SendId":"SVR01","Payload":{"CtxId":"7f91c5a9f0879994d95a42e919b574af"}}
 int main(void){				// a9f0879994d95a42e919b574af}
 
@@ -85,13 +94,16 @@ int main(void){				// a9f0879994d95a42e919b574af}
 	Usart1_Init(115200);
 
 	Usart2_Init(115200);
-//	cJSON * jo = cJSON_Parse(JSON_parse_test_5);
-//	if (jo) {
-//		printf("JSON ok\n");
-//	}
-//	else
-//		printf("JSON invalid\n");
-//	return 0;	
+	
+#ifdef cJSON_TEST_Start	
+	cJSON * jo = cJSON_Parse(JSON_parse_test_6);
+	if (jo) {
+		printf("JSON ok\n");
+	}
+	else
+		printf("JSON invalid\n");
+	return 0;	
+#endif	
 	// 将USART2的中 断处理函数指针指向初始化阶段的处理函数
     USART2_IRQHandler_ptr = USART2_IRQHandler_Init;
 	// ----test 7/3
@@ -131,6 +143,8 @@ int main(void){				// a9f0879994d95a42e919b574af}
 	
 	// 转移中断,接收嵌套JSON	test 7/7
 	USART2_IRQHandler_ptr = USART2_IRQHandler_Runtime3_WithPayload;
+	DS1302_init(init_time);
+	DS1302_SetTime(init_time);
 	IWDG_Init();
 
 	while(1){
@@ -188,8 +202,21 @@ int main(void){				// a9f0879994d95a42e919b574af}
 //	
 //		}
 		Json_parse_WithPayload();
-		Delay_ms(3000);
-		printf("test\r\n");
+		Delay_ms(995);
+		
+		
+		// Start与End的时间的对比 7/9
+		if(CompareTime_Flag == true){
+			if(CompareTime() == true ){
+				printf("testCompareTime Successful!\r\n");
+				Pin_DoorLock_2 = 1;
+				Pin_Light_2	   = 1;		
+				CompareTime_Flag = false;
+			}
+		}
+		DS1302_Readtime();
+		 printf("%d-%d-%d  %d:%d:%d\r\n",		\
+		 time_data[0],time_data[1],time_data[2],time_data[3],time_data[4],time_data[5]);
 	// Json_parse_NoPayload();
 			// 喂狗 7/6
 		IWDG_ReloadCounter(); // 重装载IWDG寄存器

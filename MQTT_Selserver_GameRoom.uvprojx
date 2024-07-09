@@ -750,6 +750,11 @@
               <FileType>5</FileType>
               <FilePath>.\System\Rec_Json_parse.h</FilePath>
             </File>
+            <File>
+              <FileName>ConvertJsonTime.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\System\ConvertJsonTime.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -784,6 +789,11 @@
               <FileName>relay5V.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Hardware\relay5V.h</FilePath>
+            </File>
+            <File>
+              <FileName>DS1302.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Hardware\DS1302.c</FilePath>
             </File>
           </Files>
         </Group>

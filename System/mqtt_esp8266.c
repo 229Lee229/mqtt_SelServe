@@ -91,7 +91,7 @@ void MQTT_Init(void){
 	Delay_ms(2);
 	TimeOut_mqtt = 3;
 	while(TimeOut_mqtt--){
-		if(esp8266_at_MQTTSUB(MQTTCONN_Topic_4) == 1)
+		if(esp8266_at_MQTTSUB(MQTTCONN_Topic_3) == 1)
 			printf("MQTTSUB Error!\r\n");
 		else{
 			printf("MQTTSUB Successful!\r\n");

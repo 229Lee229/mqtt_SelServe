@@ -47,6 +47,6 @@
 .\objects\convertjsontime.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\convertjsontime.o: .\Hardware\EspRst.h
 .\objects\convertjsontime.o: System\Rec_Json_parse.h
-.\objects\convertjsontime.o: .\Hardware\DS1302.h
 .\objects\convertjsontime.o: System\ConvertJsonTime.h
+.\objects\convertjsontime.o: .\Hardware\DS1302.h
 .\objects\convertjsontime.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\time.h

@@ -9,7 +9,7 @@ extern u8 Json_type;
 extern char JSON_parse_test_5[RX_BUFFER_SIZE];
 
 long long Start_time_stamp;
-
+long long End_time_stamp;
 // 非嵌套Json
 void Json_parse_NoPayload(void){
 		if (data_REC_NoPayload_Flag) {
@@ -140,7 +140,34 @@ void Json_parse_WithPayload(void){
 			sprintf(payload_json_string,"%s",payload->valuestring);
 			// printf("%s\r\n",payload_json_string);		// 查看数据
 		/******** 解析payload中的数据 嵌套解析 *************/
+		
+		/*** 7/9 定时开门 检测Start与end */ 
+			Json_type = type->valueint;
+			
+				switch(Json_type){
+					case RELAY_1_ON:		
+								Pin_DoorLock_2 = 0;
+								Pin_Light_2	   = 0;		
+								break;
+					case RELAY_1_OFF:		
+								Pin_DoorLock_2 = 1;
+								Pin_Light_2	   = 1;		
+								break;
+					case SysReset:
+								printf("System will reset...\r\n");
+								Delay_ms(1000); // 发送完信息后延时一会儿
+								NVIC_SystemReset(); // 触发软件复位
+								break;
+					default:				
+								break;
+					
+				}
 
+		
+		/*** 7/9 */
+			
+			
+			
 		cJSON_Delete(jo);
 		cJSON *payload_json = cJSON_Parse(payload_json_string);
         if (payload_json == NULL) {
@@ -165,7 +192,10 @@ void Json_parse_WithPayload(void){
 	
 		// 解析time  7/7
 		Start_time_stamp = Start->valuedouble;
+		End_time_stamp   = End  ->valuedouble;
 		printf("Start_time_stamp: %lld\r\n",Start_time_stamp);
+		ConvMillisToDateTime_S(Start_time_stamp);
+		ConvMillisToDateTime_E(End_time_stamp);		
 		// 转化为秒
 //		time_t seconds = Start_time_stamp / 1000;
 		// 转化为时间结构体

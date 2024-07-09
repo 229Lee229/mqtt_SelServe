@@ -47,9 +47,6 @@
 .\objects\rec_json_parse.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\rec_json_parse.o: .\Hardware\EspRst.h
 .\objects\rec_json_parse.o: System\Rec_Json_parse.h
-<<<<<<< HEAD
-=======
-.\objects\rec_json_parse.o: .\Hardware\DS1302.h
 .\objects\rec_json_parse.o: System\ConvertJsonTime.h
->>>>>>> 6e099c89dfa2fd0ea87e5608be26633a34b9ed0d
+.\objects\rec_json_parse.o: .\Hardware\DS1302.h
 .\objects\rec_json_parse.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\time.h
