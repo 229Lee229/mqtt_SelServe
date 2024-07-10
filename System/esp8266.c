@@ -19,7 +19,7 @@ RingBuffer rxBuffer = { .head = 0, .tail = 0 };
 /******************************* JSON格式 声明变量 **********************************************/
 
 
-volatile char rx_buffer_esp8266[RX_BUFFER_SIZE];
+char rx_buffer_esp8266[RX_BUFFER_SIZE];
 volatile uint16_t rx_index = 0;
 volatile bool data_REC_NoPayload_Flag = false;
 /*********************************************************************************************/
@@ -85,6 +85,7 @@ uint8_t esp8266_wait_receive(void)
 void esp8266_clear(void)
 {
 	memset(g_uart_rx_buf, 0, sizeof(g_uart_rx_buf));
+	memset(rx_buffer_esp8266, 0, sizeof(rx_buffer_esp8266));
 	esp8266_cnt = 0;
 }
 uint8_t esp8266_send_command(char *cmd, char *res)
@@ -239,17 +240,25 @@ void ESP8266_GPIO_PinInit(void){
 
 void ESP8266_Init(void){
 	ESP8266_GPIO_PinInit();
-	u8 timeout_espInit;
 	/* GPIO Pin Init */
 //	GPIO_Pin_Init(PB8,GPIO_Mode_Out_PP);			// PB8->CH-PD  ;   PB9->RST
 //	GPIO_Pin_Init(PB9,GPIO_Mode_Out_PP);			// PB8->CH-PD  ;   PB9->RST
 //	PBout(8) = 1;
 //	PBout(9) = 1;
-	
+	u8 timeout_espInit;			// 7/10	
 	timeout_espInit = 3;
 	// esp8266 Init 
 	Delay_ms(500);
 	while(timeout_espInit--){
+
+		// 若多次AT不成功则重启esp8266		7/10
+		if(timeout_espInit == 0){
+			PBout(9) = 0;			// ESP8266 RST引脚拉低
+			Delay_ms(40);
+			PBout(9) = 1;
+			timeout_espInit = 3;
+		}
+		
 		if(esp8266_at_test() == 1)
 			printf("at test Error!\r\n");
 		else{

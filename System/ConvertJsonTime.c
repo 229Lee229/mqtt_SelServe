@@ -47,7 +47,7 @@ void ConvMillisToDateTime_S(long long millis) {
     printf("year: %d\n", (timeinfo->tm_year + 1900)%100);
 	time_data[0] = (timeinfo->tm_year + 1900)%100;
 	// printf("timeinfo:%d\r\n",timeinfo->tm_year + 1900);				// test 7/9	
-	printf("%d\r\n",time_data[0]);				// test 7/9
+	// printf("%d\r\n",time_data[0]);				// test 7/9
     printf("month: %d\n", timeinfo->tm_mon + 1);
 	time_data[1] =  timeinfo->tm_mon + 1;
     printf("day: %d\n", timeinfo->tm_mday);
@@ -87,6 +87,10 @@ void ConvMillisToDateTime_E(long long millis){
 bool CompareTime(void){
 	for(int i = 0;i < 6;i++){
 		printf("time_data: %d\tEnd_time:%d\r\n",time_data[i],End_time[i]);
+		
+	}
+	
+	for(int i = 0;i < 6;i++){
 		if(time_data[i] >= End_time[i]){
 			// printf("time_data: %d\tEnd_time:%d\r\n",time_data[i],End_time[i]);
 			// printf("test:%d\r\n",i);
@@ -94,7 +98,7 @@ bool CompareTime(void){
 				return true;
 		}
 		else return false;
-	}
+	} 
 	return false;
 }
 

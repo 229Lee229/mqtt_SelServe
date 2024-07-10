@@ -49,3 +49,4 @@
 .\objects\relay5v.o: .\System\Rec_Json_parse.h
 .\objects\relay5v.o: .\System\ConvertJsonTime.h
 .\objects\relay5v.o: .\Hardware\DS1302.h
+.\objects\relay5v.o: .\System\HeartBeat.h

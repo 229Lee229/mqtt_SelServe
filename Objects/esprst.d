@@ -49,3 +49,4 @@
 .\objects\esprst.o: .\System\Rec_Json_parse.h
 .\objects\esprst.o: .\System\ConvertJsonTime.h
 .\objects\esprst.o: .\Hardware\DS1302.h
+.\objects\esprst.o: .\System\HeartBeat.h

@@ -30,7 +30,7 @@
 // 7/9 
 extern bool CompareTime_Flag;
 
-uchar init_time[6] = {24,7,8,23,59,05};			// 初始化时钟
+uchar init_time[6] = {24,2,28,23,30,05};			// 初始化时钟
 uchar time_data[6] = {0};// 接收时钟数据缓冲
 /* 7/6 */
 void IWDG_Init(void) {
@@ -70,7 +70,7 @@ void USART2_IRQHandler(void) {
 
 u8 Json_type;
 bool json_YorN_flag;
-extern volatile char rx_buffer_esp8266[RX_BUFFER_SIZE];
+extern char rx_buffer_esp8266[RX_BUFFER_SIZE];
 extern bool data_REC_WithPayload_Flag;			// 7/7
 /*********************************** JSON_parse 测试数据 *************************************************************************/
 char JSON_parse_test_1[RX_BUFFER_SIZE] = "{\"Type\":4,\"Time\":1719746116700,\"MsgId\":\"96c158a3-1a72-4604-b699-4487b58a28b8\",\"SendId\":\"SVR01\",			\
@@ -148,66 +148,16 @@ int main(void){				// a9f0879994d95a42e919b574af}
 	IWDG_Init();
 
 	while(1){
-
-		/* 原parse NoPayload 7/7
-		if (data_REC_NoPayload_Flag) {
-			printf("%s",rx_buffer_esp8266);
-			data_REC_NoPayload_Flag = false;	
-
-
-			char *jsonStart = strchr((char *)rx_buffer_esp8266, '{');
-			cJSON * jo = cJSON_Parse(jsonStart);
-			if (jo == NULL) {			// 若解析失败 7/3
-				// JSON解析失败
-				// printf("JSON parse error\n");
-				printf("JSON parse error: %s\n", cJSON_GetErrorPtr());
-				cJSON_Delete(jo);
-				json_YorN_flag = false;
-				continue;
-				// return 0;
-			}else	json_YorN_flag = true;
-
-			cJSON *type = cJSON_GetObjectItem(jo, "Type");
-			if (type && json_YorN_flag) {
-				printf("Type: %d\n", type->valueint);
-				Json_type = type->valueint;
-				
-				switch(Json_type){
-					case RELAY_1_ON:		
-								Pin_DoorLock_2 = 0;
-								Pin_Light_2	   = 0;		
-								break;
-					case RELAY_1_OFF:		
-								Pin_DoorLock_2 = 1;
-								Pin_Light_2	   = 1;		
-								break;
-					case SysReset:
-								printf("System will reset...\r\n");
-								Delay_ms(1000); // 发送完信息后延时一会儿
-								NVIC_SystemReset(); // 触发软件复位
-								break;
-					default:				
-								break;
-					
-				}
-			}
-			cJSON_Delete(jo);
-		}		
-	}
-	*/
-		
-//		if(data_REC_WithPayload_Flag){
-//			printf("%s\r\n",rx_buffer_esp8266);
-//			data_REC_WithPayload_Flag = true;
-//	
-//		}
 		Json_parse_WithPayload();
-		Delay_ms(995);
+		
+		keep_HeartBeat();			// 发送心跳回执
+	 // Json_parse_NoPayload();
+		Delay_ms(4995);				// 考虑每955毫秒设置定时器
 		
 		
 		// Start与End的时间的对比 7/9
 		if(CompareTime_Flag == true){
-			if(CompareTime() == true ){
+			if(CompareTime() == true){
 				printf("testCompareTime Successful!\r\n");
 				Pin_DoorLock_2 = 1;
 				Pin_Light_2	   = 1;		
@@ -215,11 +165,9 @@ int main(void){				// a9f0879994d95a42e919b574af}
 			}
 		}
 		DS1302_Readtime();
-		 printf("%d-%d-%d  %d:%d:%d\r\n",		\
+		printf("%d-%d-%d  %d:%d:%d\r\n",		\
 		 time_data[0],time_data[1],time_data[2],time_data[3],time_data[4],time_data[5]);
-	// Json_parse_NoPayload();
 			// 喂狗 7/6
 		IWDG_ReloadCounter(); // 重装载IWDG寄存器
 	}
-
 }

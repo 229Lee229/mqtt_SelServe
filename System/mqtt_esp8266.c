@@ -110,12 +110,15 @@ void MQTT_Init(void){
 	
 #ifdef MQTTPUB_Init	
 	
-	
+//char JSON_parse_test_6[RX_BUFFER_SIZE]	= "{\"Type\":0,\"Time\":12787,\"MsgId\":\"7f91c5a9f0879994d95a42e919b574af\",\"SendId\":\"2222227_U1Q4B2Z5\",  \
+	       \"Payload\":\"{\\\"CtxId\\\":\\\"7f91c5a9f0879994d95a42e919b574af\\\"}\"}";
 	MQTTPUB_FLAG = true;
 	TimeOut_mqtt = 3;
 	while(TimeOut_mqtt--){
+		
+		
 		// 发消息
-		if(esp8266_at_MQTTPUB(MQTTCONN_Topic_4,MQTTCONN_Message_3) == 1)			// 返回值已改成动态奇切换中断 6/30
+		if(esp8266_at_MQTTPUB(MQTTCONN_Topic_3,MQTTCONN_Msg_4_HeartBeat) == 1)			// 返回值已改成动态奇切换中断 6/30
 			printf("MQTTPUB Send Error!\r\n");
 		else{
 			// USART2_IRQn_EnableSel = false;

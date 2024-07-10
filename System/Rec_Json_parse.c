@@ -2,7 +2,8 @@
 #include "time.h"
 extern volatile bool data_REC_NoPayload_Flag;
 extern bool data_REC_WithPayload_Flag;		// 7/7
-extern volatile char rx_buffer_esp8266[RX_BUFFER_SIZE];
+extern char rx_buffer_esp8266[RX_BUFFER_SIZE];// 7/10
+extern uint8_t g_uart_rx_buf[ESP8266_UART_RX_BUF_SIZE];// 7/10
 extern bool json_YorN_flag;
 extern u8 Json_type;
 
@@ -78,23 +79,32 @@ void Json_parse_WithPayload(void){
 		char Rx_WithPayload_temp[RX_BUFFER_SIZE];
 		// 打印接收到的数据 嵌套Json数据
 		if(data_REC_WithPayload_Flag){
-			// USART_ITConfig(USART2,USART_IT_RXNE,DISABLE);
 			strcpy(Rx_WithPayload_temp,(char *)rx_buffer_esp8266); // 将结果复制到中间变量
 			printf("%s\r\n",Rx_WithPayload_temp);
 			data_REC_WithPayload_Flag = false;
-			// USART_ITConfig(USART2,USART_IT_RXNE,ENABLE);
-			
+			memset(g_uart_rx_buf, 0, sizeof(g_uart_rx_buf));
+			memset(rx_buffer_esp8266, 0, sizeof(rx_buffer_esp8266));
+
+			// esp8266_clear();			// 清除串口缓存数据	 7/10
+			printf("\r\n");
+			printf("rx_buffer_esp8266 after:\r\n");
+			printf("%s\r\n",rx_buffer_esp8266);
+			printf("\r\n");
 		}else return;
 		
 		
 		// 查找Json数据开始的位置
 		char *jsonStart = strchr((char *)Rx_WithPayload_temp, '{');
+		
+		// 清理Rx_WithPayload_temp 数组清理		7/10
+		memset(Rx_WithPayload_temp, 0, sizeof(Rx_WithPayload_temp));
+		printf("Rx_WithPayload_temp after:\r\n%s\r\nRx_WithPayload_tempend\r\n",Rx_WithPayload_temp);
+		//////////////////////////////////////////////////////// Rx_WithPayload_temp 数组清理	
 //		printf("---%s\r\n",jsonStart); 
 //		return;
 		if (jsonStart == NULL) {
 			// 无法找到JSON数据的开始位置
 			printf("Unable to find the starting position of the JSON data\r\n");
-			
 			return;
 		}
 	
@@ -158,13 +168,19 @@ void Json_parse_WithPayload(void){
 								Delay_ms(1000); // 发送完信息后延时一会儿
 								NVIC_SystemReset(); // 触发软件复位
 								break;
+					
+					/* 增加心跳检测数据  */
+					case HeartBeat_Syn:
+								printf("HeartBeat Syn Successfcul!\r\n");
+								return;
+								// break;
+					case 0:		// 回声 不处理
+								return;
 					default:				
 								break;
 					
 				}
-
-		
-		/*** 7/9 */
+		/*** 以上为发送心跳回执 7/9 */
 			
 			
 			

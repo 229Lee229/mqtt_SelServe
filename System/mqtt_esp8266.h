@@ -9,8 +9,8 @@
 
 #define MQTTLONGCLIENTID_MyConf 		"1234567_T9BX11TG"
 #define MQTTCONNCFG_MyConf  			"0,60,1,\"\",\"\",0,0"
-#define MQTTCONN_Host_MyConf			"192.168.1.42"				// LAN
-// #define MQTTCONN_Host_MyConf	 		"nestbase.meseee.com"		// PUB
+// #define MQTTCONN_Host_MyConf			"192.168.1.42"				// LAN
+#define MQTTCONN_Host_MyConf	 		"nestbase.meseee.com"		// PUB
 #define MQTTCONN_Port_MyConf			1883
 
 
@@ -25,6 +25,7 @@
 //#define MQTTCONN_Message_2			"{\\\"Type\\\":0\\,\\\"Time\\\":12787\\\,\\\"MsgId\\\":\\\"7f91c5a9f0879994d95a42e919b574af\\\"\\\,\\\"SendId\\\":\\\"1234567_T9BX11TG\\\"}"
 #define MQTTCONN_Message_3				"{\\\"Type\\\":0\\,\\\"Time\\\":12787\\,\\\"MsgId\\\":\\\"7f91c5a9f0879994d95a42e919b574af\\\"\\,\\\"SendId\\\":\\\"2222227_U1Q4B2Z5\\\"}"
 
+#define MQTTCONN_Msg_4_HeartBeat		"{\\\"Type\\\":0\\,\\\"Time\\\":12787\\,\\\"MsgId\\\":\\\"7f91c5a9f0879994d95a42e919b574af\\\"\\,\\\"SendId\\\":\\\"2222227_U1Q4B2Z5\\\"\\,\\\"Payload\\\":{\\\"CtxId\\\":\\\"7f91c5a9f0879994d95a42e919b574af\\\"}}"
 
 #define ClientID_Length					1024
 #define LinkID							0

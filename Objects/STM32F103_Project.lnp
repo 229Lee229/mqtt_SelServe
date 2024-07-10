@@ -35,6 +35,7 @@
 ".\objects\mqtt_esp8266.o"
 ".\objects\rec_json_parse.o"
 ".\objects\convertjsontime.o"
+".\objects\heartbeat.o"
 ".\objects\matrix_key2.o"
 ".\objects\esprst.o"
 ".\objects\relay5v.o"

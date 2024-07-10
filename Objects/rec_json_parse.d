@@ -49,4 +49,5 @@
 .\objects\rec_json_parse.o: System\Rec_Json_parse.h
 .\objects\rec_json_parse.o: System\ConvertJsonTime.h
 .\objects\rec_json_parse.o: .\Hardware\DS1302.h
+.\objects\rec_json_parse.o: System\HeartBeat.h
 .\objects\rec_json_parse.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\time.h
