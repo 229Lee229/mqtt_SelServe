@@ -50,3 +50,4 @@
 .\objects\main.o: .\System\ConvertJsonTime.h
 .\objects\main.o: .\Hardware\DS1302.h
 .\objects\main.o: .\System\HeartBeat.h
+.\objects\main.o: .\System\TIM_HeartBeat.h

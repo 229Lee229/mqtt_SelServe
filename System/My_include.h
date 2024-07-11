@@ -27,4 +27,5 @@
 #include "DS1302.h"
 
 #include "HeartBeat.h"
+#include "TIM_HeartBeat.h"
 #endif

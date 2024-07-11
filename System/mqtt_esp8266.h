@@ -23,7 +23,7 @@
 #define MQTTCONN_Message_1				"Play_two_hours"
 #define MQTTCONN_Message_2				"{\\\"Type\\\":0\\,\\\"Time\\\":12787\\,\\\"MsgId\\\":\\\"7f91c5a9f0879994d95a42e919b574af\\\"\\,\\\"SendId\\\":\\\"1234567_T9BX11TG\\\"}"
 //#define MQTTCONN_Message_2			"{\\\"Type\\\":0\\,\\\"Time\\\":12787\\\,\\\"MsgId\\\":\\\"7f91c5a9f0879994d95a42e919b574af\\\"\\\,\\\"SendId\\\":\\\"1234567_T9BX11TG\\\"}"
-#define MQTTCONN_Message_3				"{\\\"Type\\\":0\\,\\\"Time\\\":12787\\,\\\"MsgId\\\":\\\"7f91c5a9f0879994d95a42e919b574af\\\"\\,\\\"SendId\\\":\\\"2222227_U1Q4B2Z5\\\"}"
+#define MQTTCONN_Msg_3_HeartBeat		"{\\\"Type\\\":0\\,\\\"Time\\\":12787\\,\\\"MsgId\\\":\\\"7f91c5a9f0879994d95a42e919b574af\\\"\\,\\\"SendId\\\":\\\"2222227_U1Q4B2Z5\\\"}"
 
 #define MQTTCONN_Msg_4_HeartBeat		"{\\\"Type\\\":0\\,\\\"Time\\\":12787\\,\\\"MsgId\\\":\\\"7f91c5a9f0879994d95a42e919b574af\\\"\\,\\\"SendId\\\":\\\"2222227_U1Q4B2Z5\\\"\\,\\\"Payload\\\":{\\\"CtxId\\\":\\\"7f91c5a9f0879994d95a42e919b574af\\\"}}"
 

@@ -20,12 +20,15 @@
 	V3.0		 7/7/2024     Lee				增加解析payload数据,startANDend长整形数据,增加看门狗定时,
 												解除半主机模式解析失败 使用mircro LIB解析成功
 												如函数 : void _ttywrch(int ch)
+    V4.0       	 7/11/2024    Lee				增加心跳检测 定时器TIM2												
  ***********************************************************************/
 
 
 
 // extern uint8_t g_uart_rx_buf[];
 // bool esp_RstPin = false;
+
+extern bool Enable_HeartBeat_Send_Flag;
 
 // 7/9 
 extern bool CompareTime_Flag;
@@ -145,14 +148,19 @@ int main(void){				// a9f0879994d95a42e919b574af}
 	USART2_IRQHandler_ptr = USART2_IRQHandler_Runtime3_WithPayload;
 	DS1302_init(init_time);
 	DS1302_SetTime(init_time);
+	
+	TIM_HeartBeat_Init();
 	IWDG_Init();
-
+	
 	while(1){
 		Json_parse_WithPayload();
 		
-		keep_HeartBeat();			// 发送心跳回执
+		if(Enable_HeartBeat_Send_Flag){
+			keep_HeartBeat();			// 发送心跳回执		
+			Enable_HeartBeat_Send_Flag = false;
+		}
 	 // Json_parse_NoPayload();
-		Delay_ms(4995);				// 考虑每955毫秒设置定时器
+		Delay_ms(995);				// 考虑每955毫秒设置定时器
 		
 		
 		// Start与End的时间的对比 7/9

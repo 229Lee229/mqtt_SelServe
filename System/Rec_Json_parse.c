@@ -6,7 +6,7 @@ extern char rx_buffer_esp8266[RX_BUFFER_SIZE];// 7/10
 extern uint8_t g_uart_rx_buf[ESP8266_UART_RX_BUF_SIZE];// 7/10
 extern bool json_YorN_flag;
 extern u8 Json_type;
-
+char Rx_WithPayload_temp[RX_BUFFER_SIZE];
 extern char JSON_parse_test_5[RX_BUFFER_SIZE];
 
 long long Start_time_stamp;
@@ -76,39 +76,56 @@ void Json_parse_NoPayload(void){
 */
 // 嵌套Json
 void Json_parse_WithPayload(void){
-		char Rx_WithPayload_temp[RX_BUFFER_SIZE];
+		// char Rx_WithPayload_temp[RX_BUFFER_SIZE];
 		// 打印接收到的数据 嵌套Json数据
 		if(data_REC_WithPayload_Flag){
-			strcpy(Rx_WithPayload_temp,(char *)rx_buffer_esp8266); // 将结果复制到中间变量
+			// strcpy(Rx_WithPayload_temp,(char *)rx_buffer_esp8266); // 将结果复制到中间变量   结果已在中断中赋值给此变量 7/11
+			printf("\r\ntemp:\r\n");
 			printf("%s\r\n",Rx_WithPayload_temp);
 			data_REC_WithPayload_Flag = false;
 			memset(g_uart_rx_buf, 0, sizeof(g_uart_rx_buf));
-			memset(rx_buffer_esp8266, 0, sizeof(rx_buffer_esp8266));
+			// memset(Rx_WithPayload_temp, 0, sizeof(Rx_WithPayload_temp));
 
 			// esp8266_clear();			// 清除串口缓存数据	 7/10
-			printf("\r\n");
-			printf("rx_buffer_esp8266 after:\r\n");
-			printf("%s\r\n",rx_buffer_esp8266);
-			printf("\r\n");
-		}else return;
+//			printf("\r\n");
+//			printf("rx_buffer_esp8266 after:\r\n");
+//			printf("%s\r\n",rx_buffer_esp8266);
+//			printf("\r\n");
+		}else {
+			memset(Rx_WithPayload_temp, 0, sizeof(Rx_WithPayload_temp));	
+			return;
+		}
 		
 		
 		// 查找Json数据开始的位置
 		char *jsonStart = strchr((char *)Rx_WithPayload_temp, '{');
 		
 		// 清理Rx_WithPayload_temp 数组清理		7/10
-		memset(Rx_WithPayload_temp, 0, sizeof(Rx_WithPayload_temp));
-		printf("Rx_WithPayload_temp after:\r\n%s\r\nRx_WithPayload_tempend\r\n",Rx_WithPayload_temp);
+		// memset(Rx_WithPayload_temp, 0, sizeof(Rx_WithPayload_temp));
+		// printf("Rx_WithPayload_temp after:\r\n%s\r\nRx_WithPayload_tempend\r\n",Rx_WithPayload_temp);
 		//////////////////////////////////////////////////////// Rx_WithPayload_temp 数组清理	
-//		printf("---%s\r\n",jsonStart); 
+		printf("---%s\r\n",jsonStart); 
 //		return;
 		if (jsonStart == NULL) {
 			// 无法找到JSON数据的开始位置
 			printf("Unable to find the starting position of the JSON data\r\n");
 			return;
 		}
-	
+		else printf("Json Start Successful!\r\n");		// test HeartBeat 7/11
+		// return;
 
+		// 查找回声
+//		if(jsonStart[10] == 0){
+//			printf("It is BackSound!\r\n");
+//			return;
+//		}
+//		if(jsonStart[8] == 4){
+//			printf("It is HeartBeat!\r\n");
+//			return;
+//		}
+			
+		
+		
 		// 打印Json数据 7/7
 //		else{
 //			printf("%s\r\n",jsonStart);
@@ -127,7 +144,8 @@ void Json_parse_WithPayload(void){
 			// JSON解析失败
 			// printf("JSON parse error\n");
 			printf("JSON parse error: %s\n", cJSON_GetErrorPtr());
-			cJSON_Delete(jo);		
+			cJSON_Delete(jo);				// 回声会被返回
+			memset(Rx_WithPayload_temp, 0, sizeof(Rx_WithPayload_temp));
 			return;
 		}else printf("Json OK\r\n");
 		
@@ -172,11 +190,17 @@ void Json_parse_WithPayload(void){
 					/* 增加心跳检测数据  */
 					case HeartBeat_Syn:
 								printf("HeartBeat Syn Successfcul!\r\n");
+								cJSON_Delete(jo);	
+								memset(Rx_WithPayload_temp, 0, sizeof(Rx_WithPayload_temp));					
 								return;
 								// break;
 					case 0:		// 回声 不处理
+								printf("It is BackSound2!\r\n");
+								cJSON_Delete(jo);
 								return;
-					default:				
+					default:
+								cJSON_Delete(jo);
+								memset(Rx_WithPayload_temp, 0, sizeof(Rx_WithPayload_temp));	
 								break;
 					
 				}
@@ -221,7 +245,8 @@ void Json_parse_WithPayload(void){
 		
 /********************************************************************/
 		// 释放JSON对象	
-			 cJSON_Delete(payload_json);		
+		cJSON_Delete(payload_json);	
+		memset(Rx_WithPayload_temp, 0, sizeof(Rx_WithPayload_temp));		
 		}
 }
 

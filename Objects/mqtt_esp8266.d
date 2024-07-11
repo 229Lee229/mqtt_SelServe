@@ -50,3 +50,4 @@
 .\objects\mqtt_esp8266.o: System\ConvertJsonTime.h
 .\objects\mqtt_esp8266.o: .\Hardware\DS1302.h
 .\objects\mqtt_esp8266.o: System\HeartBeat.h
+.\objects\mqtt_esp8266.o: System\TIM_HeartBeat.h

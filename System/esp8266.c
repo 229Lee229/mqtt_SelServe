@@ -7,7 +7,7 @@ u8 rx_flag_char = 0;			// 接收是否是'}'
 bool REC_WithPayload_Flag = false;			// 在中断中接收嵌套Json 判断中括号 7/7
 bool data_REC_WithPayload_Flag = false;
 extern bool MQTTPUB_FLAG;
-
+extern char Rx_WithPayload_temp[RX_BUFFER_SIZE];
 /******************************* runtime 环形缓冲区 **********************************************/
 typedef struct {
     char buffer[BUFFER_SIZE];
@@ -213,7 +213,15 @@ void USART2_IRQHandler_Runtime3_WithPayload(void) {
 			data_REC_WithPayload_Flag = true;
 			REC_WithPayload_Flag = false;
 			rx_index = 0;	
-			USART_ClearITPendingBit(USART2, USART_IT_RXNE);
+			USART_ClearITPendingBit(USART2, USART_IT_RXNE);			// 清除中断标志位的位置对程序有音响
+			// 打印接收到的字符串		7/11
+			strcpy(Rx_WithPayload_temp,(char *)rx_buffer_esp8266); // 将结果复制到中间变量
+			printf("\r\nrx_buffer_esp8266:\r\n");
+			printf("%s\r\n",rx_buffer_esp8266);
+			memset(rx_buffer_esp8266, 0, sizeof(rx_buffer_esp8266));
+			printf("\r\nclean after:\r\n");
+			printf("%s\r\n",rx_buffer_esp8266);
+			// 
 			return;			
 		}
 		

@@ -118,7 +118,7 @@ void MQTT_Init(void){
 		
 		
 		// 发消息
-		if(esp8266_at_MQTTPUB(MQTTCONN_Topic_3,MQTTCONN_Msg_4_HeartBeat) == 1)			// 返回值已改成动态奇切换中断 6/30
+		if(esp8266_at_MQTTPUB(MQTTCONN_Topic_3,MQTTCONN_Meg_3_HeartBeat) == 1)			// 返回值已改成动态奇切换中断 6/30
 			printf("MQTTPUB Send Error!\r\n");
 		else{
 			// USART2_IRQn_EnableSel = false;

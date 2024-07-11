@@ -50,3 +50,4 @@
 .\objects\esp8266.o: System\ConvertJsonTime.h
 .\objects\esp8266.o: .\Hardware\DS1302.h
 .\objects\esp8266.o: System\HeartBeat.h
+.\objects\esp8266.o: System\TIM_HeartBeat.h
