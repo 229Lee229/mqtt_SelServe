@@ -253,10 +253,10 @@ void DS1302_init(uchar *time)
  *************************************/
 void DS1302_Readtime(void)//
 {
-			time_data[0]=DS1302_Read( 0x8D);
-			time_data[1]=DS1302_Read( 0x89);
-			time_data[2]=DS1302_Read( 0x87);
-			time_data[3]=DS1302_Read( 0x85);
-			time_data[4]=DS1302_Read( 0x83);
-			time_data[5]=DS1302_Read( 0x81);
+			time_Current[0]=DS1302_Read( 0x8D);
+			time_Current[1]=DS1302_Read( 0x89);
+			time_Current[2]=DS1302_Read( 0x87);
+			time_Current[3]=DS1302_Read( 0x85);
+			time_Current[4]=DS1302_Read( 0x83);
+			time_Current[5]=DS1302_Read( 0x81);
 }

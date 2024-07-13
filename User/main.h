@@ -4,9 +4,9 @@
 extern volatile USART2_IRQHandler_t USART2_IRQHandler_ptr;
 
 /*********** Debug **************/ 
-
- // #define MQTTPUB_Init
-// #define cJSON_TEST_Start
+#define Debug_ComapreTime
+#define Debug_MQTTPUB_Init
+// #define Debug_cJSON_TEST_Start
 /*******************************/ 
 
 

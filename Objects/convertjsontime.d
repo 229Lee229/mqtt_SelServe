@@ -51,4 +51,6 @@
 .\objects\convertjsontime.o: .\Hardware\DS1302.h
 .\objects\convertjsontime.o: System\HeartBeat.h
 .\objects\convertjsontime.o: System\TIM_HeartBeat.h
+.\objects\convertjsontime.o: .\Hardware\Switch Ctrl Relay\switchCtrlRelay.h
+.\objects\convertjsontime.o: .\Hardware\Switch Ctrl Relay\timer_doorLock.h
 .\objects\convertjsontime.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\time.h

@@ -336,7 +336,7 @@
               <MiscControls></MiscControls>
               <Define>USE_STDPERIPH_DRIVER,STM32F10X_MD</Define>
               <Undefine></Undefine>
-              <IncludePath>.\User;.\Start;.\Library;.\System;.\Hardware</IncludePath>
+              <IncludePath>.\User;.\Start;.\Library;.\System;.\Hardware;.\Hardware\Switch Ctrl Relay</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -814,6 +814,16 @@
               <FileName>DS1302.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Hardware\DS1302.c</FilePath>
+            </File>
+            <File>
+              <FileName>switchCtrlRelay.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Hardware\Switch Ctrl Relay\switchCtrlRelay.c</FilePath>
+            </File>
+            <File>
+              <FileName>timer_doorLock.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Hardware\Switch Ctrl Relay\timer_doorLock.c</FilePath>
             </File>
           </Files>
         </Group>

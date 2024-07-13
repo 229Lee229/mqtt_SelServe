@@ -41,6 +41,8 @@
 ".\objects\esprst.o"
 ".\objects\relay5v.o"
 ".\objects\ds1302.o"
+".\objects\switchctrlrelay.o"
+".\objects\timer_doorlock.o"
 ".\objects\stm32f10x_it.o"
 ".\objects\main.o"
 --library_type=microlib --strict --scatter ".\Objects\STM32F103_Project.sct"

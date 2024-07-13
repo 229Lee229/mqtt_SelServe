@@ -12,6 +12,7 @@
 #define OUT   0x01
 #define IN    0x00
 extern uchar time_data[6];//时间存放数组
+extern uchar time_Current[6];
 
 #define DS1302_PORT   GPIOB
 

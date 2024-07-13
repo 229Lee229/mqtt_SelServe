@@ -51,3 +51,5 @@
 .\objects\relay5v.o: .\Hardware\DS1302.h
 .\objects\relay5v.o: .\System\HeartBeat.h
 .\objects\relay5v.o: .\System\TIM_HeartBeat.h
+.\objects\relay5v.o: .\Hardware\Switch Ctrl Relay\switchCtrlRelay.h
+.\objects\relay5v.o: .\Hardware\Switch Ctrl Relay\timer_doorLock.h

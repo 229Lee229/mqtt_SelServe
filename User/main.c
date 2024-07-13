@@ -35,6 +35,9 @@ extern bool CompareTime_Flag;
 
 uchar init_time[6] = {24,2,28,23,30,05};			// 初始化时钟
 uchar time_data[6] = {0};// 接收时钟数据缓冲
+uchar time_Current[6] = {0};
+
+
 /* 7/6 */
 void IWDG_Init(void) {
     // 使能对IWDG寄存器的写访问
@@ -98,7 +101,7 @@ int main(void){				// a9f0879994d95a42e919b574af}
 
 	Usart2_Init(115200);
 	
-#ifdef cJSON_TEST_Start	
+#ifdef Debug_cJSON_TEST_Start	
 	cJSON * jo = cJSON_Parse(JSON_parse_test_6);
 	if (jo) {
 		printf("JSON ok\n");
@@ -109,25 +112,18 @@ int main(void){				// a9f0879994d95a42e919b574af}
 #endif	
 	// 将USART2的中 断处理函数指针指向初始化阶段的处理函数
     USART2_IRQHandler_ptr = USART2_IRQHandler_Init;
+	
+	timer_doorLock_Init();
+	switchCtrlRelay_Init();
 	// ----test 7/3
 	relay5V_Init();	
-	EspRst_GPIO_Init();
 	ESP8266_Init();
 	MQTT_Init();
-	
-/* 测试json数据代码
-//	cJSON * jo = cJSON_Parse(rx_buffer_5);
-//	if (jo) {
-//		printf("JSON ok\n");
-//	}
-//	else
-//		printf("JSON invalid\n");
-//	return 0;
-*/
-#ifdef MQTTPUB_Init	
+	DS1302_init(init_time);
+#ifdef Debug_MQTTPUB_Init	
 	do{
 		// break;
-		Delay_ms(3000);	
+		Delay_ms(500);	
 		for(u16 i = 0;i < rx_index_2;i++){
 			printf("%c",rx_buffer_esp8266[i]);
 				
@@ -146,19 +142,20 @@ int main(void){				// a9f0879994d95a42e919b574af}
 	
 	// 转移中断,接收嵌套JSON	test 7/7
 	USART2_IRQHandler_ptr = USART2_IRQHandler_Runtime3_WithPayload;
-	DS1302_init(init_time);
-	DS1302_SetTime(init_time);
 	
 	TIM_HeartBeat_Init();
 	IWDG_Init();
 	
+	
+	
 	while(1){
-		Json_parse_WithPayload();
-		
 		if(Enable_HeartBeat_Send_Flag){
 			keep_HeartBeat();			// 发送心跳回执		
 			Enable_HeartBeat_Send_Flag = false;
 		}
+
+		Json_parse_WithPayload();
+		
 	 // Json_parse_NoPayload();
 		Delay_ms(995);				// 考虑每955毫秒设置定时器
 		
@@ -169,12 +166,21 @@ int main(void){				// a9f0879994d95a42e919b574af}
 				printf("testCompareTime Successful!\r\n");
 				Pin_DoorLock_2 = 1;
 				Pin_Light_2	   = 1;		
+				
+				/* 在开门时间内 开关控制不起作用 7/13 */
+				EXTI_InitTypeDef EXTI_InitStructure;
+				EXTI_InitStructure.EXTI_Line = EXTI_Line15;
+				EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
+				EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising;		// 上升沿触发
+				EXTI_InitStructure.EXTI_LineCmd = ENABLE;
+				EXTI_Init(&EXTI_InitStructure);
+				/**/
 				CompareTime_Flag = false;
 			}
 		}
 		DS1302_Readtime();
 		printf("%d-%d-%d  %d:%d:%d\r\n",		\
-		 time_data[0],time_data[1],time_data[2],time_data[3],time_data[4],time_data[5]);
+		 time_Current[0],time_Current[1],time_Current[2],time_Current[3],time_Current[4],time_Current[5]);
 			// 喂狗 7/6
 		IWDG_ReloadCounter(); // 重装载IWDG寄存器
 	}

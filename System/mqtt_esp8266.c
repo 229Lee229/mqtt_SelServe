@@ -6,7 +6,7 @@ extern char rx_buffer_3[RX_BUFFER_SIZE];
 extern uint8_t g_uart_rx_buf[ESP8266_UART_RX_BUF_SIZE];
 extern uint8_t g_uart_tx_buf[ESP8266_UART_TX_BUF_SIZE];
 extern bool USART2_IRQn_EnableSel;
-
+extern uchar time_Current[6];
 bool MQTTPUB_FLAG = false;
 
 void printJsonError(const char *jsonStart);
@@ -108,7 +108,7 @@ void MQTT_Init(void){
 	
 	Delay_ms(2);
 	
-#ifdef MQTTPUB_Init	
+#ifdef Debug_MQTTPUB_Init	
 	
 //char JSON_parse_test_6[RX_BUFFER_SIZE]	= "{\"Type\":0,\"Time\":12787,\"MsgId\":\"7f91c5a9f0879994d95a42e919b574af\",\"SendId\":\"2222227_U1Q4B2Z5\",  \
 	       \"Payload\":\"{\\\"CtxId\\\":\\\"7f91c5a9f0879994d95a42e919b574af\\\"}\"}";
@@ -118,7 +118,7 @@ void MQTT_Init(void){
 		
 		
 		// 发消息
-		if(esp8266_at_MQTTPUB(MQTTCONN_Topic_3,MQTTCONN_Meg_3_HeartBeat) == 1)			// 返回值已改成动态奇切换中断 6/30
+		if(esp8266_at_MQTTPUB(MQTTCONN_Topic_3,MQTTCONN_Msg_3_HeartBeat) == 1)			// 返回值已改成动态奇切换中断 6/30
 			printf("MQTTPUB Send Error!\r\n");
 		else{
 			// USART2_IRQn_EnableSel = false;
@@ -337,7 +337,7 @@ void processSecondGroupData(char *data) {
 		cJSON_Delete(root);
         return;
     }
-    
+    long long Current_time_stamp;
     // 从JSON数据中提取信息
     cJSON *type = cJSON_GetObjectItem(root, "Type");
     cJSON *time = cJSON_GetObjectItem(root, "Time");
@@ -351,7 +351,15 @@ void processSecondGroupData(char *data) {
         printf("MsgId: %s\n", msgId->valuestring);
         printf("SendId: %s\n", sendId->valuestring);
 
+		// 7/12 上电心跳对时
+		printf("HeartBeat Syn Successfcul!\r\n");
+		
+		
+		Current_time_stamp = time->valuedouble;
+		ConvMillisToDateTime_C(Current_time_stamp);		// 更新时钟
 
+		
+		// ----------------------------------------
 		char payload_json_string[256];
 
 		sprintf(payload_json_string,"%s",payload->valuestring);

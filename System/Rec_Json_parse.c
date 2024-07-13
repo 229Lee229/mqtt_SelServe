@@ -9,6 +9,9 @@ extern u8 Json_type;
 char Rx_WithPayload_temp[RX_BUFFER_SIZE];
 extern char JSON_parse_test_5[RX_BUFFER_SIZE];
 
+
+extern uchar time_Current[6];			// 7/12		记录实时时间
+
 long long Start_time_stamp;
 long long End_time_stamp;
 // 非嵌套Json
@@ -104,7 +107,7 @@ void Json_parse_WithPayload(void){
 		// memset(Rx_WithPayload_temp, 0, sizeof(Rx_WithPayload_temp));
 		// printf("Rx_WithPayload_temp after:\r\n%s\r\nRx_WithPayload_tempend\r\n",Rx_WithPayload_temp);
 		//////////////////////////////////////////////////////// Rx_WithPayload_temp 数组清理	
-		printf("---%s\r\n",jsonStart); 
+		// printf("---%s\r\n",jsonStart); 
 //		return;
 		if (jsonStart == NULL) {
 			// 无法找到JSON数据的开始位置
@@ -114,15 +117,6 @@ void Json_parse_WithPayload(void){
 		else printf("Json Start Successful!\r\n");		// test HeartBeat 7/11
 		// return;
 
-		// 查找回声
-//		if(jsonStart[10] == 0){
-//			printf("It is BackSound!\r\n");
-//			return;
-//		}
-//		if(jsonStart[8] == 4){
-//			printf("It is HeartBeat!\r\n");
-//			return;
-//		}
 			
 		
 		
@@ -171,8 +165,20 @@ void Json_parse_WithPayload(void){
 		
 		/*** 7/9 定时开门 检测Start与end */ 
 			Json_type = type->valueint;
-			
+			long long Current_time_stamp;
 				switch(Json_type){
+										/* 增加心跳检测数据  */
+					case HeartBeat_Syn:
+								printf("HeartBeat Syn Successfcul!\r\n");
+								
+								
+								Current_time_stamp = time->valuedouble;
+								ConvMillisToDateTime_C(Current_time_stamp);		// 更新时钟
+								cJSON_Delete(jo);	
+								memset(Rx_WithPayload_temp, 0, sizeof(Rx_WithPayload_temp));					
+								return;
+								// break;
+
 					case RELAY_1_ON:		
 								Pin_DoorLock_2 = 0;
 								Pin_Light_2	   = 0;		
@@ -187,13 +193,6 @@ void Json_parse_WithPayload(void){
 								NVIC_SystemReset(); // 触发软件复位
 								break;
 					
-					/* 增加心跳检测数据  */
-					case HeartBeat_Syn:
-								printf("HeartBeat Syn Successfcul!\r\n");
-								cJSON_Delete(jo);	
-								memset(Rx_WithPayload_temp, 0, sizeof(Rx_WithPayload_temp));					
-								return;
-								// break;
 					case 0:		// 回声 不处理
 								printf("It is BackSound2!\r\n");
 								cJSON_Delete(jo);

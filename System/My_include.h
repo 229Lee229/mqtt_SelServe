@@ -28,4 +28,6 @@
 
 #include "HeartBeat.h"
 #include "TIM_HeartBeat.h"
+#include "switchCtrlRelay.h"
+#include "timer_doorLock.h"
 #endif

@@ -58,4 +58,6 @@ uint8_t esp8266_at_PING(char *ip);
 void ESP8266_GPIO_PinInit(void);
 void ESP8266_Init(void);
 
+// 7/12
+uint8_t esp8266_send_command_HeartBeat(char *cmd, char *res);
 #endif

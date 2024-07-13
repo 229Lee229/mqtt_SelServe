@@ -106,6 +106,28 @@ uint8_t esp8266_send_command(char *cmd, char *res)
 	return ESP8266_ERROR;
 
 }
+/* 7/12 心跳发送 */
+uint8_t esp8266_send_command_HeartBeat(char *cmd, char *res)
+{
+	
+	uint8_t timeOut = 250;
+
+    esp8266_clear();
+//	HAL_UART_Transmit(&g_uart_handle, (unsigned char *)cmd, strlen((const char *)cmd), 100);
+	USART2_SendString(cmd);
+	while(timeOut--) {
+		if(esp8266_wait_receive() == ESP8266_EOK){						//如果收到数据
+			if(strstr((const char *)Rx_WithPayload_temp, res) != NULL)		//如果检索到关键词
+				return ESP8266_EOK;
+		}
+		Delay_ms(10);
+	} 
+	return ESP8266_ERROR;
+
+}
+
+
+
 
 // MQTTPUB test 转换中断指针  6/30  暂时不用
 uint8_t esp8266_send_command_PUB(char *cmd, char *res)
