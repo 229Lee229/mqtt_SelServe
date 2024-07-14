@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\STM32F103_Project.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\STM32F103_Project.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Sat Jul 13 15:22:14 2024
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Sun Jul 14 20:44:10 2024
 <BR><P>
 <H3>Maximum Stack Usage =       1392 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -971,7 +971,7 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> main.o(i.main)
 </UL>
-<P><STRONG><a name="[3e]"></a>USART2_IRQHandler_Runtime</STRONG> (Thumb, 58 bytes, Stack size 8 bytes, esp8266.o(i.USART2_IRQHandler_Runtime))
+<P><STRONG><a name="[3e]"></a>USART2_IRQHandler_Runtime</STRONG> (Thumb, 50 bytes, Stack size 8 bytes, esp8266.o(i.USART2_IRQHandler_Runtime))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = USART2_IRQHandler_Runtime &rArr; USART_GetITStatus
 </UL>
 <BR>[Calls]<UL><LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_ReceiveData
@@ -1381,7 +1381,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[38]"></a>main</STRONG> (Thumb, 264 bytes, Stack size 16 bytes, main.o(i.main))
+<P><STRONG><a name="[38]"></a>main</STRONG> (Thumb, 246 bytes, Stack size 16 bytes, main.o(i.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 1392<LI>Call Chain = main &rArr; Json_parse_WithPayload &rArr; add_backslashes_and_quotes
 </UL>
 <BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IWDG_ReloadCounter

@@ -33,9 +33,9 @@ extern bool Enable_HeartBeat_Send_Flag;
 // 7/9 
 extern bool CompareTime_Flag;
 
-uchar init_time[6] = {24,2,28,23,30,05};			// 初始化时钟
-uchar time_data[6] = {0};// 接收时钟数据缓冲
-uchar time_Current[6] = {0};
+// uchar init_time[6] = {24,2,28,23,30,05};			// 初始化时钟
+// uchar time_data[6] = {0};// 接收时钟数据缓冲
+uchar time_Current[6] = {24,2,28,23,30,05};
 
 
 /* 7/6 */
@@ -57,12 +57,12 @@ void IWDG_Init(void) {
 
 
 
-extern volatile u16 rx_index_2;
+// extern volatile u16 rx_index_2;   // 优化 7/14
 extern volatile bool data_REC_NoPayload_Flag;
 extern uint8_t g_uart_rx_buf[ESP8266_UART_RX_BUF_SIZE];
 /******************************* 函数指针 动态切换usart2中断函数 **********************************************/
 
-extern char rx_buffer_5[RX_BUFFER_SIZE];
+//extern char rx_buffer_5[RX_BUFFER_SIZE];
 extern uint16_t rx_index;
 
 volatile USART2_IRQHandler_t USART2_IRQHandler_ptr = NULL;
@@ -79,12 +79,12 @@ bool json_YorN_flag;
 extern char rx_buffer_esp8266[RX_BUFFER_SIZE];
 extern bool data_REC_WithPayload_Flag;			// 7/7
 /*********************************** JSON_parse 测试数据 *************************************************************************/
-char JSON_parse_test_1[RX_BUFFER_SIZE] = "{\"Type\":4,\"Time\":1719746116700,\"MsgId\":\"96c158a3-1a72-4604-b699-4487b58a28b8\",\"SendId\":\"SVR01\",			\
-										\"Payload\":\"{\\\"CtxId\\\":\\\"jjoodf\\\",\\\"CtxId2\\\":1974611670}\"}";
-char JSON_parse_test_2[RX_BUFFER_SIZE] = "{\"w\":\"GWiFi\",\"p\":\"G@dge@n#24it&dp\",\"t\":\"0,0,26941480,140,170,40,40,100,200,150,29,39,89,45,2,75,75,2\"}";
+//char JSON_parse_test_1[RX_BUFFER_SIZE] = "{\"Type\":4,\"Time\":1719746116700,\"MsgId\":\"96c158a3-1a72-4604-b699-4487b58a28b8\",\"SendId\":\"SVR01\",			\
+//										\"Payload\":\"{\\\"CtxId\\\":\\\"jjoodf\\\",\\\"CtxId2\\\":1974611670}\"}";
+//char JSON_parse_test_2[RX_BUFFER_SIZE] = "{\"w\":\"GWiFi\",\"p\":\"G@dge@n#24it&dp\",\"t\":\"0,0,26941480,140,170,40,40,100,200,150,29,39,89,45,2,75,75,2\"}";
 // char JSON_parse_test_3[RX_BUFFER_SIZE] = "{\"data\":\"{\\\"a\\\":1,\\\"b\\\":2}\"}";
 // char JSON_parse_test_4[RX_BUFFER_SIZE]/* 7/7 */ = "{\"Type\":10,\"Time\":1720343740875,\"MsgId\":\"5464cd57-c59f-4c53-8f46-8725013f3db9\",\"SendId\":\"SVR01\",\"Payload\":\"{\\\"CtxId\\\":\\\"7f91c5a9f0879994d95a42e919b574af\\\"}\"}";
-char JSON_parse_test_5[RX_BUFFER_SIZE]	= "{\"Type\":92,\"Time\":1744533467325,\"MsgId\":\"4af325ke4af325ke4af325ke4af325ke\",  \
+// char JSON_parse_test_5[RX_BUFFER_SIZE]	= "{\"Type\":92,\"Time\":1744533467325,\"MsgId\":\"4af325ke4af325ke4af325ke4af325ke\",  \
 											\"SendId\":\"SVR01\",\"Payload\":		\
 											\"{\\\"Start\\\":1744533467325,\\\"End\\\":17445334883254,\\\"Getter\\\":\\\"clientId_005\\\"}\"}";								
 //char JSON_parse_test_6[RX_BUFFER_SIZE] = "{\"Type\":11,\"Time\":174454444467325,\"MsgId\":\"4af325ke4af325ke4af325ke4af325ke\", \
@@ -119,16 +119,16 @@ int main(void){				// a9f0879994d95a42e919b574af}
 	relay5V_Init();	
 	ESP8266_Init();
 	MQTT_Init();
-	DS1302_init(init_time);
+	DS1302_init(time_Current);
 #ifdef Debug_MQTTPUB_Init	
 	do{
 		// break;
 		Delay_ms(500);	
-		for(u16 i = 0;i < rx_index_2;i++){
-			printf("%c",rx_buffer_esp8266[i]);
-				
-		}
-		// printf("\r\n");
+//		for(u16 i = 0;i < rx_index_2;i++){
+//			printf("%c",rx_buffer_esp8266[i]);
+//				
+//		}
+		printf("%s",rx_buffer_esp8266);
 		processSecondGroupData(	(char *)rx_buffer_esp8266);		
 		
 		
@@ -148,7 +148,7 @@ int main(void){				// a9f0879994d95a42e919b574af}
 	
 	
 	
-	while(1){
+	for(;;){
 		if(Enable_HeartBeat_Send_Flag){
 			keep_HeartBeat();			// 发送心跳回执		
 			Enable_HeartBeat_Send_Flag = false;

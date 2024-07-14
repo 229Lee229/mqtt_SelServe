@@ -4,11 +4,6 @@
 
 u8 Time_doorLock = 0;			// 按下出门开关后 门磁25s计数 按下开关开始计数
 extern bool CompareTime_Flag;	// 7/13
-
-
-
-
-
 void timer_doorLock_Init(void){
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4,ENABLE);
 	
@@ -56,9 +51,6 @@ void TIM4_IRQHandler(void){
 		printf("%s",stringDebug);
 
 		#ifdef 	DEBUG_DoorLock
-//			Delay_ms_JKD(10);
-//			PCout(13) = !PCout(13);	
-//			Delay_ms_JKD(10);
 			PCout(13) = !PCout(13);	
 			sprintf(stringDebug,"%d\r\n",Time_doorLock);
 			printf("%s",stringDebug);

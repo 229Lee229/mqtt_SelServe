@@ -2,20 +2,20 @@
 #include "My_include.h"
 
 
-volatile u16 rx_index_2;
+// volatile u16 rx_index_2;    // 优化 7/14
 u8 rx_flag_char = 0;			// 接收是否是'}'
 bool REC_WithPayload_Flag = false;			// 在中断中接收嵌套Json 判断中括号 7/7
 bool data_REC_WithPayload_Flag = false;
 extern bool MQTTPUB_FLAG;
 extern char Rx_WithPayload_temp[RX_BUFFER_SIZE];
 /******************************* runtime 环形缓冲区 **********************************************/
-typedef struct {
-    char buffer[BUFFER_SIZE];
-    volatile uint16_t head;
-    volatile uint16_t tail;
-} RingBuffer;
+//typedef struct {
+//    char buffer[BUFFER_SIZE];
+//    volatile uint16_t head;
+//    volatile uint16_t tail;
+//} RingBuffer;
 
-RingBuffer rxBuffer = { .head = 0, .tail = 0 };
+//RingBuffer rxBuffer = { .head = 0, .tail = 0 };
 /******************************* JSON格式 声明变量 **********************************************/
 
 
@@ -25,7 +25,7 @@ volatile bool data_REC_NoPayload_Flag = false;
 /*********************************************************************************************/
 
 uint8_t g_uart_rx_buf[ESP8266_UART_RX_BUF_SIZE];
-uint8_t g_uart_tx_buf[ESP8266_UART_TX_BUF_SIZE];
+// uint8_t g_uart_tx_buf[ESP8266_UART_TX_BUF_SIZE];
 uint16_t esp8266_cnt = 0, esp8266_cntPre = 0;
 // bool USART2_IRQn_EnableSel = true;
 
@@ -181,7 +181,7 @@ void USART2_IRQHandler_Runtime(void) {
         char c = USART_ReceiveData(USART2);
 		// printf("%c",c);
 		rx_buffer_esp8266[rx_index++] = c;
-		rx_index_2 = rx_index;
+		// rx_index_2 = rx_index;    // 优化 7/14
 		
 		// 判断是否是这组数据的结束
 //		if(rx_buffer[rx_index] == '}'){

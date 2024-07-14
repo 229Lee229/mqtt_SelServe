@@ -3,7 +3,7 @@
 extern volatile bool data_REC_NoPayload_Flag;
 extern bool data_REC_WithPayload_Flag;		// 7/7
 extern char rx_buffer_esp8266[RX_BUFFER_SIZE];// 7/10
-extern uint8_t g_uart_rx_buf[ESP8266_UART_RX_BUF_SIZE];// 7/10
+extern uint8_t g_uart_rx_buf[ESP8266_UART_RX_BUF_SIZE];// 7/10			´ýÓÅ»¯
 extern bool json_YorN_flag;
 extern u8 Json_type;
 char Rx_WithPayload_temp[RX_BUFFER_SIZE];
