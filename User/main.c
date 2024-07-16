@@ -87,9 +87,7 @@ extern bool data_REC_WithPayload_Flag;			// 7/7
 // char JSON_parse_test_5[RX_BUFFER_SIZE]	= "{\"Type\":92,\"Time\":1744533467325,\"MsgId\":\"4af325ke4af325ke4af325ke4af325ke\",  \
 											\"SendId\":\"SVR01\",\"Payload\":		\
 											\"{\\\"Start\\\":1744533467325,\\\"End\\\":17445334883254,\\\"Getter\\\":\\\"clientId_005\\\"}\"}";								
-//char JSON_parse_test_6[RX_BUFFER_SIZE] = "{\"Type\":11,\"Time\":174454444467325,\"MsgId\":\"4af325ke4af325ke4af325ke4af325ke\", \
-//										   \"SendId\":\"SVR01\",\"Payload\":  \
-//										   \"{\\\"Start\\\":1720444624448,\\\"End\\\":17445334883254,\\\"Getter\\\":\\\"clientId_005\\\"}\"}";
+// char JSON_parse_test_6[RX_BUFFER_SIZE] = "{\"Type\":31,\"Time\":174454444467325,\"MsgId\":\"4af325ke4af325ke4af325ke4af325ke\",\"SendId\":\"SVR01\",\"Payload\":\"{\\\"art\\\":1720444624448,\\\"End\\\":17445334883254,\\\"ett\\\":\\\"clientId_005\\\",\\\"L\\\":14448}\"}";
 
 // {"Type":10,"Time":1720343740875,"MsgId":"5464cd57-c59f-4c53-8f46-8725013f3db9","SendId":"SVR01","Payload":{"CtxId":"7f91c5a9f0879994d95a42e919b574af"}}
 int main(void){				// a9f0879994d95a42e919b574af}
@@ -106,8 +104,11 @@ int main(void){				// a9f0879994d95a42e919b574af}
 	if (jo) {
 		printf("JSON ok\n");
 	}
-	else
-		printf("JSON invalid\n");
+	else{
+		printf("JSON parse error: %s\n", cJSON_GetErrorPtr());
+		
+	}
+	// printf("JSON invalid\n");
 	return 0;	
 #endif	
 	// 将USART2的中 断处理函数指针指向初始化阶段的处理函数
