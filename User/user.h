@@ -1,6 +1,15 @@
 #ifndef __USER_H
 #define __USER_H
 
+
+// 门磁继电器常闭
+#define PwrOn_LockDoor				1   
+#define PwrLoss_OpenDoor			0	  
+
+
+// 其它继电器常开
+#define Machine_PwrOn_Relay					0
+#define Machine_PwrLoss_Relay				1
 //typedef enum
 //{
 //	HeartBeat_Syn					4,
@@ -25,10 +34,10 @@
 //}Json_type_NoPayload;
 
 
-#define Pin_DoorLock_1						PBout(12)
-#define Pin_DoorLock_2               	 	PBout(13)
-#define Pin_Light_1                			PBout(14)
-#define Pin_Light_2							PBout(15)
+#define Relay_1_Pin_DoorLock				PBout(12)
+#define Relay_2_Pin				            PBout(13)
+#define Relay_3_Pin		                	PBout(14)
+#define Relay_4_Pin							PBout(15)
 
 #define HeartBeat_Syn						4
 

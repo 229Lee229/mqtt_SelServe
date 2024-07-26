@@ -14,7 +14,7 @@
 												AT调试时测试一下是否可以正常设置 考虑mqtt_clean的问题 重连mqtt的时候考虑重新启动esp
 												
     V1.2		 6/25/2024	  Lee				尝试中断函数中不加延时函数 使用标志位进行esp重置 
-	V1.3		 6/27/2024     Lee  				中断后出不去的原因是,判断语句中多个引脚判断 "(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_15) == 0)"
+	V1.3		 6/27/2024    Lee  				中断后出不去的原因是,判断语句中多个引脚判断 "(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_15) == 0)"
 												当进入中断函数后,判断if语句中,这条语句不成立,故不断进入中断,出不去的原因,标志位在语句中,故一直清除不掉
 	V2.0		 7/4/2024	  Lee				增加mqtt指令控制系统复位
 	V3.0		 7/7/2024     Lee				增加解析payload数据,startANDend长整形数据,增加看门狗定时,
@@ -23,21 +23,11 @@
     V4.0       	 7/11/2024    Lee				增加心跳检测 定时器TIM2												
  ***********************************************************************/
 
-
-
-// extern uint8_t g_uart_rx_buf[];
-// bool esp_RstPin = false;
-
 extern bool Enable_HeartBeat_Send_Flag;
-
-// 7/9 
 extern bool CompareTime_Flag;
+uchar time_Current[6] = {97,6,30,23,58,05};
 
-// uchar init_time[6] = {24,2,28,23,30,05};			// 初始化时钟
-// uchar time_data[6] = {0};// 接收时钟数据缓冲
-uchar time_Current[6] = {24,2,28,23,30,05};
-
-
+extern char Rx_WithPayload_temp[RX_BUFFER_SIZE];
 /* 7/6 */
 void IWDG_Init(void) {
     // 使能对IWDG寄存器的写访问
@@ -57,12 +47,9 @@ void IWDG_Init(void) {
 
 
 
-// extern volatile u16 rx_index_2;   // 优化 7/14
 extern volatile bool data_REC_NoPayload_Flag;
-extern uint8_t g_uart_rx_buf[ESP8266_UART_RX_BUF_SIZE];
+extern uint16_t esp8266_rx_index;
 /******************************* 函数指针 动态切换usart2中断函数 **********************************************/
-
-//extern char rx_buffer_5[RX_BUFFER_SIZE];
 extern uint16_t rx_index;
 
 volatile USART2_IRQHandler_t USART2_IRQHandler_ptr = NULL;
@@ -74,14 +61,14 @@ void USART2_IRQHandler(void) {
     }
 }
 
-u8 Json_type;
-bool json_YorN_flag;
-extern char rx_buffer_esp8266[RX_BUFFER_SIZE];
+// u8 Json_type;
+// bool json_YorN_flag;
+extern uchar rx_buffer_esp8266[RX_BUFFER_SIZE];
 extern bool data_REC_WithPayload_Flag;			// 7/7
 /*********************************** JSON_parse 测试数据 *************************************************************************/
-//char JSON_parse_test_1[RX_BUFFER_SIZE] = "{\"Type\":4,\"Time\":1719746116700,\"MsgId\":\"96c158a3-1a72-4604-b699-4487b58a28b8\",\"SendId\":\"SVR01\",			\
+// char JSON_parse_test_1[RX_BUFFER_SIZE] = "{\"Type\":4,\"Time\":1719746116700,\"MsgId\":\"96c158a3-1a72-4604-b699-4487b58a28b8\",\"SendId\":\"SVR01\",			\
 //										\"Payload\":\"{\\\"CtxId\\\":\\\"jjoodf\\\",\\\"CtxId2\\\":1974611670}\"}";
-//char JSON_parse_test_2[RX_BUFFER_SIZE] = "{\"w\":\"GWiFi\",\"p\":\"G@dge@n#24it&dp\",\"t\":\"0,0,26941480,140,170,40,40,100,200,150,29,39,89,45,2,75,75,2\"}";
+// char JSON_parse_test_2[RX_BUFFER_SIZE] = "{\"w\":\"GWiFi\",\"p\":\"G@dge@n#24it&dp\",\"t\":\"0,0,26941480,140,170,40,40,100,200,150,29,39,89,45,2,75,75,2\"}";
 // char JSON_parse_test_3[RX_BUFFER_SIZE] = "{\"data\":\"{\\\"a\\\":1,\\\"b\\\":2}\"}";
 // char JSON_parse_test_4[RX_BUFFER_SIZE]/* 7/7 */ = "{\"Type\":10,\"Time\":1720343740875,\"MsgId\":\"5464cd57-c59f-4c53-8f46-8725013f3db9\",\"SendId\":\"SVR01\",\"Payload\":\"{\\\"CtxId\\\":\\\"7f91c5a9f0879994d95a42e919b574af\\\"}\"}";
 // char JSON_parse_test_5[RX_BUFFER_SIZE]	= "{\"Type\":92,\"Time\":1744533467325,\"MsgId\":\"4af325ke4af325ke4af325ke4af325ke\",  \
@@ -90,24 +77,21 @@ extern bool data_REC_WithPayload_Flag;			// 7/7
 // char JSON_parse_test_6[RX_BUFFER_SIZE] = "{\"Type\":31,\"Time\":174454444467325,\"MsgId\":\"4af325ke4af325ke4af325ke4af325ke\",\"SendId\":\"SVR01\",\"Payload\":\"{\\\"art\\\":1720444624448,\\\"End\\\":17445334883254,\\\"ett\\\":\\\"clientId_005\\\",\\\"L\\\":14448}\"}";
 
 // {"Type":10,"Time":1720343740875,"MsgId":"5464cd57-c59f-4c53-8f46-8725013f3db9","SendId":"SVR01","Payload":{"CtxId":"7f91c5a9f0879994d95a42e919b574af"}}
+// char *a_test = "{\"Type\":4,\"Time\":1721824139120,\"MsgId\":\"b51b9c69-deb0-4e4d-b2e4-eb7294266b50\",\"SendId\":\"SVR01\",\"Payload\":\"{\\\"CtxId\\\":\\\"7f91c5a9f0879994d95a42e919b574af\\\"}\"}";
 int main(void){				// a9f0879994d95a42e919b574af}
-
-	
-	
-
 	Usart1_Init(115200);
 
 	Usart2_Init(115200);
 	
 #ifdef Debug_cJSON_TEST_Start	
-	cJSON * jo = cJSON_Parse(JSON_parse_test_6);
+	cJSON * jo = cJSON_Parse(a);
 	if (jo) {
 		printf("JSON ok\n");
 	}
 	else{
 		printf("JSON parse error: %s\n", cJSON_GetErrorPtr());
-		
 	}
+	cJSON_Delete(jo);				// 回声会被返回
 	// printf("JSON invalid\n");
 	return 0;	
 #endif	
@@ -119,54 +103,77 @@ int main(void){				// a9f0879994d95a42e919b574af}
 	// ----test 7/3
 	relay5V_Init();	
 	ESP8266_Init();
+
 	MQTT_Init();
 	DS1302_init(time_Current);
 #ifdef Debug_MQTTPUB_Init	
 	do{
-		// break;
-		Delay_ms(500);	
-//		for(u16 i = 0;i < rx_index_2;i++){
-//			printf("%c",rx_buffer_esp8266[i]);
-//				
-//		}
-		printf("%s",rx_buffer_esp8266);
-		processSecondGroupData(	(char *)rx_buffer_esp8266);		
+		Delay_ms(200);
+		uchar *array = (uchar *)malloc(RX_BUFFER_SIZE* sizeof(uchar));
+		array = (uchar *)(strstr((const char *)rx_buffer_esp8266, "OK"));
+		array++;
+		array++;
+		printf("\r\n%s\r\n",array);
+		printf("done!\r\n");
+		processSecondGroupData((uchar *)array);		
 		
-		
+		// 使用完毕，释放内存
+		free(array);
+		array = NULL; // 将指针设置为NULL，防止悬空指针
 	}while(0);
+	// 加上此代码 后续解析json错误 改为发送心跳包获取初始化时间
 #endif	
-	// 数组清零			7/3
-	memset((void*)rx_buffer_esp8266, 0, RX_BUFFER_SIZE);
-	rx_index = 0;
-	// 转移中断, 接收非嵌套JSON  test  7/3
+	
+
+
+
+	
+	// 数组清零 序列清零
+	esp8266_clear();
+	
+	// 转移中断, 接收非嵌套JSON 
     // USART2_IRQHandler_ptr = USART2_IRQHandler_Runtime2_NoPayload;
 	
-	// 转移中断,接收嵌套JSON	test 7/7
+	// 转移中断,接收嵌套JSON	
 	USART2_IRQHandler_ptr = USART2_IRQHandler_Runtime3_WithPayload;
 	
+/*-----------------初始化实时时间------------------------*/
+/*|*/	keep_HeartBeat();			// 发送心跳回执	  /*|*/	
+/*|*/	Delay_ms(500);
+    esp8266_clear();
+//	printf("\r\n%s\r\n",rx_buffer_esp8266);
+//	printf("\r\n%s\r\n",Rx_WithPayload_temp);
+	// memset(Rx_WithPayload_temp, 0, sizeof(Rx_WithPayload_temp));	
+
+//  char *a_test = "+MQTTSUBRECV:0,\"1111119/1111119_L16LF3HR\",150,{\"Type\": 101,\"Time\": 1744533467325,\"MsgId\":\"4af325ke4af325ke4af325ke4af325ke\",\"SendId\":\"SVR01\",\"Payload\":{\"Start\": 1744533467325,\"End\":17445334883254,\"Getter\":\"clientId_001\"}}";
+//	strcpy(Rx_WithPayload_temp,(char *)a_test); // 将结果复制到中间变量
+	Json_parse_WithPayload2();                     /*|*/
+	data_REC_WithPayload_Flag = false;
+/*-------------------------------------------------------*/
 	TIM_HeartBeat_Init();
 	IWDG_Init();
-	
-	
-	
 	for(;;){
 		if(Enable_HeartBeat_Send_Flag){
 			keep_HeartBeat();			// 发送心跳回执		
 			Enable_HeartBeat_Send_Flag = false;
 		}
-
-		Json_parse_WithPayload();
-		
+		if(data_REC_WithPayload_Flag){
+			esp8266_clear();
+			Json_parse_WithPayload2(); 
+			data_REC_WithPayload_Flag = false;
+		}					
+	 // Json_parse_WithPayload();
 	 // Json_parse_NoPayload();
 		Delay_ms(995);				// 考虑每955毫秒设置定时器
-		
-		
 		// Start与End的时间的对比 7/9
 		if(CompareTime_Flag == true){
 			if(CompareTime() == true){
 				printf("testCompareTime Successful!\r\n");
-				Pin_DoorLock_2 = 1;
-				Pin_Light_2	   = 1;		
+				Relay_1_Pin_DoorLock = PwrOn_LockDoor;
+				Relay_2_Pin 		 = Machine_PwrLoss_Relay;
+				Relay_3_Pin 		 = Machine_PwrLoss_Relay;
+				Relay_4_Pin 		 = Machine_PwrLoss_Relay;
+	
 				
 				/* 在开门时间内 开关控制不起作用 7/13 */
 				EXTI_InitTypeDef EXTI_InitStructure;

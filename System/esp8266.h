@@ -10,10 +10,10 @@
 #define ESP8266_EINVAL                      3   /* ²ÎÊý´íÎó */
 #define BUFFER_SIZE 						100
 
-//#define ESP8266_WIFI_SSID					"STM32"
-//#define ESP8266_WIFI_PASSWORD				"12345678"
-#define ESP8266_WIFI_SSID					"ChinaNet-PaRf"
-#define ESP8266_WIFI_PASSWORD				"gj5qmdxe"
+#define ESP8266_WIFI_SSID					"STM32"
+#define ESP8266_WIFI_PASSWORD				"12345678"
+//#define ESP8266_WIFI_SSID					"ChinaNet-PaRf"
+//#define ESP8266_WIFI_PASSWORD				"gj5qmdxe"
 
 #define ESP8266_PING_DomainName_6			"http://nestbase.meseee.com"
 #define ESP8266_PING_DomainName_5 			"www.baidu.com"

@@ -30,6 +30,7 @@
 .\objects\timer_doorlock.o: .\Library\stm32f10x_wwdg.h
 .\objects\timer_doorlock.o: .\Library\misc.h
 .\objects\timer_doorlock.o: .\User\user.h
+.\objects\timer_doorlock.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\timer_doorlock.o: .\Library\cJSON.h
 .\objects\timer_doorlock.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stddef.h
 .\objects\timer_doorlock.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\string.h
@@ -43,6 +44,7 @@
 .\objects\timer_doorlock.o: .\System\SysBitBand.h
 .\objects\timer_doorlock.o: .\System\esp8266.h
 .\objects\timer_doorlock.o: .\System\mqtt_esp8266.h
+.\objects\timer_doorlock.o: .\System\My_include.h
 .\objects\timer_doorlock.o: .\User\main.h
 .\objects\timer_doorlock.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\timer_doorlock.o: .\Hardware\EspRst.h

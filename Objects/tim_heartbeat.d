@@ -30,6 +30,7 @@
 .\objects\tim_heartbeat.o: .\Library\stm32f10x_wwdg.h
 .\objects\tim_heartbeat.o: .\Library\misc.h
 .\objects\tim_heartbeat.o: .\User\user.h
+.\objects\tim_heartbeat.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\tim_heartbeat.o: .\Library\cJSON.h
 .\objects\tim_heartbeat.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stddef.h
 .\objects\tim_heartbeat.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\string.h
@@ -43,6 +44,7 @@
 .\objects\tim_heartbeat.o: System\SysBitBand.h
 .\objects\tim_heartbeat.o: System\esp8266.h
 .\objects\tim_heartbeat.o: System\mqtt_esp8266.h
+.\objects\tim_heartbeat.o: System\My_include.h
 .\objects\tim_heartbeat.o: .\User\main.h
 .\objects\tim_heartbeat.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\tim_heartbeat.o: .\Hardware\EspRst.h

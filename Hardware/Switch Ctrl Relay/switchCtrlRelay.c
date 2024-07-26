@@ -45,6 +45,7 @@ void EXTI15_10_IRQHandler(){
 		PBout(15) = 0;
 		PBout(14) = 0;				// 门磁失电 可以开门
 		PBout(13) = 0;
+		PBout(12) = 0;
 		EXTI_ClearITPendingBit(EXTI_Line15);
 		while(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_15) == 0)
 			;

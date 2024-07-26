@@ -63,6 +63,7 @@ void TIM4_IRQHandler(void){
 			PBout(15) = 1;
 			PBout(14) = 1;				// 门磁上电  不可开门
 			PBout(13) = 1;
+			PBout(12) = 1;
 			TIM_Cmd(TIM4, DISABLE);
  		}
 	}

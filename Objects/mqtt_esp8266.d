@@ -30,6 +30,7 @@
 .\objects\mqtt_esp8266.o: .\Library\stm32f10x_wwdg.h
 .\objects\mqtt_esp8266.o: .\Library\misc.h
 .\objects\mqtt_esp8266.o: .\User\user.h
+.\objects\mqtt_esp8266.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\mqtt_esp8266.o: .\Library\cJSON.h
 .\objects\mqtt_esp8266.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stddef.h
 .\objects\mqtt_esp8266.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\string.h
@@ -43,6 +44,7 @@
 .\objects\mqtt_esp8266.o: System\SysBitBand.h
 .\objects\mqtt_esp8266.o: System\esp8266.h
 .\objects\mqtt_esp8266.o: System\mqtt_esp8266.h
+.\objects\mqtt_esp8266.o: System\My_include.h
 .\objects\mqtt_esp8266.o: .\User\main.h
 .\objects\mqtt_esp8266.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\mqtt_esp8266.o: .\Hardware\EspRst.h

@@ -30,6 +30,7 @@
 .\objects\esp8266.o: .\Library\misc.h
 .\objects\esp8266.o: System\My_include.h
 .\objects\esp8266.o: .\User\user.h
+.\objects\esp8266.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\esp8266.o: .\Library\cJSON.h
 .\objects\esp8266.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stddef.h
 .\objects\esp8266.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\string.h
@@ -43,6 +44,7 @@
 .\objects\esp8266.o: System\SysBitBand.h
 .\objects\esp8266.o: System\esp8266.h
 .\objects\esp8266.o: System\mqtt_esp8266.h
+.\objects\esp8266.o: System\My_include.h
 .\objects\esp8266.o: .\User\main.h
 .\objects\esp8266.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\esp8266.o: .\Hardware\EspRst.h

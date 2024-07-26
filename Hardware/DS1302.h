@@ -1,7 +1,8 @@
 #ifndef __DS1302_H__
 #define __DS1302_H__
 #include <stm32f10x.h>
-#define uchar unsigned char
+#include "My_include.h"
+// #define uchar unsigned char
 #define uint unsigned int
 /***DS1302时钟芯片****************************/
 //CLK--->PB5

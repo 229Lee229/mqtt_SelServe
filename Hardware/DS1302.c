@@ -1,4 +1,4 @@
-#include"DS1302.h"
+#include "DS1302.h"
 
  /*****************************************
  * 函数名：void DS1302_GPIOInit(void)

@@ -1,14 +1,14 @@
 #include "My_include.h"
 
-char rx_buffer_5[RX_BUFFER_SIZE] = "{\"CtxId\":\"7f91c5a9f0879994d95a42e919b574af\"}";
-extern char rx_buffer_2[RX_BUFFER_SIZE]; 
-extern char rx_buffer_3[RX_BUFFER_SIZE];
-extern uint8_t g_uart_rx_buf[ESP8266_UART_RX_BUF_SIZE];
-extern uint8_t g_uart_tx_buf[ESP8266_UART_TX_BUF_SIZE];
+// char rx_buffer_5[RX_BUFFER_SIZE] = "{\"CtxId\":\"7f91c5a9f0879994d95a42e919b574af\"}";
+// extern char rx_buffer_2[RX_BUFFER_SIZE]; 
+// extern char rx_buffer_3[RX_BUFFER_SIZE];
+// extern uint8_t g_uart_rx_buf[ESP8266_UART_RX_BUF_SIZE];
+// extern uint8_t g_uart_tx_buf[ESP8266_UART_TX_BUF_SIZE];
 extern bool USART2_IRQn_EnableSel;
 extern uchar time_Current[6];
-bool MQTTPUB_FLAG = false;
-
+// bool MQTTPUB_FLAG = false;
+extern uchar rx_buffer_esp8266[RX_BUFFER_SIZE];
 void printJsonError(const char *jsonStart);
 void MQTT_Init(void){
 	
@@ -68,7 +68,12 @@ void MQTT_Init(void){
 			break;
 		}
 		Delay_ms(1);
-	}	
+	}
+	if(TimeOut_mqtt == 255){
+		printf("Reset!\r\n");
+		Delay_ms(200); // 发送完信息后延时一会儿	
+		NVIC_SystemReset();
+	}
 	
 	TimeOut_mqtt = 5;
 	// 3 - AT+MQTTCONN：连接 MQTT Broker
@@ -91,7 +96,7 @@ void MQTT_Init(void){
 	Delay_ms(2);
 	TimeOut_mqtt = 3;
 	while(TimeOut_mqtt--){
-		if(esp8266_at_MQTTSUB(MQTTCONN_Topic_3) == 1)
+		if(esp8266_at_MQTTSUB(MQTTCONN_Topic_4) == 1)
 			printf("MQTTSUB Error!\r\n");
 		else{
 			printf("MQTTSUB Successful!\r\n");
@@ -99,12 +104,11 @@ void MQTT_Init(void){
 		}
 	}
 	// 若连接失败 复位 7/7  考虑重启mqtt  此方法重置时间长
-//	if(TimeOut_mqtt == 0){
-//		printf("System will reset...\r\n");
-//		Delay_ms(1000); // 发送完信息后延时一会儿
-//		NVIC_SystemReset(); // 触发软件复位
-
-//	}
+	if(TimeOut_mqtt == 255){
+		printf("System will reset...\r\n");
+		Delay_ms(200); // 发送完信息后延时一会儿
+		NVIC_SystemReset(); // 触发软件复位
+	}
 	
 	Delay_ms(2);
 	
@@ -112,18 +116,19 @@ void MQTT_Init(void){
 	
 //char JSON_parse_test_6[RX_BUFFER_SIZE]	= "{\"Type\":0,\"Time\":12787,\"MsgId\":\"7f91c5a9f0879994d95a42e919b574af\",\"SendId\":\"2222227_U1Q4B2Z5\",  \
 	       \"Payload\":\"{\\\"CtxId\\\":\\\"7f91c5a9f0879994d95a42e919b574af\\\"}\"}";
-	MQTTPUB_FLAG = true;
+	// MQTTPUB_FLAG = true;
 	TimeOut_mqtt = 3;
 	while(TimeOut_mqtt--){
 		
 		
 		// 发消息
-		if(esp8266_at_MQTTPUB(MQTTCONN_Topic_3,MQTTCONN_Msg_3_HeartBeat) == 1)			// 返回值已改成动态奇切换中断 6/30
+		if(esp8266_at_MQTTPUB(MQTTCONN_Topic_4,MQTTCONN_Msg_3_HeartBeat) == 1){			// 返回值已改成动态奇切换中断 6/30
 			printf("MQTTPUB Send Error!\r\n");
+			esp8266_clear();
+		}
 		else{
-			// USART2_IRQn_EnableSel = false;
-			// USART2_IRQHandler_ptr = USART2_IRQHandler_Runtime;				// 中断函数指针切换
 			printf("MQTTPUB Send Successful!\r\n");
+
 			break;
 		}
 		Delay_ms(10);		
@@ -131,31 +136,6 @@ void MQTT_Init(void){
 #endif	
 	
 }
-//void MQTT_Init(void){
-//	
-//	u8 TimeOut_mqtt = 5;
-//	
-//	// mqtt Init
-//	// 1 - AT+MQTTUSERCFG：设置 MQTT 用户属性
-//	if(esp8266_at_MQTTUSERCFG(MQTTUSERCFG_MyConf) == 1)
-//		printf("MQTTUSERCFG Error!\r\n");
-//	else printf("MQTTUSERCFG Successful!\r\n");
-//	Delay_ms(1);
-//	
-//	// 2 - AT+MQTTCONNCFG：设置 MQTT 连接属性
-//	if(esp8266_at_MQTTCONNCFG(MQTTCONNCFG_MyConf) == 1)
-//		printf("MQTTCONNCFG Error!\r\n");
-//	else printf("MQTTCONNCFG Successful!\r\n");
-//	Delay_ms(1);
-
-//	// 3 - AT+MQTTCONN：连接 MQTT Broker
-//	if(esp8266_at_MQTTCONN(MQTTCONN_Host_MyConf,MQTTCONN_Port_MyConf) == 1)
-//		printf("MQTTCONN Error!\r\n");
-//	else printf("MQTTCONN Successful!\r\n");
-//	Delay_ms(1);
-
-//	
-//}
 
 // MQTT Functions Implementation
 uint8_t esp8266_send_command_expect(char *cmd, char *expect, char *res)
@@ -166,11 +146,11 @@ uint8_t esp8266_send_command_expect(char *cmd, char *expect, char *res)
     USART2_SendString(cmd);
     while (timeOut--) {
         if (esp8266_wait_receive() == ESP8266_EOK) {
-            if (strstr((const char *)g_uart_rx_buf, expect) != NULL) {
+            if (strstr((const char *)rx_buffer_esp8266, expect) != NULL) {
                 USART2_SendString(res);
                 while (timeOut--) {
                     if (esp8266_wait_receive() == ESP8266_EOK) {
-                        if (strstr((const char *)g_uart_rx_buf, "OK") != NULL)
+                        if (strstr((const char *)rx_buffer_esp8266, "OK") != NULL)
                             return ESP8266_EOK;
                     }
                     Delay_ms(10);
@@ -246,7 +226,7 @@ uint8_t esp8266_at_MQTTPUB(char *topic, char *message)
 {
     char cmd[512];
 	// AT+MQTTPUB=<LinkID>,<"topic">,<"data">,<qos>,<retain>
-    sprintf(cmd, "AT+MQTTPUB=0,\"%s\",\"%s\",0,0\r\n", topic, message);
+    sprintf(cmd, "AT+MQTTPUB=0,\"%s\",\"%s\",1,0\r\n", topic, message);
 	// printf("Debug test:%s",cmd);			// 打印数据
 	// USART2_IRQHandler_ptr = USART2_IRQHandler_Runtime;
     return esp8266_send_command(cmd, "OK");
@@ -269,7 +249,7 @@ uint8_t esp8266_at_MQTTSUB(char *topic)
 {
     char cmd[128];
 	// AT+MQTTSUB=<LinkID>,<"topic">,<qos>
-    sprintf(cmd, "AT+MQTTSUB=0,\"%s\",0\r\n", topic);
+    sprintf(cmd, "AT+MQTTSUB=0,\"%s\",2\r\n", topic);
     return esp8266_send_command(cmd, "OK");
 }
 
@@ -292,30 +272,32 @@ uint8_t esp8266_at_MQTTCLEAN(void)
 */
 /*************************************** JSON处理数据 ***********************************************************/
 
-void processSecondGroupData(char *data) {
+void processSecondGroupData(uchar *data) {
     // 查找第一组数据的结束位置
-    char *firstGroupEnd = strstr(data, "}"); // \n
+    char *firstGroupEnd = strstr((const char *)data, "}"); // \n
     if (firstGroupEnd == NULL) {
         // 无法找到第一组数据的结束位置
 		printf("Unable to find the end position of the first set of data\r\n");
-        return;
+		// 无法更新最新时间 重启
+		NVIC_SystemReset();        
+		// return;
     }
     
     // 移动到第二组数据的开始位置
     char *secondGroupStart = firstGroupEnd + 1/* 2 */;		// 少了 '\n' 6/30
-    
+   //  printf("secondGroupStart:\r\n%s\r\n",secondGroupStart);
     // 查找第二组JSON数据的开始位置
     char *jsonStart = strchr(secondGroupStart, '{');
     if (jsonStart == NULL) {
         // 无法找到第二组JSON数据的开始位置
 		printf("Unable to find the starting position of the second set of JSON data\r\n");
-		
         return;
     }
 	
+	// printf("jsonStart add before:\r\n%s\r\n",jsonStart);
 	// 7/1 加转义
     add_backslashes_and_quotes(jsonStart);
-	printf("\r\n%s\r\n",jsonStart);
+	// printf("jsonStart add after:\r\n%s\r\n",jsonStart);
 	// {"Type":4,"Time":1719746116700,"MsgId":"96c158a3-1a72-4604-b699-4487b58a28b8","SendId":"SVR01","Payload":{"CtxId":"7f91c5a9f0879994d95a42e919b574af"}}
 /***********************************************************************/	
 	
@@ -344,7 +326,11 @@ void processSecondGroupData(char *data) {
     cJSON *msgId = cJSON_GetObjectItem(root, "MsgId");
     cJSON *sendId = cJSON_GetObjectItem(root, "SendId");
     cJSON *payload = cJSON_GetObjectItem(root, "Payload");
-    
+//	        printf("Type: %d\n", type->valueint);
+//        printf("Time: %.llf\n", time->valuedouble);  // 使用valueint或valuedouble取决于数据类型
+//        printf("MsgId: %s\n", msgId->valuestring);
+//        printf("SendId: %s\n", sendId->valuestring);
+
     if (type && time && msgId && sendId && payload) {
         printf("Type: %d\n", type->valueint);
         printf("Time: %.llf\n", time->valuedouble);  // 使用valueint或valuedouble取决于数据类型
@@ -353,8 +339,6 @@ void processSecondGroupData(char *data) {
 
 		// 7/12 上电心跳对时
 		printf("HeartBeat Syn Successfcul!\r\n");
-		
-		
 		Current_time_stamp = time->valuedouble;
 		ConvMillisToDateTime_C(Current_time_stamp);		// 更新时钟
 
@@ -363,7 +347,7 @@ void processSecondGroupData(char *data) {
 		char payload_json_string[256];
 
 		sprintf(payload_json_string,"%s",payload->valuestring);
-		// printf("%s\r\n",payload_json_string);
+		printf("%s\r\n",payload_json_string);
 		/******** 解析payload中的数据 嵌套解析 *************/
         // 解析嵌套的payload JSON字符串
 		//sprintf(payload_json_string,"%s",payload->valuestring);
@@ -380,6 +364,8 @@ void processSecondGroupData(char *data) {
 		/*********************/
 		
         cJSON *ctxId = cJSON_GetObjectItem(payload_json, "CtxId");
+				 
+
         if (ctxId) {
             printf("CtxId: %s\n", ctxId->valuestring);// 原  %s  valuestring 7/1 
         }else{				// test 解析错误 7/2
@@ -391,10 +377,16 @@ void processSecondGroupData(char *data) {
 //            printf("CtxId2: %d\n", ctxId2->valueint);// 原  %s  valuestring 7/1 
 //        }
 		 // 释放JSON对象
-		 cJSON_Delete(payload_json);
+		// cJSON_Delete(ctxId);
+		cJSON_Delete(payload_json);
 
-    }
-    
+    }else 		cJSON_Delete(root);
+
+//    cJSON_Delete(type);
+//    cJSON_Delete(time);
+//    cJSON_Delete(msgId);
+//    cJSON_Delete(sendId);
+//	cJSON_Delete(payload);
 	printf("\r\nParsing completed!\r\n");				//  7/1
 }
 
@@ -445,9 +437,9 @@ void add_backslashes_and_quotes(char *str) {
             result[res_index++] = '\\';
             // result[res_index++] = '\\';
         }
-
         result[res_index++] = str[i];
     }
-
+//	printf("str:\r\n%s\r\n",str);
+//	printf("result:\r\n%s\r\n",result);
     strcpy(str, result); // 将结果复制回原字符串
 }

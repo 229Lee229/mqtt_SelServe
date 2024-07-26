@@ -1,6 +1,6 @@
 #ifndef __MQTT_ESP8266_H
 #define __MQTT_ESP8266_H
-
+#include "My_include.h"
 
 // AT+MQTTUSERCFG=<LinkID>,<scheme>,<"client_id">,<"username">,<"password">,<cert_key_ID>,<CA_ID>,<"path">
 #define MQTTUSERCFG_MyConf_1 			"0,1,\"Michael_esp\",\"esp8266_li\",\"1234567\",0,0,\"\""
@@ -9,8 +9,8 @@
 
 #define MQTTLONGCLIENTID_MyConf 		"1234567_T9BX11TG"
 #define MQTTCONNCFG_MyConf  			"0,60,1,\"\",\"\",0,0"
-// #define MQTTCONN_Host_MyConf			"192.168.1.42"				// LAN
-#define MQTTCONN_Host_MyConf	 		"nestbase.meseee.com"		// PUB
+#define MQTTCONN_Host_MyConf			"192.168.1.42"				// LAN
+// #define MQTTCONN_Host_MyConf	 		"nestbase.meseee.com"		// PUB
 #define MQTTCONN_Port_MyConf			1883
 
 
@@ -49,7 +49,7 @@ uint8_t esp8266_at_MQTTPUBRAW(char *topic, uint8_t *data, uint16_t len);
 uint8_t esp8266_at_MQTTSUB(char *topic);
 uint8_t esp8266_at_MQTTUNSUB(char *topic);
 uint8_t esp8266_at_MQTTCLEAN(void);
-void processSecondGroupData(char *data);
+void processSecondGroupData(uchar *data);
 // 7/1
 void add_backslashes_and_quotes(char *str);
 #endif

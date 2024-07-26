@@ -1,8 +1,12 @@
 #ifndef __MY_INCLUDE_H
 #define __MY_INCLUDE_H
 
+
+#define  uchar unsigned char
+
 #include "stm32f10x.h"                  // Device header
 #include "user.h"
+#include "stdlib.h"
 #include "cJSON.h"
 // #include "cJSON2.h"
 #include "string.h"
@@ -30,4 +34,5 @@
 #include "TIM_HeartBeat.h"
 #include "switchCtrlRelay.h"
 #include "timer_doorLock.h"
+
 #endif
