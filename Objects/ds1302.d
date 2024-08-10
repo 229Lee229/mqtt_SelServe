@@ -31,6 +31,7 @@
 .\objects\ds1302.o: .\Library\misc.h
 .\objects\ds1302.o: .\System\My_include.h
 .\objects\ds1302.o: .\User\user.h
+.\objects\ds1302.o: .\System\My_include.h
 .\objects\ds1302.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\ds1302.o: .\Library\cJSON.h
 .\objects\ds1302.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stddef.h
@@ -45,7 +46,6 @@
 .\objects\ds1302.o: .\System\SysBitBand.h
 .\objects\ds1302.o: .\System\esp8266.h
 .\objects\ds1302.o: .\System\mqtt_esp8266.h
-.\objects\ds1302.o: .\System\My_include.h
 .\objects\ds1302.o: .\User\main.h
 .\objects\ds1302.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\ds1302.o: .\Hardware\EspRst.h
@@ -56,3 +56,4 @@
 .\objects\ds1302.o: .\System\TIM_HeartBeat.h
 .\objects\ds1302.o: .\Hardware\Switch Ctrl Relay\switchCtrlRelay.h
 .\objects\ds1302.o: .\Hardware\Switch Ctrl Relay\timer_doorLock.h
+.\objects\ds1302.o: .\Hardware\JR6001.h

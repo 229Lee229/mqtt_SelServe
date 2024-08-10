@@ -1,5 +1,9 @@
 #include "My_include.h"
 #include "time.h"
+
+extern bool en_judge_IfLightEnd;
+extern long long en_judge_IfLightEnd_val;
+
 // extern uchar init_time[6];		// 7/8 接收json后转换时间
 uchar End_time[6];
 // extern uchar time_data[6];// 接收时钟数据缓冲
@@ -66,12 +70,12 @@ void ConvMillisToDateTime_E(long long millis){
 	CompareTime_Flag = true;
 	
 	/* 在开门时间内 开关控制relay不起作用 直到开门时间结束 7/13 */
-				EXTI_InitTypeDef EXTI_InitStructure;
-				EXTI_InitStructure.EXTI_Line = EXTI_Line15;
-				EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
-				EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising;		// 上升沿触发
-				EXTI_InitStructure.EXTI_LineCmd = DISABLE;
-				EXTI_Init(&EXTI_InitStructure);
+//				EXTI_InitTypeDef EXTI_InitStructure;
+//				EXTI_InitStructure.EXTI_Line = EXTI_Line15;
+//				EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
+//				EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising;		// 上升沿触发
+//				EXTI_InitStructure.EXTI_LineCmd = DISABLE;
+//				EXTI_Init(&EXTI_InitStructure);
 
 }
 
@@ -106,14 +110,44 @@ bool CompareTime(void){
 //		}
 //	}
 //	return false;
-	
+
+if(en_judge_IfLightEnd == true){
+	printf("\r\nThe above are lighting fixtures\r\n");
 	for(int i = 0;i < 6;i++){
 		if(time_Current[i] >= End_time[i]){
-			if(i == 5)
+			if(i == 5){
 				return true;
+			}
+		}
+		else return false;
+	}
+}
+
+
+if(en_judge_IfLightEnd == false){	
+	for(int i = 0;i < 6;i++){
+		if(time_Current[i] >= End_time[i]){
+			if(i == 5){
+				
+			// JR6001_play_finish
+			JR6001_Play_Service_Finish();	
+			Delay_ms(300);
+			while(My_JR6001_IsBusy() == false)
+				// Waiting...
+				;				
+				
+				
+				
+				en_judge_IfLightEnd = true;	
+				ConvMillisToDateTime_E(en_judge_IfLightEnd_val);		
+				return true;
+			}
 		}
 		else return false;
 	} 
 	return false;
 }
 
+
+return false;			// 此行永远都不会到达. 考虑怎么优化
+}

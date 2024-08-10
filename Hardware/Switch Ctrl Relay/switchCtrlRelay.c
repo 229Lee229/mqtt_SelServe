@@ -37,18 +37,19 @@ void switchCtrlRelay_Init(void){
 
 void EXTI15_10_IRQHandler(){
 	u16 timeout = 50000;
-	if((EXTI_GetITStatus(EXTI_Line15) == SET) /* && (GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_15) == 0) */ ){			
+	if((EXTI_GetITStatus(EXTI_Line15) == SET)){			
 		
-		
+		Relay_1_Pin_DoorLock_out = PwrLoss_OpenDoor;
 		
 		/* 按下开关后,使能TIM4,开始计数 */
-		PBout(15) = 0;
-		PBout(14) = 0;				// 门磁失电 可以开门
-		PBout(13) = 0;
-		PBout(12) = 0;
+//		PBout(15) = 0;
+//		PBout(14) = 0;				// 门磁失电 可以开门
+//		PBout(13) = 0;
+//		PBout(12) = 0;
 		EXTI_ClearITPendingBit(EXTI_Line15);
 		while(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_15) == 0)
-			;
+			IWDG_ReloadCounter();			// 在长按下开关时，计数值重装，防止长按的时间过长，触发复位操作
+				
 		Time_doorLock = 0;			// 若在12s的时间再次按下开关 则重新计时
 		TIM_Cmd(TIM4, ENABLE);
 		// Delay_ms_JKD(30);		// 防抖动

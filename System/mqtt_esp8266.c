@@ -222,6 +222,31 @@ uint8_t esp8266_at_MQTTCONN(char *host, int port)
     return esp8266_send_command(cmd, "OK");
 }
 
+// 检测mqttconn?   检查state是否为4(已连接但是未订阅主题)or6(已连接已订阅)    8/10
+bool esp8266_at_Check_MQTTCONN(void)
+{
+    char cmd[128];
+	// AT+MQTTCONN?
+    sprintf(cmd, "AT+MQTTCONN?\r\n");
+	
+	if(esp8266_send_command(cmd, "0,6,1") == 0){			// 没有错误 - 检索成功
+		return true;
+	}else if((esp8266_send_command(cmd, "0,4,1") == 0) || (esp8266_send_command(cmd, "0,5,1") == 0)){		// 如果这两个返回4或5 那么需要订阅主题
+	
+		// AT+MQTTSUB=<LinkID>,<"topic">,<qos>
+		int8_t TimeOut_mqtt = 3;
+			while(TimeOut_mqtt--){
+				if(esp8266_at_MQTTSUB(MQTTCONN_Topic_4) == 1)
+					printf("reconnect MQTTSUB Error!\r\n");
+				else{
+					printf("reconnect MQTTSUB Successful!\r\n");
+					break;
+				}
+			}
+	}	
+	
+    return esp8266_send_command(cmd, "OK");
+}
 uint8_t esp8266_at_MQTTPUB(char *topic, char *message)
 {
     char cmd[512];

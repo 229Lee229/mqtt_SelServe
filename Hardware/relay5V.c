@@ -4,7 +4,7 @@
 
 /*
 	PB12
-    PB13	-> 	  门磁
+    PB13	
     PB14
 	PB15
 */ 
@@ -12,10 +12,10 @@
 
 void relay5V_Init(void){
 	// 四路继电器
-	GPIO_Pin_Init(PB12 ,GPIO_Mode_Out_PP);
-	GPIO_Pin_Init(PB13 ,GPIO_Mode_Out_PP);
-	GPIO_Pin_Init(PB14 ,GPIO_Mode_Out_PP);
-	GPIO_Pin_Init(PB15 ,GPIO_Mode_Out_PP);				
+	GPIO_Pin_Init(Relay_1_Pin_DoorLock 	,		GPIO_Mode_Out_PP);
+	GPIO_Pin_Init(Relay_2_Pin_Light 	,		GPIO_Mode_Out_PP);
+	GPIO_Pin_Init(Relay_3_Pin_AllSocket ,		GPIO_Mode_Out_PP);
+	GPIO_Pin_Init(Relay_4_Pin_else 		,		GPIO_Mode_Out_PP);				
 	
 	// 开关控制门磁短暂开启函数 初始化
 	// switchCtrlRelay_Init();

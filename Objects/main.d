@@ -30,6 +30,7 @@
 .\objects\main.o: .\Library\misc.h
 .\objects\main.o: .\System\My_include.h
 .\objects\main.o: .\User\user.h
+.\objects\main.o: .\System\My_include.h
 .\objects\main.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\main.o: .\Library\cJSON.h
 .\objects\main.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stddef.h
@@ -44,7 +45,6 @@
 .\objects\main.o: .\System\SysBitBand.h
 .\objects\main.o: .\System\esp8266.h
 .\objects\main.o: .\System\mqtt_esp8266.h
-.\objects\main.o: .\System\My_include.h
 .\objects\main.o: .\User\main.h
 .\objects\main.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\main.o: .\Hardware\EspRst.h
@@ -55,3 +55,4 @@
 .\objects\main.o: .\System\TIM_HeartBeat.h
 .\objects\main.o: .\Hardware\Switch Ctrl Relay\switchCtrlRelay.h
 .\objects\main.o: .\Hardware\Switch Ctrl Relay\timer_doorLock.h
+.\objects\main.o: .\Hardware\JR6001.h

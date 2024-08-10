@@ -9,16 +9,17 @@
 
 #define MQTTLONGCLIENTID_MyConf 		"1234567_T9BX11TG"
 #define MQTTCONNCFG_MyConf  			"0,60,1,\"\",\"\",0,0"
-#define MQTTCONN_Host_MyConf			"192.168.1.42"				// LAN
-// #define MQTTCONN_Host_MyConf	 		"nestbase.meseee.com"		// PUB
+// #define MQTTCONN_Host_MyConf			"192.168.1.42"				// LAN
+#define MQTTCONN_Host_MyConf	 		"nestbase.meseee.com"		// PUB
 #define MQTTCONN_Port_MyConf			1883
 
 
 #define MQTTCONN_Topic_1				"Room001"
 #define MQTTCONN_Topic_2				"1234567/1234567_T9BX11TG"
 #define MQTTCONN_Topic_3				"2222227/2222227_U1Q4B2Z5"
-#define MQTTCONN_Topic_4				"1111119/1111119_L16LF3HR"
-
+// #define MQTTCONN_Topic_4				"1111119/1111119_L16LF3HR"
+// #define MQTTCONN_Topic_4				"1111119/1111119_T9BX11TG"					// 7/26 ÁÙÊ±¹«Íø
+#define MQTTCONN_Topic_4				"U06628567/U06628567_52SY2KTA"   // 8/10
 
 #define MQTTCONN_Message_1				"Play_two_hours"
 #define MQTTCONN_Message_2				"{\\\"Type\\\":0\\,\\\"Time\\\":12787\\,\\\"MsgId\\\":\\\"7f91c5a9f0879994d95a42e919b574af\\\"\\,\\\"SendId\\\":\\\"1234567_T9BX11TG\\\"}"

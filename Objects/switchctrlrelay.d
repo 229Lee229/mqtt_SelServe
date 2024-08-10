@@ -30,6 +30,7 @@
 .\objects\switchctrlrelay.o: .\Library\stm32f10x_wwdg.h
 .\objects\switchctrlrelay.o: .\Library\misc.h
 .\objects\switchctrlrelay.o: .\User\user.h
+.\objects\switchctrlrelay.o: .\System\My_include.h
 .\objects\switchctrlrelay.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\switchctrlrelay.o: .\Library\cJSON.h
 .\objects\switchctrlrelay.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stddef.h
@@ -44,7 +45,6 @@
 .\objects\switchctrlrelay.o: .\System\SysBitBand.h
 .\objects\switchctrlrelay.o: .\System\esp8266.h
 .\objects\switchctrlrelay.o: .\System\mqtt_esp8266.h
-.\objects\switchctrlrelay.o: .\System\My_include.h
 .\objects\switchctrlrelay.o: .\User\main.h
 .\objects\switchctrlrelay.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\switchctrlrelay.o: .\Hardware\EspRst.h
@@ -55,3 +55,4 @@
 .\objects\switchctrlrelay.o: .\System\TIM_HeartBeat.h
 .\objects\switchctrlrelay.o: .\Hardware\Switch Ctrl Relay\switchCtrlRelay.h
 .\objects\switchctrlrelay.o: .\Hardware\Switch Ctrl Relay\timer_doorLock.h
+.\objects\switchctrlrelay.o: .\Hardware\JR6001.h

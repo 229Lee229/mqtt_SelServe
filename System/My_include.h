@@ -35,4 +35,5 @@
 #include "switchCtrlRelay.h"
 #include "timer_doorLock.h"
 
+#include "JR6001.h"
 #endif

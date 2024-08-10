@@ -775,6 +775,16 @@
               <FileType>5</FileType>
               <FilePath>.\System\TIM_HeartBeat.h</FilePath>
             </File>
+            <File>
+              <FileName>TIM_CheckConn.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\System\TIM_CheckConn.c</FilePath>
+            </File>
+            <File>
+              <FileName>TIM_CheckConn.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Hardware\TIM_CheckConn.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -824,6 +834,16 @@
               <FileName>timer_doorLock.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Hardware\Switch Ctrl Relay\timer_doorLock.c</FilePath>
+            </File>
+            <File>
+              <FileName>JR6001.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Hardware\JR6001.c</FilePath>
+            </File>
+            <File>
+              <FileName>JR6001.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Hardware\JR6001.h</FilePath>
             </File>
           </Files>
         </Group>

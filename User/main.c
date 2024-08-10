@@ -22,6 +22,9 @@
 												如函数 : void _ttywrch(int ch)
     V4.0       	 7/11/2024    Lee				增加心跳检测 定时器TIM2												
  ***********************************************************************/
+bool en_judge_IfLightEnd = false;			// 判断是否进入到判断灯光熄灭的条件 (照明灯延长30s关闭)
+long long en_judge_IfLightEnd_val;
+
 
 extern bool Enable_HeartBeat_Send_Flag;
 extern bool CompareTime_Flag;
@@ -79,6 +82,7 @@ extern bool data_REC_WithPayload_Flag;			// 7/7
 // {"Type":10,"Time":1720343740875,"MsgId":"5464cd57-c59f-4c53-8f46-8725013f3db9","SendId":"SVR01","Payload":{"CtxId":"7f91c5a9f0879994d95a42e919b574af"}}
 // char *a_test = "{\"Type\":4,\"Time\":1721824139120,\"MsgId\":\"b51b9c69-deb0-4e4d-b2e4-eb7294266b50\",\"SendId\":\"SVR01\",\"Payload\":\"{\\\"CtxId\\\":\\\"7f91c5a9f0879994d95a42e919b574af\\\"}\"}";
 int main(void){				// a9f0879994d95a42e919b574af}
+
 	Usart1_Init(115200);
 
 	Usart2_Init(115200);
@@ -151,6 +155,15 @@ int main(void){				// a9f0879994d95a42e919b574af}
 	data_REC_WithPayload_Flag = false;
 /*-------------------------------------------------------*/
 	TIM_HeartBeat_Init();
+	
+	// JR6001 初始化   8/10
+	My_JR6001_Init();
+	
+	
+	
+	
+	
+	
 	IWDG_Init();
 	for(;;){
 		if(Enable_HeartBeat_Send_Flag){
@@ -167,23 +180,34 @@ int main(void){				// a9f0879994d95a42e919b574af}
 		Delay_ms(995);				// 考虑每955毫秒设置定时器
 		// Start与End的时间的对比 7/9
 		if(CompareTime_Flag == true){
-			if(CompareTime() == true){
-				printf("testCompareTime Successful!\r\n");
-				Relay_1_Pin_DoorLock = PwrOn_LockDoor;
-				Relay_2_Pin 		 = Machine_PwrLoss_Relay;
-				Relay_3_Pin 		 = Machine_PwrLoss_Relay;
-				Relay_4_Pin 		 = Machine_PwrLoss_Relay;
-	
-				
-				/* 在开门时间内 开关控制不起作用 7/13 */
-				EXTI_InitTypeDef EXTI_InitStructure;
-				EXTI_InitStructure.EXTI_Line = EXTI_Line15;
-				EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
-				EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising;		// 上升沿触发
-				EXTI_InitStructure.EXTI_LineCmd = ENABLE;
-				EXTI_Init(&EXTI_InitStructure);
-				/**/
-				CompareTime_Flag = false;
+			// 除了照明灯的其余继电器
+			
+			if(en_judge_IfLightEnd == false){
+				if(CompareTime() == true){			
+					printf("else-Relay testCompareTime Successful!\r\n");
+					// Relay_1_Pin_DoorLock = PwrOn_LockDoor;
+					Relay_3_Pin_AllSocket_out 	 = Machine_PwrLoss_Relay;
+					Relay_4_Pin_else_out 		 = Machine_PwrLoss_Relay;
+		
+					
+				}
+			}
+			else if(en_judge_IfLightEnd == true){
+				if(CompareTime() == true){
+					printf("light-Relay testCompareTime Successful!\r\n");	
+					Relay_1_Pin_DoorLock_out 	 = PwrOn_LockDoor;	
+					Relay_2_Pin_Light_out 		 = Machine_PwrLoss_Relay;
+					
+					en_judge_IfLightEnd = false;
+									/* 在开门时间内 开关控制不起作用 7/13 */
+					EXTI_InitTypeDef EXTI_InitStructure;
+					EXTI_InitStructure.EXTI_Line = EXTI_Line15;
+					EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
+					EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising;		// 上升沿触发
+					EXTI_InitStructure.EXTI_LineCmd = ENABLE;
+					EXTI_Init(&EXTI_InitStructure);
+					CompareTime_Flag = false;
+				}
 			}
 		}
 		DS1302_Readtime();

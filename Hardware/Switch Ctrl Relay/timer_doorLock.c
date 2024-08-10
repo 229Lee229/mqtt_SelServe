@@ -59,11 +59,12 @@ void TIM4_IRQHandler(void){
 
 		if(Time_doorLock == doorLock_countDown_MAX){
 			Time_doorLock = 0;
+			Relay_1_Pin_DoorLock_out = PwrOn_LockDoor;
 			// 12s时间到 门磁上电 不使能TIM4 自动计数关闭
-			PBout(15) = 1;
-			PBout(14) = 1;				// 门磁上电  不可开门
-			PBout(13) = 1;
-			PBout(12) = 1;
+//			PBout(15) = 1;
+//			PBout(14) = 1;				// 门磁上电  不可开门
+//			PBout(13) = 1;
+//			PBout(12) = 1;
 			TIM_Cmd(TIM4, DISABLE);
  		}
 	}

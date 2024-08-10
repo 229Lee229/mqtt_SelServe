@@ -1,5 +1,10 @@
 #include "My_include.h"
 #include "time.h"
+
+
+extern long long en_judge_IfLightEnd_val;
+
+
 extern volatile bool data_REC_NoPayload_Flag;
 extern bool data_REC_WithPayload_Flag;		// 7/7
 extern uchar rx_buffer_esp8266[RX_BUFFER_SIZE];// 7/10
@@ -80,7 +85,7 @@ void Json_parse_NoPayload(void){
 
 */
 
-void Json_parse_WithPayload2(void){
+void Json_parse_WithPayload2(void){	
 		int i = 0;
 		//int BackSound_cnt = 0;
 		BackSound_Flag = false;
@@ -179,10 +184,10 @@ else if(BackSound_Flag == false)
 								return;
 								// break;
 					case RELAY_AllOn_EXC_1:			// 全部上电，除去一号（门磁）
-								Relay_1_Pin_DoorLock = PwrLoss_OpenDoor;
-								Relay_2_Pin 		 = Machine_PwrOn_Relay;
-								Relay_3_Pin 		 = Machine_PwrOn_Relay;
-								Relay_4_Pin 		 = Machine_PwrOn_Relay;
+								Relay_1_Pin_DoorLock_out 		 = PwrLoss_OpenDoor;
+								Relay_2_Pin_Light_out 			 = Machine_PwrOn_Relay;
+								Relay_3_Pin_AllSocket_out 		 = Machine_PwrOn_Relay;
+								Relay_4_Pin_else_out 		 	 = Machine_PwrOn_Relay;
 								break;
 					case RELAY_1_ON:		
 								break;
@@ -233,6 +238,18 @@ else if(BackSound_Flag == false)
 		long long End_time_stamp;
 		// 解析time  7/7
 		End_time_stamp   = End  ->valuedouble;
+		en_judge_IfLightEnd_val = (End_time_stamp + 30000);
+		
+		
+		// 从ConvMillisToDateTime_E() 移出来了,以防en_judge_IfLightEnd_val进入第二次,浪费资源
+				EXTI_InitTypeDef EXTI_InitStructure;
+				EXTI_InitStructure.EXTI_Line = EXTI_Line15;
+				EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
+				EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising;		// 上升沿触发
+				EXTI_InitStructure.EXTI_LineCmd = DISABLE;
+				EXTI_Init(&EXTI_InitStructure);
+
+		
 		ConvMillisToDateTime_E(End_time_stamp);		
 		
 /********************************************************************/
@@ -342,10 +359,10 @@ static void Json_parse_WithPayload_input(char * WithPayload_temp_input){
 								return;
 								// break;
 					case RELAY_AllOn_EXC_1:			// 全部上电，除去一号（门磁）
-								Relay_1_Pin_DoorLock = PwrLoss_OpenDoor;
-								Relay_2_Pin 		 = Machine_PwrOn_Relay;
-								Relay_3_Pin 		 = Machine_PwrOn_Relay;
-								Relay_4_Pin 		 = Machine_PwrOn_Relay;
+								Relay_1_Pin_DoorLock_out 		= PwrLoss_OpenDoor;
+								Relay_2_Pin_Light_out 			= Machine_PwrOn_Relay;
+								Relay_3_Pin_AllSocket_out 		= Machine_PwrOn_Relay;
+								Relay_4_Pin_else_out 		 	= Machine_PwrOn_Relay;
 					
 					case RELAY_1_ON:		
 								break;
@@ -538,10 +555,10 @@ void Json_parse_WithPayload(void){
 								return;
 								// break;
 					case RELAY_AllOn_EXC_1:			// 全部上电，除去一号（门磁）
-								Relay_1_Pin_DoorLock = PwrLoss_OpenDoor;
-								Relay_2_Pin 		 = Machine_PwrOn_Relay;
-								Relay_3_Pin 		 = Machine_PwrOn_Relay;
-								Relay_4_Pin 		 = Machine_PwrOn_Relay;
+								Relay_1_Pin_DoorLock_out 			= PwrLoss_OpenDoor;
+								Relay_2_Pin_Light_out 		 		= Machine_PwrOn_Relay;
+								Relay_3_Pin_AllSocket_out			= Machine_PwrOn_Relay;
+								Relay_4_Pin_else_out 				= Machine_PwrOn_Relay;
 					
 					case RELAY_1_ON:		
 								break;

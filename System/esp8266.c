@@ -251,12 +251,13 @@ void ESP8266_Init(void){
 	Delay_ms(500);
 	while(timeout_espInit--){
 
-		// 若多次AT不成功则重启esp8266		7/10
+		// 若多次AT不成功则重启esp8266		7/10    重启发现 也一直AT error....			8/10
 		if(timeout_espInit == 0){
-			PBout(9) = 0;			// ESP8266 RST引脚拉低
-			Delay_ms(40);
-			PBout(9) = 1;
-			timeout_espInit = 3;
+			NVIC_SystemReset();
+//			PBout(9) = 0;			// ESP8266 RST引脚拉低
+//			Delay_ms(40);
+//			PBout(9) = 1;
+//			timeout_espInit = 3;
 		}
 		
 		if(esp8266_at_test() == 1)

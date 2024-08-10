@@ -1,6 +1,23 @@
 #ifndef __USER_H
 #define __USER_H
 
+#include "My_include.h"
+
+
+
+
+
+
+#define	 	Relay_1_Pin_DoorLock		PB12
+#define 	Relay_2_Pin_Light			PB13
+#define 	Relay_3_Pin_AllSocket	    PB14
+#define	 	Relay_4_Pin_else			PB15
+
+
+
+
+
+
 
 // ÃÅ´Å¼ÌµçÆ÷³£±Õ
 #define PwrOn_LockDoor				1   
@@ -34,10 +51,10 @@
 //}Json_type_NoPayload;
 
 
-#define Relay_1_Pin_DoorLock				PBout(12)
-#define Relay_2_Pin				            PBout(13)
-#define Relay_3_Pin		                	PBout(14)
-#define Relay_4_Pin							PBout(15)
+#define Relay_1_Pin_DoorLock_out				PBout(12)
+#define Relay_2_Pin_Light_out				    PBout(13)
+#define Relay_3_Pin_AllSocket_out          		PBout(14)
+#define Relay_4_Pin_else_out					PBout(15)
 
 #define HeartBeat_Syn						4
 
