@@ -2545,7 +2545,7 @@ Memory Map of the image
     0x080049f2   0x080049f2   0x00000002   PAD
     0x080049f4   0x080049f4   0x0000013c   Code   RO         3222    i.parse_value       cjson.o
     0x08004b30   0x08004b30   0x0000006c   Code   RO         5171    i.realloc           mc_w.l(mallocr.o)
-    0x08004b9c   0x08004b9c   0x00000044   Code   RO         4614    i.relay5V_Init      relay5v.o
+    0x08004b9c   0x08004b9c   0x00000044   Code   RO         4576    i.relay5V_Init      relay5v.o
     0x08004be0   0x08004be0   0x0000003c   Code   RO         3233    i.skip_utf8_bom     cjson.o
     0x08004c1c   0x08004c1c   0x0000001c   Code   RO         4869    i.strtod            m_ws.l(strtod.o)
     0x08004c38   0x08004c38   0x00000078   Code   RO         4697    i.switchCtrlRelay_Init  switchctrlrelay.o
@@ -2597,12 +2597,12 @@ Image component sizes
       1288        482          0          8       2048      25562   esp8266.o
        104         70        110          0          0        505   heartbeat.o
        292         56          0          0          0       2119   jr6001.o
-       514        158          0         28          0       2760   main.o
+       514        158          0         28          0       2756   main.o
        132         22          0          0          0     256279   misc.o
       1062        484          0          0          0       4390   mqtt_esp8266.o
         68          6          0          0          0       2452   mygpio.o
       2232        858          0          1       2048       5664   rec_json_parse.o
-        68          8          0          0          0        455   relay5v.o
+        68          8          0          0          0       1307   relay5v.o
         36          8        236          0       1536        780   startup_stm32f10x_md.o
          0          0          0          0          0       1648   stm32f10x_adc.o
        200         18          0          0          0       4064   stm32f10x_exti.o
@@ -2614,13 +2614,13 @@ Image component sizes
        646         28          0          0          0      13472   stm32f10x_usart.o
        216         20          0          0          0       1202   switchctrlrelay.o
        328         28          0          0          0       1801   system_stm32f10x.o
-        28          6          0          0          0       1302   tim_checkconn.o
+        28          6          0          0          0        450   tim_checkconn.o
        150          4          0          1          0       1288   tim_heartbeat.o
        228         30          0          1          0       1452   timer_doorlock.o
        618         42          0         10        600       5585   usart.o
 
     ----------------------------------------------------------------------
-     13720       2858        380        100       6232     414791   Object Totals
+     13720       2858        380        100       6232     414787   Object Totals
          0          0         32          0          0          0   (incl. Generated)
         26          0          2          4          0          0   (incl. Padding)
 
@@ -2699,8 +2699,8 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-     19816       3040        456        108       6276     410463   Grand Totals
-     19816       3040        456        108       6276     410463   ELF Image Totals
+     19816       3040        456        108       6276     410459   Grand Totals
+     19816       3040        456        108       6276     410459   ELF Image Totals
      19816       3040        456        108          0          0   ROM Totals
 
 ==============================================================================

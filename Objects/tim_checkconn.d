@@ -1,6 +1,6 @@
 .\objects\tim_checkconn.o: System\TIM_CheckConn.c
-.\objects\tim_checkconn.o: .\Hardware\TIM_CheckConn.h
-.\objects\tim_checkconn.o: .\System\My_include.h
+.\objects\tim_checkconn.o: System\TIM_CheckConn.h
+.\objects\tim_checkconn.o: System\My_include.h
 .\objects\tim_checkconn.o: .\Start\stm32f10x.h
 .\objects\tim_checkconn.o: .\Start\core_cm3.h
 .\objects\tim_checkconn.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stdint.h
@@ -37,23 +37,23 @@
 .\objects\tim_checkconn.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stddef.h
 .\objects\tim_checkconn.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\string.h
 .\objects\tim_checkconn.o: .\Hardware\relay5V.h
-.\objects\tim_checkconn.o: .\System\OLED.h
-.\objects\tim_checkconn.o: .\System\Delay.h
+.\objects\tim_checkconn.o: System\OLED.h
+.\objects\tim_checkconn.o: System\Delay.h
 .\objects\tim_checkconn.o: .\Hardware\Matrix_Key2.h
-.\objects\tim_checkconn.o: .\System\MyGPIO.h
-.\objects\tim_checkconn.o: .\System\usart.h
+.\objects\tim_checkconn.o: System\MyGPIO.h
+.\objects\tim_checkconn.o: System\usart.h
 .\objects\tim_checkconn.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stdio.h
-.\objects\tim_checkconn.o: .\System\SysBitBand.h
-.\objects\tim_checkconn.o: .\System\esp8266.h
-.\objects\tim_checkconn.o: .\System\mqtt_esp8266.h
+.\objects\tim_checkconn.o: System\SysBitBand.h
+.\objects\tim_checkconn.o: System\esp8266.h
+.\objects\tim_checkconn.o: System\mqtt_esp8266.h
 .\objects\tim_checkconn.o: .\User\main.h
 .\objects\tim_checkconn.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\tim_checkconn.o: .\Hardware\EspRst.h
-.\objects\tim_checkconn.o: .\System\Rec_Json_parse.h
-.\objects\tim_checkconn.o: .\System\ConvertJsonTime.h
+.\objects\tim_checkconn.o: System\Rec_Json_parse.h
+.\objects\tim_checkconn.o: System\ConvertJsonTime.h
 .\objects\tim_checkconn.o: .\Hardware\DS1302.h
-.\objects\tim_checkconn.o: .\System\HeartBeat.h
-.\objects\tim_checkconn.o: .\System\TIM_HeartBeat.h
+.\objects\tim_checkconn.o: System\HeartBeat.h
+.\objects\tim_checkconn.o: System\TIM_HeartBeat.h
 .\objects\tim_checkconn.o: .\Hardware\Switch Ctrl Relay\switchCtrlRelay.h
 .\objects\tim_checkconn.o: .\Hardware\Switch Ctrl Relay\timer_doorLock.h
 .\objects\tim_checkconn.o: .\Hardware\JR6001.h

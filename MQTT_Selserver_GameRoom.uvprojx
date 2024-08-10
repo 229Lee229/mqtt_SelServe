@@ -780,11 +780,6 @@
               <FileType>1</FileType>
               <FilePath>.\System\TIM_CheckConn.c</FilePath>
             </File>
-            <File>
-              <FileName>TIM_CheckConn.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Hardware\TIM_CheckConn.h</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
