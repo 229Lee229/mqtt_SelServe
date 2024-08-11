@@ -5,6 +5,8 @@
 #define  uchar unsigned char
 
 #include "stm32f10x.h"                  // Device header
+#include "stdbool.h"
+
 #include "user.h"
 #include "stdlib.h"
 #include "cJSON.h"
@@ -22,7 +24,6 @@
 #include "esp8266.h"
 #include "mqtt_esp8266.h"
 #include "main.h"
-#include "stdbool.h"
 
 #include "EspRst.h"
 
@@ -36,4 +37,5 @@
 #include "timer_doorLock.h"
 
 #include "JR6001.h"
+#include "TIM_CheckConn.h"
 #endif

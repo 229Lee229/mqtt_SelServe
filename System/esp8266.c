@@ -59,6 +59,13 @@ uint8_t esp8266_at_CWJAP(char *ssid, char *pwd)
 	return esp8266_send_command(cmd, "WIFI CONNECTED");				/* 先接收此信息 */
 }
 
+// AT+CWRECONNCFG=<interval_second>,<repeat_count>    8/11
+static uint8_t esp8266_at_CWRECONNCFG(void)
+{
+	char *cmd = "AT+CWRECONNCFG=5,500\r\n";
+	return esp8266_send_command(cmd,"OK");
+}
+	
 
 
 /* ------------------------------- 驱动函数 -------------------------*/
@@ -221,7 +228,7 @@ void USART2_IRQHandler_Runtime3_WithPayload(void) {
         char Rx_c = USART_ReceiveData(USART2);
 		if(esp8266_rx_index >= sizeof(rx_buffer_esp8266))
             esp8266_rx_index = 0; //防止串口被刷爆
-
+		
 		rx_buffer_esp8266[esp8266_rx_index++] = Rx_c;
 		if(rx_buffer_esp8266[esp8266_rx_index-1] == '}' && rx_buffer_esp8266[esp8266_rx_index-2] == '}'){
 			strcpy(Rx_WithPayload_temp,(char *)rx_buffer_esp8266); // 将结果复制到中间变量
@@ -276,6 +283,8 @@ void ESP8266_Init(void){
 	else printf("at CWMODE Successful!\r\n");
 	// USART1_SendString((char *)g_uart_rx_buf);				// 检测回传指令是否正确
 	
+	
+	// AT+CWRECONNCFG=<interval_second>,<repeat_count>	
 	timeout_espInit = 5;
 	while(timeout_espInit--){
 		if(esp8266_at_CWJAP(ESP8266_WIFI_SSID, ESP8266_WIFI_PASSWORD) == 1)
@@ -289,9 +298,27 @@ void ESP8266_Init(void){
 	}
 	if(timeout_espInit == 255)			NVIC_SystemReset(); // 触发软件复位
 	
+	Delay_ms(1);
 	timeout_espInit = 5;
-	Delay_ms(2);
-	// Ping test
+	while(timeout_espInit--){
+		
+		if(esp8266_at_CWRECONNCFG() == 1){
+			printf("at CWRECONNCFG Error!\r\n");
+		}
+		else
+		{
+			printf("at CWRECONNCFG Successful!\r\n");
+			break;
+		}
+	}
+	
+	if(timeout_espInit == 255)			NVIC_SystemReset(); // 触发软件复位
+	
+	
+	
+	// Ping test	
+	Delay_ms(1);
+	timeout_espInit = 5;
 	
 #ifndef Debug_NoPing	
 	bool ping_break = true;

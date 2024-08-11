@@ -244,7 +244,7 @@ u16 USART3_RX_STA = 0;         			//接收状态标记
 void Usart3_Init(u32 bound)
 {
 
-	NVIC_InitTypeDef NVIC_InitStructure;
+// 	NVIC_InitTypeDef NVIC_InitStructure;
 	GPIO_InitTypeDef GPIO_InitStructure;
 	USART_InitTypeDef USART_InitStructure;
  

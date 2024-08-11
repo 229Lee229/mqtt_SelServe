@@ -30,6 +30,7 @@
 .\objects\jr6001.o: .\Library\stm32f10x_usart.h
 .\objects\jr6001.o: .\Library\stm32f10x_wwdg.h
 .\objects\jr6001.o: .\Library\misc.h
+.\objects\jr6001.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\jr6001.o: .\User\user.h
 .\objects\jr6001.o: .\System\My_include.h
 .\objects\jr6001.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stdlib.h
@@ -47,7 +48,6 @@
 .\objects\jr6001.o: .\System\esp8266.h
 .\objects\jr6001.o: .\System\mqtt_esp8266.h
 .\objects\jr6001.o: .\User\main.h
-.\objects\jr6001.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\jr6001.o: .\Hardware\EspRst.h
 .\objects\jr6001.o: .\System\Rec_Json_parse.h
 .\objects\jr6001.o: .\System\ConvertJsonTime.h
@@ -57,3 +57,4 @@
 .\objects\jr6001.o: .\Hardware\Switch Ctrl Relay\switchCtrlRelay.h
 .\objects\jr6001.o: .\Hardware\Switch Ctrl Relay\timer_doorLock.h
 .\objects\jr6001.o: .\Hardware\JR6001.h
+.\objects\jr6001.o: .\System\TIM_CheckConn.h

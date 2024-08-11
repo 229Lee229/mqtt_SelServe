@@ -30,6 +30,7 @@
 .\objects\tim_checkconn.o: .\Library\stm32f10x_usart.h
 .\objects\tim_checkconn.o: .\Library\stm32f10x_wwdg.h
 .\objects\tim_checkconn.o: .\Library\misc.h
+.\objects\tim_checkconn.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\tim_checkconn.o: .\User\user.h
 .\objects\tim_checkconn.o: .\System\My_include.h
 .\objects\tim_checkconn.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stdlib.h
@@ -47,7 +48,6 @@
 .\objects\tim_checkconn.o: System\esp8266.h
 .\objects\tim_checkconn.o: System\mqtt_esp8266.h
 .\objects\tim_checkconn.o: .\User\main.h
-.\objects\tim_checkconn.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\tim_checkconn.o: .\Hardware\EspRst.h
 .\objects\tim_checkconn.o: System\Rec_Json_parse.h
 .\objects\tim_checkconn.o: System\ConvertJsonTime.h
@@ -57,3 +57,4 @@
 .\objects\tim_checkconn.o: .\Hardware\Switch Ctrl Relay\switchCtrlRelay.h
 .\objects\tim_checkconn.o: .\Hardware\Switch Ctrl Relay\timer_doorLock.h
 .\objects\tim_checkconn.o: .\Hardware\JR6001.h
+.\objects\tim_checkconn.o: System\TIM_CheckConn.h

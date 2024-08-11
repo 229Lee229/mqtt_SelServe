@@ -33,6 +33,7 @@
 // #define MQTTCONN_Message_2		"{\"Type\":0,\"Time\":12787,\"MsgId\":\"7f91c5a9f0879994d95a42e919b574af\",\"SendId\":\"1234567_T9BX11TG\"}"
 // {"Type":0,"Time":12787,"MsgId":"7f91c5a9f0879994d95a42e919b574af","SendId":"2222227_U1Q4B2Z5"}
 void MQTT_Init(void);
+bool esp8266_at_Check_MQTTCONN(void);
 
 
 // MQTT Functions
@@ -53,4 +54,7 @@ uint8_t esp8266_at_MQTTCLEAN(void);
 void processSecondGroupData(uchar *data);
 // 7/1
 void add_backslashes_and_quotes(char *str);
+
+
+// 8/11
 #endif

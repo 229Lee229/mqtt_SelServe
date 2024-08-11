@@ -29,6 +29,7 @@
 .\objects\tim_heartbeat.o: .\Library\stm32f10x_usart.h
 .\objects\tim_heartbeat.o: .\Library\stm32f10x_wwdg.h
 .\objects\tim_heartbeat.o: .\Library\misc.h
+.\objects\tim_heartbeat.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\tim_heartbeat.o: .\User\user.h
 .\objects\tim_heartbeat.o: .\System\My_include.h
 .\objects\tim_heartbeat.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stdlib.h
@@ -46,7 +47,6 @@
 .\objects\tim_heartbeat.o: System\esp8266.h
 .\objects\tim_heartbeat.o: System\mqtt_esp8266.h
 .\objects\tim_heartbeat.o: .\User\main.h
-.\objects\tim_heartbeat.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\tim_heartbeat.o: .\Hardware\EspRst.h
 .\objects\tim_heartbeat.o: System\Rec_Json_parse.h
 .\objects\tim_heartbeat.o: System\ConvertJsonTime.h
@@ -56,3 +56,4 @@
 .\objects\tim_heartbeat.o: .\Hardware\Switch Ctrl Relay\switchCtrlRelay.h
 .\objects\tim_heartbeat.o: .\Hardware\Switch Ctrl Relay\timer_doorLock.h
 .\objects\tim_heartbeat.o: .\Hardware\JR6001.h
+.\objects\tim_heartbeat.o: System\TIM_CheckConn.h

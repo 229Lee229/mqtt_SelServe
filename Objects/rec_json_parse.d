@@ -29,6 +29,7 @@
 .\objects\rec_json_parse.o: .\Library\stm32f10x_usart.h
 .\objects\rec_json_parse.o: .\Library\stm32f10x_wwdg.h
 .\objects\rec_json_parse.o: .\Library\misc.h
+.\objects\rec_json_parse.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\rec_json_parse.o: .\User\user.h
 .\objects\rec_json_parse.o: .\System\My_include.h
 .\objects\rec_json_parse.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stdlib.h
@@ -46,7 +47,6 @@
 .\objects\rec_json_parse.o: System\esp8266.h
 .\objects\rec_json_parse.o: System\mqtt_esp8266.h
 .\objects\rec_json_parse.o: .\User\main.h
-.\objects\rec_json_parse.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\rec_json_parse.o: .\Hardware\EspRst.h
 .\objects\rec_json_parse.o: System\Rec_Json_parse.h
 .\objects\rec_json_parse.o: System\ConvertJsonTime.h
@@ -56,4 +56,5 @@
 .\objects\rec_json_parse.o: .\Hardware\Switch Ctrl Relay\switchCtrlRelay.h
 .\objects\rec_json_parse.o: .\Hardware\Switch Ctrl Relay\timer_doorLock.h
 .\objects\rec_json_parse.o: .\Hardware\JR6001.h
+.\objects\rec_json_parse.o: System\TIM_CheckConn.h
 .\objects\rec_json_parse.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\time.h

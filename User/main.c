@@ -166,6 +166,12 @@ int main(void){				// a9f0879994d95a42e919b574af}
 	
 	IWDG_Init();
 	for(;;){
+		// 检查是否重连 若重连Wifi,则重启mqtt   				每5s重连一次,重连200次
+		CheckConn_ReConnWifi_After();
+		
+		
+		
+		
 		if(Enable_HeartBeat_Send_Flag){
 			keep_HeartBeat();			// 发送心跳回执		
 			Enable_HeartBeat_Send_Flag = false;

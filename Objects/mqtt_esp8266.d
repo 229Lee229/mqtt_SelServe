@@ -1,4 +1,5 @@
 .\objects\mqtt_esp8266.o: System\mqtt_esp8266.c
+.\objects\mqtt_esp8266.o: System\mqtt_esp8266.h
 .\objects\mqtt_esp8266.o: System\My_include.h
 .\objects\mqtt_esp8266.o: .\Start\stm32f10x.h
 .\objects\mqtt_esp8266.o: .\Start\core_cm3.h
@@ -29,6 +30,7 @@
 .\objects\mqtt_esp8266.o: .\Library\stm32f10x_usart.h
 .\objects\mqtt_esp8266.o: .\Library\stm32f10x_wwdg.h
 .\objects\mqtt_esp8266.o: .\Library\misc.h
+.\objects\mqtt_esp8266.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\mqtt_esp8266.o: .\User\user.h
 .\objects\mqtt_esp8266.o: .\System\My_include.h
 .\objects\mqtt_esp8266.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stdlib.h
@@ -46,7 +48,6 @@
 .\objects\mqtt_esp8266.o: System\esp8266.h
 .\objects\mqtt_esp8266.o: System\mqtt_esp8266.h
 .\objects\mqtt_esp8266.o: .\User\main.h
-.\objects\mqtt_esp8266.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\mqtt_esp8266.o: .\Hardware\EspRst.h
 .\objects\mqtt_esp8266.o: System\Rec_Json_parse.h
 .\objects\mqtt_esp8266.o: System\ConvertJsonTime.h
@@ -56,3 +57,4 @@
 .\objects\mqtt_esp8266.o: .\Hardware\Switch Ctrl Relay\switchCtrlRelay.h
 .\objects\mqtt_esp8266.o: .\Hardware\Switch Ctrl Relay\timer_doorLock.h
 .\objects\mqtt_esp8266.o: .\Hardware\JR6001.h
+.\objects\mqtt_esp8266.o: System\TIM_CheckConn.h

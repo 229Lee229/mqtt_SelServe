@@ -1,6 +1,16 @@
 #include "TIM_CheckConn.h"
 
+extern char rx_buffer_esp8266[RX_BUFFER_SIZE];
 
+
+void CheckConn_ReConnWifi_After(void){
+	if(strstr((const char *)rx_buffer_esp8266, "WIFI CONNECTED") != NULL || strstr((const char *)rx_buffer_esp8266, "WIFI GOT IP") != NULL){		//如果检索到关键词
+		// AT+MQTTCLEAN=0
+		if(esp8266_at_MQTTCLEAN() == 0){		// 清除成功
+			MQTT_Init();
+		}		
+	}
+}
 
 void TIM_CheckConn_Init(void){
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3,ENABLE);
@@ -34,7 +44,8 @@ void TIM3_IRQHandler(void){
 	if(TIM_GetITStatus(TIM3,TIM_IT_Update) != RESET){
 		
 		// 发送AT+MQTTCONN?
-		
+		// 置检测mqttconn的标志位,在主循环中进行操作检查
+		// esp8266_at_Check_MQTTCONN
 		
 		
 		

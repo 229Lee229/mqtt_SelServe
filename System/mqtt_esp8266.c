@@ -1,4 +1,5 @@
-#include "My_include.h"
+// #include "My_include.h"
+#include "mqtt_esp8266.h"
 
 // char rx_buffer_5[RX_BUFFER_SIZE] = "{\"CtxId\":\"7f91c5a9f0879994d95a42e919b574af\"}";
 // extern char rx_buffer_2[RX_BUFFER_SIZE]; 
@@ -71,7 +72,7 @@ void MQTT_Init(void){
 	}
 	if(TimeOut_mqtt == 255){
 		printf("Reset!\r\n");
-		Delay_ms(200); // 发送完信息后延时一会儿	
+		Delay_ms(20); // 发送完信息后延时一会儿	
 		NVIC_SystemReset();
 	}
 	
@@ -106,7 +107,7 @@ void MQTT_Init(void){
 	// 若连接失败 复位 7/7  考虑重启mqtt  此方法重置时间长
 	if(TimeOut_mqtt == 255){
 		printf("System will reset...\r\n");
-		Delay_ms(200); // 发送完信息后延时一会儿
+		Delay_ms(20); // 发送完信息后延时一会儿
 		NVIC_SystemReset(); // 触发软件复位
 	}
 	
@@ -230,22 +231,38 @@ bool esp8266_at_Check_MQTTCONN(void)
     sprintf(cmd, "AT+MQTTCONN?\r\n");
 	
 	if(esp8266_send_command(cmd, "0,6,1") == 0){			// 没有错误 - 检索成功
-		return true;
+		return false;
 	}else if((esp8266_send_command(cmd, "0,4,1") == 0) || (esp8266_send_command(cmd, "0,5,1") == 0)){		// 如果这两个返回4或5 那么需要订阅主题
 	
+		
+		// 若state=4 or state=5,那么重新订阅主题
 		// AT+MQTTSUB=<LinkID>,<"topic">,<qos>
 		int8_t TimeOut_mqtt = 3;
-			while(TimeOut_mqtt--){
-				if(esp8266_at_MQTTSUB(MQTTCONN_Topic_4) == 1)
-					printf("reconnect MQTTSUB Error!\r\n");
-				else{
-					printf("reconnect MQTTSUB Successful!\r\n");
-					break;
-				}
+		while(TimeOut_mqtt--){
+			if(esp8266_at_MQTTSUB(MQTTCONN_Topic_4) == 1)
+				printf("reconnect MQTTSUB Error!\r\n");
+			else{
+				printf("reconnect MQTTSUB Successful!\r\n");
+				return true;
 			}
-	}	
+		}
+		
+		// 重连
+		if(TimeOut_mqtt <= 0){	// 若订阅了三次还未能订阅成功 则清除数据 mqtt_init
+			if(esp8266_at_MQTTCLEAN() == 0){		// 清除成功
+				MQTT_Init();
+				return true;
+			}
+		}
+	}else{			// 其余情况重连
+		if(esp8266_at_MQTTCLEAN() == 0){		// 清除成功
+			MQTT_Init();
+			return true;
+		}	
+	}		
 	
-    return esp8266_send_command(cmd, "OK");
+	return false;  // 待删除
+    // return esp8266_send_command(cmd, "OK");
 }
 uint8_t esp8266_at_MQTTPUB(char *topic, char *message)
 {
@@ -287,7 +304,7 @@ uint8_t esp8266_at_MQTTUNSUB(char *topic)
 
 uint8_t esp8266_at_MQTTCLEAN(void)
 {
-    return esp8266_send_command("AT+MQTTCLEAN\r\n", "OK");
+    return esp8266_send_command("AT+MQTTCLEAN=0\r\n", "OK");
 }
 
 /*  回执数据 

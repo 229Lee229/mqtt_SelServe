@@ -29,6 +29,7 @@
 .\objects\timer_doorlock.o: .\Library\stm32f10x_usart.h
 .\objects\timer_doorlock.o: .\Library\stm32f10x_wwdg.h
 .\objects\timer_doorlock.o: .\Library\misc.h
+.\objects\timer_doorlock.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\timer_doorlock.o: .\User\user.h
 .\objects\timer_doorlock.o: .\System\My_include.h
 .\objects\timer_doorlock.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stdlib.h
@@ -46,7 +47,6 @@
 .\objects\timer_doorlock.o: .\System\esp8266.h
 .\objects\timer_doorlock.o: .\System\mqtt_esp8266.h
 .\objects\timer_doorlock.o: .\User\main.h
-.\objects\timer_doorlock.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\timer_doorlock.o: .\Hardware\EspRst.h
 .\objects\timer_doorlock.o: .\System\Rec_Json_parse.h
 .\objects\timer_doorlock.o: .\System\ConvertJsonTime.h
@@ -56,3 +56,4 @@
 .\objects\timer_doorlock.o: .\Hardware\Switch Ctrl Relay\switchCtrlRelay.h
 .\objects\timer_doorlock.o: .\Hardware\Switch Ctrl Relay\timer_doorLock.h
 .\objects\timer_doorlock.o: .\Hardware\JR6001.h
+.\objects\timer_doorlock.o: .\System\TIM_CheckConn.h
