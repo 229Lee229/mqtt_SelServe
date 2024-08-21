@@ -13,6 +13,10 @@ extern uchar rx_buffer_esp8266[RX_BUFFER_SIZE];
 void printJsonError(const char *jsonStart);
 void MQTT_Init(void){
 	
+	IWDG_ReloadCounter(); // 重装载IWDG寄存器
+
+	
+	
 	u8 TimeOut_mqtt;
 	TimeOut_mqtt = 3;
 	// mqtt Init
@@ -27,6 +31,8 @@ void MQTT_Init(void){
 		Delay_ms(1);
 	}
 	
+	
+	IWDG_ReloadCounter(); // 重装载IWDG寄存器
 	TimeOut_mqtt = 3;
 //	// 1-2 AT+MQTTLONGCLIENTID：设置 MQTT 客户端 ID
 //	while(TimeOut_mqtt--){
@@ -79,6 +85,11 @@ void MQTT_Init(void){
 	TimeOut_mqtt = 5;
 	// 3 - AT+MQTTCONN：连接 MQTT Broker
 	while(TimeOut_mqtt--){
+		
+		
+			IWDG_ReloadCounter(); // 重装载IWDG寄存器
+
+		
 		char conn_name[24];
 		if(esp8266_at_MQTTCONN(MQTTCONN_Host_MyConf,MQTTCONN_Port_MyConf) == 1){
 			sprintf(conn_name,"%s",MQTTCONN_Host_MyConf);
@@ -97,6 +108,10 @@ void MQTT_Init(void){
 	Delay_ms(2);
 	TimeOut_mqtt = 3;
 	while(TimeOut_mqtt--){
+		
+			IWDG_ReloadCounter(); // 重装载IWDG寄存器
+
+		
 		if(esp8266_at_MQTTSUB(MQTTCONN_Topic_4) == 1)
 			printf("MQTTSUB Error!\r\n");
 		else{
@@ -239,6 +254,9 @@ bool esp8266_at_Check_MQTTCONN(void)
 		// AT+MQTTSUB=<LinkID>,<"topic">,<qos>
 		int8_t TimeOut_mqtt = 3;
 		while(TimeOut_mqtt--){
+			
+			IWDG_ReloadCounter(); // 重装载IWDG寄存器
+			
 			if(esp8266_at_MQTTSUB(MQTTCONN_Topic_4) == 1)
 				printf("reconnect MQTTSUB Error!\r\n");
 			else{

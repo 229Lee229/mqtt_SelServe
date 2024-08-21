@@ -57,4 +57,5 @@
 .\objects\convertjsontime.o: .\Hardware\Switch Ctrl Relay\timer_doorLock.h
 .\objects\convertjsontime.o: .\Hardware\JR6001.h
 .\objects\convertjsontime.o: System\TIM_CheckConn.h
+.\objects\convertjsontime.o: .\Hardware\W25Q64.h
 .\objects\convertjsontime.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\time.h

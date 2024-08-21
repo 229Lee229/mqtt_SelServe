@@ -57,3 +57,4 @@
 .\objects\heartbeat.o: .\Hardware\Switch Ctrl Relay\timer_doorLock.h
 .\objects\heartbeat.o: .\Hardware\JR6001.h
 .\objects\heartbeat.o: System\TIM_CheckConn.h
+.\objects\heartbeat.o: .\Hardware\W25Q64.h

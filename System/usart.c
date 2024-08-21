@@ -106,24 +106,24 @@ void Usart1_Init(u32 bound){
 	
 	
 	/* USART1 NVIC Init */
-	NVIC_InitTypeDef NVIC_InitStructure;
-	NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 3;
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 3;
-	NVIC_Init(&NVIC_InitStructure);
+//	NVIC_InitTypeDef NVIC_InitStructure;
+//	NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;
+//	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+//	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 3;
+//	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 3;
+//	NVIC_Init(&NVIC_InitStructure);
 	
 	
 	/* USART1 Init */
 	USART_InitTypeDef USART_InitStructre;
 	USART_InitStructre.USART_BaudRate = bound;
 	USART_InitStructre.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
-	USART_InitStructre.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;	/* Sending and Receiving mode */
+	USART_InitStructre.USART_Mode = /* USART_Mode_Rx | */ USART_Mode_Tx;	/* Sending and Receiving mode */
 	USART_InitStructre.USART_Parity = USART_Parity_No;				/* No Parity bit */
 	USART_InitStructre.USART_StopBits = USART_StopBits_1;
 	USART_InitStructre.USART_WordLength = USART_WordLength_8b;
 	USART_Init(USART1,&USART_InitStructre);
-	USART_ITConfig(USART1,USART_IT_RXNE,ENABLE);					/* 开启串口中断, 非空中断 */
+	// USART_ITConfig(USART1,USART_IT_RXNE,ENABLE);					/* 开启串口中断, 非空中断 */
 	
 	USART_Cmd(USART1,ENABLE);		/* Enable Serial Port */
 }

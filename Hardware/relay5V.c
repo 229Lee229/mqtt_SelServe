@@ -22,10 +22,10 @@ void relay5V_Init(void){
 
 	// 使用反相输出 高电平触发
 	// 继电器常闭通电  IO初始状态为高电平(三极管导通5v拉低,继电器不动作) 5V拉低->不触发
-	PBout(12) = 1;
-	PBout(13) = 1;
-	PBout(14) = 1;
-	PBout(15) = 1;	
+	PBout(12) = 0;
+	PBout(13) = 0;
+	PBout(14) = 0;
+	PBout(15) = 0;	
 } 
 
 

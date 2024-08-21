@@ -236,9 +236,27 @@ else if(BackSound_Flag == false)
 		
 		/*********************/
 		long long End_time_stamp;
+		long long Left15_time_stamp;
+		long long Left3_time_stamp;
 		// 解析time  7/7
 		End_time_stamp   = End  ->valuedouble;
-		en_judge_IfLightEnd_val = (End_time_stamp + 30000);
+		en_judge_IfLightEnd_val 	= 				(End_time_stamp + 30000);
+		Left15_time_stamp 			= 				(End_time_stamp - 900000);
+		Left3_time_stamp 			=				(End_time_stamp - 180000);
+		W25Q64_SectorErase(0);				// 擦除扇区,为了更新cjson
+		W25Q64_SectorErase(0x001000);				// 擦除扇区,为了更新cjson
+
+		// 存储END时间,  考虑是否将en_judge_IfLightEnd_val此变量去掉
+		Store_Second_TimeStamp(en_judge_IfLightEnd_val);
+		Store_Left15Min_TimeStamp(Left15_time_stamp);
+		Store_Left3Min_TimeStamp(Left3_time_stamp);
+//		// test flash store time_stamp   8/20
+//		long long End_time_stamp_H = End_time_stamp / 100000;
+//		long long End_time_stamp_L = End_time_stamp % 100000;
+//		W25Q64_SectorErase(0);	
+//		W25Q64_WriteFlag_SocketOn();		// 写入flash标志位, 表示插座还开着电,提醒下次断电后,并及时读出数据
+		
+		
 		
 		
 		// 从ConvMillisToDateTime_E() 移出来了,以防en_judge_IfLightEnd_val进入第二次,浪费资源
@@ -249,8 +267,8 @@ else if(BackSound_Flag == false)
 				EXTI_InitStructure.EXTI_LineCmd = DISABLE;
 				EXTI_Init(&EXTI_InitStructure);
 
-		
-		ConvMillisToDateTime_E(End_time_stamp);		
+		W25Q64_WriteFlag_SocketOn();		// 写入flash标志位, 表示插座还开着电,提醒下次断电后,并及时读出数据
+		ConvMillisToDateTime_E(End_time_stamp);				// 这组数据是关插座电的截止时间
 		
 /********************************************************************/
 		// 释放JSON对象	
@@ -385,7 +403,6 @@ static void Json_parse_WithPayload_input(char * WithPayload_temp_input){
 								break;
 					
 				}
-		/*** 以上为发送心跳回执 7/9 */
 			
 			
 			

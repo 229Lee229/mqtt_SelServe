@@ -58,3 +58,4 @@
 .\objects\ds1302.o: .\Hardware\Switch Ctrl Relay\timer_doorLock.h
 .\objects\ds1302.o: .\Hardware\JR6001.h
 .\objects\ds1302.o: .\System\TIM_CheckConn.h
+.\objects\ds1302.o: .\Hardware\W25Q64.h

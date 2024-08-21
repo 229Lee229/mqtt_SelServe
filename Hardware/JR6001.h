@@ -31,6 +31,7 @@
 #define JR6001_VOLUME_MAX			"AF:30\r\n"			/* 音量设置 */
 #define JR6001_VOLUME_MID			"AF:20\r\n"
 #define JR6001_VOLUME_MIN			"AF:10\r\n"
+#define JR6001_Welcome				"A7:00004\r\n"
 #define JR6001_Service_finish		"A7:00001\r\n"		/* x号房间，服务时间已到，请收拾好物品，欢迎下次光临 */
 #define JR6001_left_3min			"A7:00002\r\n"		/* x号房间，剩余三分钟，请及时续费 */
 #define JR6001_left_15min			"A7:00003\r\n"	    /* x号房间，剩余十五分钟，请及时续费 */
@@ -49,6 +50,7 @@ typedef enum
 }PlayMode_JR6001;//播放模式
 
 #define JR6001_SEND_CMD(n)      					 USART_SendString(UART3_JR6001,n)
+#define JR6001_Play_Welcome()						 JR6001_SEND_CMD(JR6001_Welcome)
 #define JR6001_Play_Service_Finish() 				 JR6001_SEND_CMD(JR6001_Service_finish)
 #define JR6001_Play_left_3min() 					 JR6001_SEND_CMD(JR6001_left_3min)
 #define JR6001_Play_left_15min() 					 JR6001_SEND_CMD(JR6001_left_15min)

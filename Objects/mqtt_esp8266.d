@@ -58,3 +58,4 @@
 .\objects\mqtt_esp8266.o: .\Hardware\Switch Ctrl Relay\timer_doorLock.h
 .\objects\mqtt_esp8266.o: .\Hardware\JR6001.h
 .\objects\mqtt_esp8266.o: System\TIM_CheckConn.h
+.\objects\mqtt_esp8266.o: .\Hardware\W25Q64.h

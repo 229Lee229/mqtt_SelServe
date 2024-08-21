@@ -780,6 +780,16 @@
               <FileType>1</FileType>
               <FilePath>.\System\TIM_CheckConn.c</FilePath>
             </File>
+            <File>
+              <FileName>SPI_W25.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\System\SPI_W25.c</FilePath>
+            </File>
+            <File>
+              <FileName>SPI_W25.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\System\SPI_W25.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -839,6 +849,21 @@
               <FileName>JR6001.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Hardware\JR6001.h</FilePath>
+            </File>
+            <File>
+              <FileName>W25Q64.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Hardware\W25Q64.c</FilePath>
+            </File>
+            <File>
+              <FileName>W25Q64.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Hardware\W25Q64.h</FilePath>
+            </File>
+            <File>
+              <FileName>W25Q64_Ins.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Hardware\W25Q64_Ins.h</FilePath>
             </File>
           </Files>
         </Group>

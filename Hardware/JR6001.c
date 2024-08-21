@@ -9,7 +9,7 @@ void My_JR6001_SetVolume(u8 level){
 
 bool My_JR6001_IsBusy(void){
 	// if(PinRead(PA4) == 1)
-	if(GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_11) == 1)
+	if(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_10) == 1)
 		return false;
 	return true;
 }
@@ -45,11 +45,11 @@ void JR6001_Usart3_Init(u32 bound)
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;	
 	GPIO_Init(GPIOB, &GPIO_InitStructure); 
    
-	// 初始化读BUSY引脚 PB11 (原usart3-RX)	
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11;
-	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-	GPIO_Init(GPIOB,&GPIO_InitStructure);	
+//	// 初始化读BUSY引脚 PA10 (原usart1-RX)	  在串口一已配置
+//	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+//	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;
+//	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+//	GPIO_Init(GPIOA,&GPIO_InitStructure);	
 	
 	
 	

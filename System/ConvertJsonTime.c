@@ -61,11 +61,23 @@ void ConvMillisToDateTime_E(long long millis){
 	struct tm *timeinfo = localtime(&seconds);
 	// End_time[0] = timeinfo->tm_year + 1900;
 	End_time[0] = (timeinfo->tm_year + 1900)%100;
-	End_time[1] =  timeinfo->tm_mon + 1;
+	End_time[1] = timeinfo->tm_mon + 1;
 	End_time[2] = timeinfo->tm_mday;
 	End_time[3] = timeinfo->tm_hour + 8;
 	End_time[4] = timeinfo->tm_min;
 	End_time[5] = timeinfo->tm_sec;
+	
+	
+	
+	// Ã¿´ÎĞ´ÈëÇ°²Á³ıÉÈÇøÊı¾İ
+	// W25Q64_SectorErase(0);			// Ö®Ç°Ğ´½øÈ¥µÄÓÖ²Á³ıµôÁË..... 8/19   ÏÈ²Á³ı ÔÙĞ´Èë±êÖ¾Î»
+	
+	// ½«½ØÖ¹Ê±¼äĞ´Èëµ½FlashÖĞ				8/18
+	for(int i = 0;i < 6;i++){	
+		W25Q64_PageProgram_SingleInt((0x000000 | ((i+1)<<8)),End_time[i]);	
+	}
+	
+	
 	
 	CompareTime_Flag = true;
 	
@@ -78,6 +90,77 @@ void ConvMillisToDateTime_E(long long millis){
 //				EXTI_Init(&EXTI_InitStructure);
 
 }
+void Store_Left3Min_TimeStamp(long long millis){
+	uint8_t Left3End[6];
+	time_t seconds = millis / 1000;
+	struct tm *timeinfo = localtime(&seconds);
+	// End_time[0] = timeinfo->tm_year + 1900;
+	Left3End[0] = (timeinfo->tm_year + 1900)%100;
+	Left3End[1] = timeinfo->tm_mon + 1;
+	Left3End[2] = timeinfo->tm_mday;
+	Left3End[3] = timeinfo->tm_hour + 8;
+	Left3End[4] = timeinfo->tm_min;
+	Left3End[5] = timeinfo->tm_sec;
+	
+	
+	
+	// Ã¿´ÎĞ´ÈëÇ°²Á³ıÉÈÇøÊı¾İ
+	// W25Q64_SectorErase(0);			// Ö®Ç°Ğ´½øÈ¥µÄÓÖ²Á³ıµôÁË..... 8/19   ÏÈ²Á³ı ÔÙĞ´Èë±êÖ¾Î»
+	
+	// ½«½ØÖ¹Ê±¼äĞ´Èëµ½FlashÖĞ				8/18
+	for(int i = 0;i < 6;i++){	
+		W25Q64_PageProgram_SingleInt((0x001000 | ((i+7)<<8)),Left3End[i]);	
+	}
+}
+
+void Store_Left15Min_TimeStamp(long long millis){
+	uint8_t Left15End[6];
+	time_t seconds = millis / 1000;
+	struct tm *timeinfo = localtime(&seconds);
+	// End_time[0] = timeinfo->tm_year + 1900;
+	Left15End[0] = (timeinfo->tm_year + 1900)%100;
+	Left15End[1] = timeinfo->tm_mon + 1;
+	Left15End[2] = timeinfo->tm_mday;
+	Left15End[3] = timeinfo->tm_hour + 8;
+	Left15End[4] = timeinfo->tm_min;
+	Left15End[5] = timeinfo->tm_sec;
+	
+	
+	
+	// Ã¿´ÎĞ´ÈëÇ°²Á³ıÉÈÇøÊı¾İ
+	// W25Q64_SectorErase(0);			// Ö®Ç°Ğ´½øÈ¥µÄÓÖ²Á³ıµôÁË..... 8/19   ÏÈ²Á³ı ÔÙĞ´Èë±êÖ¾Î»
+	
+	// ½«½ØÖ¹Ê±¼äĞ´Èëµ½FlashÖĞ				8/18
+	for(int i = 0;i < 6;i++){	
+		W25Q64_PageProgram_SingleInt((0x001000 | ((i+1)<<8)),Left15End[i]);	
+	}
+}
+
+
+
+void Store_Second_TimeStamp(long long millis){
+	uint8_t SecondEnd[6];
+	time_t seconds = millis / 1000;
+	struct tm *timeinfo = localtime(&seconds);
+	// End_time[0] = timeinfo->tm_year + 1900;
+	SecondEnd[0] = (timeinfo->tm_year + 1900)%100;
+	SecondEnd[1] = timeinfo->tm_mon + 1;
+	SecondEnd[2] = timeinfo->tm_mday;
+	SecondEnd[3] = timeinfo->tm_hour + 8;
+	SecondEnd[4] = timeinfo->tm_min;
+	SecondEnd[5] = timeinfo->tm_sec;
+	
+	
+	
+	// Ã¿´ÎĞ´ÈëÇ°²Á³ıÉÈÇøÊı¾İ
+	// W25Q64_SectorErase(0);			// Ö®Ç°Ğ´½øÈ¥µÄÓÖ²Á³ıµôÁË..... 8/19   ÏÈ²Á³ı ÔÙĞ´Èë±êÖ¾Î»
+	
+	// ½«½ØÖ¹Ê±¼äĞ´Èëµ½FlashÖĞ				8/18
+	for(int i = 0;i < 6;i++){	
+		W25Q64_PageProgram_SingleInt((0x000000 | ((i+7)<<8)),SecondEnd[i]);	
+	}
+}
+
 
 bool CompareTime(void){
 #ifdef Debug_ComapreTime
@@ -110,20 +193,6 @@ bool CompareTime(void){
 //		}
 //	}
 //	return false;
-
-if(en_judge_IfLightEnd == true){
-	printf("\r\nThe above are lighting fixtures\r\n");
-	for(int i = 0;i < 6;i++){
-		if(time_Current[i] >= End_time[i]){
-			if(i == 5){
-				return true;
-			}
-		}
-		else return false;
-	}
-}
-
-
 if(en_judge_IfLightEnd == false){	
 	for(int i = 0;i < 6;i++){
 		if(time_Current[i] >= End_time[i]){
@@ -139,7 +208,18 @@ if(en_judge_IfLightEnd == false){
 				
 				
 				en_judge_IfLightEnd = true;	
-				ConvMillisToDateTime_E(en_judge_IfLightEnd_val);		
+				// ²Á³öµ±Ç°Êı¾İ,(×¢Òâ:Èô±£´æÎ¨Ò»Ê¶±ğÂë,×¢ÒâÉÈÇøÎ»ÖÃ)		ÒÑ¾­ÔÚ×ª»»º¯ÊıÖĞ½øĞĞÁËÌáÇ°²Á³ı	8/18
+				// W25Q64_SectorErase(0);
+				W25Q64_WriteFlag_SocketOff();
+				// printf("%lld\n",en_judge_IfLightEnd_val);
+				// ConvMillisToDateTime_E(en_judge_IfLightEnd_val);	
+				// ¸üĞÂµÚ¶ş¸öEndÊ±¼,Ò²¾ÍÊÇ¹ØµÆ¹ØÃÅÊ±¼ä  ´ÓFlash¶ÁÈ¡
+				for(int i = 0;i < 6;i++){	
+					End_time[i] = W25Q64_ReadData_SingleInt((0x000000 | ((i+7)<<8)));	
+				}
+				
+			
+				
 				return true;
 			}
 		}
@@ -147,6 +227,25 @@ if(en_judge_IfLightEnd == false){
 	} 
 	return false;
 }
+
+if(en_judge_IfLightEnd == true){
+	printf("\r\nThe above are lighting fixtures\r\n");
+	for(int i = 0;i < 6;i++){
+		if(time_Current[i] >= End_time[i]){
+			if(i == 5){
+				
+				// Ê±¼äµ½ÁË ²Á³ıÉÈÇøÊı¾İ
+				W25Q64_SectorErase(0);
+				W25Q64_SectorErase(0x001000);
+
+				return true;
+			}
+		}
+		else return false;
+	}
+}
+
+
 
 
 return false;			// ´ËĞĞÓÀÔ¶¶¼²»»áµ½´ï. ¿¼ÂÇÔõÃ´ÓÅ»¯

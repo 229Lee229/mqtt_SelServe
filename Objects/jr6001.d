@@ -58,3 +58,4 @@
 .\objects\jr6001.o: .\Hardware\Switch Ctrl Relay\timer_doorLock.h
 .\objects\jr6001.o: .\Hardware\JR6001.h
 .\objects\jr6001.o: .\System\TIM_CheckConn.h
+.\objects\jr6001.o: .\Hardware\W25Q64.h

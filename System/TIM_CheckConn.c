@@ -1,7 +1,7 @@
 #include "TIM_CheckConn.h"
 
 extern char rx_buffer_esp8266[RX_BUFFER_SIZE];
-
+extern bool Check_MQTTCONN_flag;
 
 void CheckConn_ReConnWifi_After(void){
 	if(strstr((const char *)rx_buffer_esp8266, "WIFI CONNECTED") != NULL || strstr((const char *)rx_buffer_esp8266, "WIFI GOT IP") != NULL){		//如果检索到关键词
@@ -45,7 +45,7 @@ void TIM3_IRQHandler(void){
 		
 		// 发送AT+MQTTCONN?
 		// 置检测mqttconn的标志位,在主循环中进行操作检查
-		// esp8266_at_Check_MQTTCONN
+		Check_MQTTCONN_flag = true;
 		
 		
 		

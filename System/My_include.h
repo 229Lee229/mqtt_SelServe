@@ -38,4 +38,8 @@
 
 #include "JR6001.h"
 #include "TIM_CheckConn.h"
+
+
+// --- W25Q64
+#include "W25Q64.h"
 #endif

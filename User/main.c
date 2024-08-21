@@ -23,6 +23,7 @@
     V4.0       	 7/11/2024    Lee				增加心跳检测 定时器TIM2												
  ***********************************************************************/
 bool en_judge_IfLightEnd = false;			// 判断是否进入到判断灯光熄灭的条件 (照明灯延长30s关闭)
+bool Check_MQTTCONN_flag = false;
 long long en_judge_IfLightEnd_val;
 
 
@@ -104,12 +105,20 @@ int main(void){				// a9f0879994d95a42e919b574af}
 	
 	timer_doorLock_Init();
 	switchCtrlRelay_Init();
+	
+	// 上电对flash进行扫描
+	W25Q64_Init();		// 8/18
+
+	
 	// ----test 7/3
 	relay5V_Init();	
 	ESP8266_Init();
 
 	MQTT_Init();
 	DS1302_init(time_Current);
+	
+	
+	W25Q64_Init_Scan();
 #ifdef Debug_MQTTPUB_Init	
 	do{
 		Delay_ms(200);
@@ -158,19 +167,40 @@ int main(void){				// a9f0879994d95a42e919b574af}
 	
 	// JR6001 初始化   8/10
 	My_JR6001_Init();
+	TIM_CheckConn_Init();
 	
 	
-	
-	
-	
-	
+		// test 8/20
+		Delay_ms(200);
+		JR6001_Play_Welcome();	
+		// Delay_ms(300);	// 默认
+		Delay_ms(500);
+		while(My_JR6001_IsBusy() == false)
+			// Waiting...
+			printf("test\n");
 	IWDG_Init();
 	for(;;){
 		// 检查是否重连 若重连Wifi,则重启mqtt   				每5s重连一次,重连200次
 		CheckConn_ReConnWifi_After();
 		
 		
+		// test 8/20
+//			JR6001_Play_Service_Finish();	
+//		Delay_ms(300);
+//		while(My_JR6001_IsBusy() == false)
+//			// Waiting...
+//			;				
+
 		
+		
+		
+		
+		if(Check_MQTTCONN_flag == true){
+			IWDG_ReloadCounter(); // 重装载IWDG寄存器
+			if(esp8266_at_Check_MQTTCONN() == true)	printf("Reconn MQTT succeed!\r\n");
+			IWDG_ReloadCounter(); // 重装载IWDG寄存器
+			Check_MQTTCONN_flag = false;
+		}
 		
 		if(Enable_HeartBeat_Send_Flag){
 			keep_HeartBeat();			// 发送心跳回执		
@@ -194,8 +224,6 @@ int main(void){				// a9f0879994d95a42e919b574af}
 					// Relay_1_Pin_DoorLock = PwrOn_LockDoor;
 					Relay_3_Pin_AllSocket_out 	 = Machine_PwrLoss_Relay;
 					Relay_4_Pin_else_out 		 = Machine_PwrLoss_Relay;
-		
-					
 				}
 			}
 			else if(en_judge_IfLightEnd == true){
@@ -204,6 +232,8 @@ int main(void){				// a9f0879994d95a42e919b574af}
 					Relay_1_Pin_DoorLock_out 	 = PwrOn_LockDoor;	
 					Relay_2_Pin_Light_out 		 = Machine_PwrLoss_Relay;
 					
+					// TEST
+						Relay_3_Pin_AllSocket_out 	 = Machine_PwrOn_Relay;				
 					en_judge_IfLightEnd = false;
 									/* 在开门时间内 开关控制不起作用 7/13 */
 					EXTI_InitTypeDef EXTI_InitStructure;

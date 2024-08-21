@@ -57,4 +57,5 @@
 .\objects\rec_json_parse.o: .\Hardware\Switch Ctrl Relay\timer_doorLock.h
 .\objects\rec_json_parse.o: .\Hardware\JR6001.h
 .\objects\rec_json_parse.o: System\TIM_CheckConn.h
+.\objects\rec_json_parse.o: .\Hardware\W25Q64.h
 .\objects\rec_json_parse.o: D:\Keil5_2\Keil5\ARM\ARMCC\Bin\..\include\time.h
